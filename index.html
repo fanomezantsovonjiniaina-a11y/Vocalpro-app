@@ -556,7 +556,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 
 <!-- HOME -->
-<div id="home" class="screen">
+<div id="home" class="screen" style="overflow-y:auto;padding-bottom:72px">
   <div class="topbar">
     <div class="brand">VocalPro 🎙️</div>
     <div class="topbar-r">
@@ -599,7 +599,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 
 <!-- SETTINGS -->
-<div id="settings" class="screen">
+<div id="settings" class="screen" style="overflow-y:auto;padding-bottom:20px">
   <div class="topbar">
     <button class="ex-back" onclick="navTo('home',0)">←</button>
     <div style="flex:1;font-size:16px;font-weight:800;margin-left:10px">Paramètres</div>
@@ -668,7 +668,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 
 <!-- CHALLENGES SCREEN -->
-<div id="challenges-screen" class="screen" style="padding-bottom:20px">
+<div id="challenges-screen" class="screen" style="padding-bottom:20px;overflow-y:auto">
   <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px 8px;flex-shrink:0">
     <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:800;background:linear-gradient(135deg,var(--a1),var(--a2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Challenges 🔥</div>
     <div id="ch-xp-chip" style="background:rgba(255,211,42,.1);border:1px solid rgba(255,211,42,.25);border-radius:20px;padding:5px 12px;font-size:12px;font-weight:800;color:var(--gold)">⚡ 0 XP</div>
@@ -693,7 +693,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 
 <!-- PROFILE -->
-<div id="profile" class="screen" style="padding-bottom:20px">
+<div id="profile" class="screen" style="padding-bottom:20px;overflow-y:auto">
   <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px 8px;flex-shrink:0">
     <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:800;background:linear-gradient(135deg,var(--a1),var(--a2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Mon Profil</div>
     <button style="background:transparent;border:1px solid var(--brd);border-radius:var(--r2);color:var(--text2);font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;cursor:pointer;padding:6px 14px" onclick="doLogout()">Déconnexion</button>
