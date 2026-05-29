@@ -21,7 +21,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
 .app{max-width:480px;margin:0 auto;min-height:100vh;position:relative}
 
 /* SCREENS */
-.screen{display:none!important;flex-direction:column;width:100%;padding-bottom:80px;position:relative}.screen.active{display:flex!important;flex-direction:column;overflow-y:auto;height:100vh}
+.screen{display:none!important;flex-direction:column;width:100%;padding-bottom:80px;position:relative}.screen.active{display:flex!important;flex-direction:column;overflow-y:auto;min-height:100vh}
 .screen.active{display:flex}#login.screen.active{flex-direction:column}
 
 /* SPLASH */
@@ -477,7 +477,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 </head>
 <body style="overflow:hidden;height:100vh">
-<div class="app" style="height:100vh;overflow:hidden">
+<div class="app" style="height:100vh;overflow-y:auto">
 
 <!-- SPLASH -->
 <div id="splash" class="screen active">
