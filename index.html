@@ -476,26 +476,6 @@ try {
   }
 } catch(e) { console.log('Firebase init:', e.message); }
 </script>
-<script>
-var auth = null;
-try {
-  var firebaseConfig = {
-    apiKey: "AIzaSyB9Ksn0wPSvrUFB1CEJDMqB8X4fx2Tx-z4",
-    authDomain: "vocalpro-97af3.firebaseapp.com",
-    projectId: "vocalpro-97af3",
-    storageBucket: "vocalpro-97af3.firebasestorage.app",
-    messagingSenderId: "696854300735",
-    appId: "1:696854300735:web:26c95e07066b015cbd908a"
-  };
-  if(typeof firebase !== 'undefined') {
-    firebase.initializeApp(firebaseConfig);
-    auth = firebase.auth();
-    auth.onAuthStateChanged(function(user) {
-      if(user) window._vp_name = user.displayName || user.email.split("@")[0];
-    });
-  }
-} catch(e) { console.log('Firebase init:', e.message); }
-</script>
 
 <script>
 // SPLASH → LOGIN - runs immediately
@@ -1802,11 +1782,11 @@ function getNextLevel() {
 }
 
 function isModUnlocked(modIndex) {
-  const cur = getCurrentLevel();
-  // Free modules always unlocked
+  // All modules require Premium
+  if (!isPremium) return false;
   if (MODS[modIndex] && MODS[modIndex].free) return true;
-  // Premium AND level check
-  return modIndex < cur.unlock && isPremium;
+  const cur = getCurrentLevel();
+  return modIndex < cur.unlock;
 }
 
 function checkChallenges() {
@@ -2099,8 +2079,8 @@ function buildGrid() {
     const d = document.createElement('div'); d.className = 'mod';
 
     // Determine lock state
-    const isPremLocked = !m.free && !isPremium;
-    const isLevelLocked = !m.free && isPremium && globalIdx >= cur.unlock;
+    const isPremLocked = !isPremium;
+    const isLevelLocked = isPremium && globalIdx >= cur.unlock;
     const xpNeeded = isLevelLocked ? (LEVELS.find(l => l.unlock > globalIdx)?.minXP || 999) : 0;
 
     let overlay = '';
@@ -2115,8 +2095,7 @@ function buildGrid() {
 
     d.innerHTML = `<div class="mod-xp">+${m.xp}XP</div>${done}<div class="mod-em" style="${lockedStyle}">${m.em}</div><div class="mod-nm">${m.nm}</div><div class="mod-mt">${m.steps.length} étapes</div><div class="mod-bar"><div class="mod-bf" style="width:${m.done?100:0}%;background:${m.done?'var(--g1)':m.col}"></div></div>${overlay}`;
 
-    if (m.free) d.onclick = () => openMod(m);
-    else if (isPremLocked) d.onclick = () => { const _pm2=document.getElementById('prem-modal');if(_pm2)_pm2.style.display='flex'; };
+    if (isPremLocked) d.onclick = () => { const _pm2=document.getElementById('prem-modal');if(_pm2)_pm2.style.display='flex'; };
     else if (isLevelLocked) d.onclick = () => toast('🔒 Gagnez ' + xpNeeded + ' XP pour débloquer ce module !');
     else d.onclick = () => openMod(m);
 
@@ -3059,11 +3038,12 @@ function enterApp(){
   (function(){const _e=document.getElementById('login');if(_e)_e.classList.remove('active');})();
   (function(){const _e=document.getElementById('home');if(_e)_e.classList.add('active');})();
   const _bnav=document.getElementById('bnav');if(_bnav){_bnav.style.display='flex';_bnav.style.flexDirection='row';}
-  // Update hero name
   const hn = document.getElementById('hero-name');
   if(hn) hn.innerHTML = userName + ' <span style="color:var(--a1)">🎙️</span>';
   const av = document.getElementById('av-chip');
   if(av) av.textContent = userName.charAt(0).toUpperCase();
+  // Only unlock modules if Premium
+  if(isPremium) { MODS.forEach(function(m){ m.free = true; }); }
   buildAll();
 }
 
