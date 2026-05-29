@@ -437,8 +437,10 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);heig
 </style>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <script>
 var auth = null;
+var db = null;
 try {
   var firebaseConfig = {
     apiKey: "AIzaSyB9Ksn0wPSvrUFB1CEJDMqB8X4fx2Tx-z4",
@@ -451,8 +453,24 @@ try {
   if(typeof firebase !== 'undefined') {
     firebase.initializeApp(firebaseConfig);
     auth = firebase.auth();
+    db = firebase.firestore();
     auth.onAuthStateChanged(function(user) {
-      if(user) window._vp_name = user.displayName || user.email.split("@")[0];
+      if(user) {
+        window._vp_name = user.displayName || user.email.split("@")[0];
+        // Save user to Firestore & check isPremium
+        db.collection('users').doc(user.uid).get().then(function(doc) {
+          if(doc.exists && doc.data().isPremium === true) {
+            isPremium = true;
+          }
+          // Save/update user data
+          db.collection('users').doc(user.uid).set({
+            email: user.email,
+            name: user.displayName || user.email.split("@")[0],
+            lastLogin: new Date(),
+            isPremium: isPremium
+          }, { merge: true });
+        }).catch(function(e) { console.log('Firestore error:', e); });
+      }
     });
   }
 } catch(e) { console.log('Firebase init:', e.message); }
@@ -3134,6 +3152,13 @@ function activateCode() {
 
   if (val === validCode) {
     isPremium = true;
+    // Save isPremium to Firestore
+    if(db && auth && auth.currentUser) {
+      db.collection('users').doc(auth.currentUser.uid).set({
+        isPremium: true,
+        premiumActivatedAt: new Date()
+      }, { merge: true });
+    }
     // Show success with expiry date
     const successBox = document.getElementById('code-success-box');
     successBox.style.display = 'block';
