@@ -453,6 +453,7 @@ try {
   if(typeof firebase !== 'undefined') {
     firebase.initializeApp(firebaseConfig);
     auth = firebase.auth();
+    auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
     db = firebase.firestore();
     auth.onAuthStateChanged(function(user) {
       if(user) {
