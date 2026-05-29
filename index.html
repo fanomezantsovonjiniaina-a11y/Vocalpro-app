@@ -2085,124 +2085,6 @@ function buildGrid() {
   });
 }
 
-// ===== BUILD CHALLENGES SCREEN =====
-function buildChallengesScreen() {
-  var xpVal = xp || 0;
-  var streakVal = streak || 0;
-  var modDoneCount = MODS.filter(function(m){ return m.done; }).length;
-  
-  // Update XP chip
-  var chip = document.getElementById('ch-xp-chip');
-  if (chip) chip.textContent = '⚡ ' + xpVal + ' XP';
-  
-  // Count challenges
-  var done = CHALLENGES.filter(function(c){ return c.done; }).length;
-  var active = CHALLENGES.filter(function(c){ return !c.done && xpVal >= (c.req||0); }).length;
-  var locked = CHALLENGES.filter(function(c){ return !c.done && xpVal < (c.req||0); }).length;
-  
-  var el;
-  el = document.getElementById('ch-done'); if (el) el.textContent = done;
-  el = document.getElementById('ch-active'); if (el) el.textContent = active;
-  el = document.getElementById('ch-locked'); if (el) el.textContent = locked;
-  
-  // Build challenges list
-  var list = document.getElementById('challenges-list');
-  if (list) {
-    if (CHALLENGES.length === 0) {
-      list.innerHTML = '<div style="text-align:center;padding:40px 20px;color:var(--text2)">Complétez des modules pour débloquer des challenges !</div>';
-    } else {
-      list.innerHTML = CHALLENGES.map(function(ch) {
-        var canDo = xpVal >= (ch.req||0);
-        var icon = ch.done ? '✅' : canDo ? (ch.em || '🔥') : '🔒';
-        var borderColor = ch.done ? 'rgba(46,213,115,.4)' : canDo ? 'rgba(255,71,87,.3)' : 'var(--brd)';
-        var bg = ch.done ? 'rgba(46,213,115,.06)' : canDo ? 'rgba(255,71,87,.04)' : 'var(--card)';
-        var nameColor = ch.done ? 'var(--b1)' : canDo ? 'var(--a1)' : 'var(--text2)';
-        var tag = ch.done
-          ? '<span style="font-size:10px;font-weight:800;color:var(--b1);background:rgba(46,213,115,.12);padding:3px 8px;border-radius:10px">TERMINÉ</span>'
-          : canDo
-          ? '<span style="font-size:10px;font-weight:800;color:var(--a1);background:rgba(255,71,87,.1);padding:3px 8px;border-radius:10px">EN COURS</span>'
-          : '<span style="font-size:10px;color:var(--text2)">' + (ch.req||0) + ' XP</span>';
-        return '<div style="background:' + bg + ';border:1px solid ' + borderColor + ';border-radius:14px;padding:14px 16px;margin-bottom:10px;display:flex;align-items:center;gap:12px">'
-          + '<div style="font-size:26px;flex-shrink:0">' + icon + '</div>'
-          + '<div style="flex:1;min-width:0">'
-          + '<div style="font-size:14px;font-weight:800;color:' + nameColor + '">' + (ch.name||'Challenge') + '</div>'
-          + '<div style="font-size:12px;color:var(--text2);margin-top:2px">' + (ch.desc||'') + '</div>'
-          + '<div style="font-size:11px;color:var(--gold);font-weight:700;margin-top:4px">+' + (ch.xp||0) + ' XP</div>'
-          + '</div>'
-          + tag
-          + '</div>';
-      }).join('');
-    }
-  }
-  
-  // Build badges grid
-  var grid = document.getElementById('badges-grid');
-  if (grid) {
-    var BADGES_DEF = [
-      {em:'🌱', name:'Premier Pas',    earned: modDoneCount >= 1,    desc:'1 module complété'},
-      {em:'🔥', name:'En Feu',         earned: streakVal >= 3,        desc:'3 jours de suite'},
-      {em:'🎤', name:'Chanteur',       earned: modDoneCount >= 10,   desc:'10 modules'},
-      {em:'⭐', name:'Étoile',         earned: xpVal >= 500,          desc:'500 XP'},
-      {em:'💎', name:'Assidu',         earned: modDoneCount >= 25,   desc:'25 modules'},
-      {em:'🏆', name:'Champion',       earned: modDoneCount >= 50,   desc:'50 modules'},
-      {em:'👑', name:'Légende',        earned: xpVal >= 5000,         desc:'5000 XP'},
-      {em:'💫', name:'Premium',        earned: isPremium || false,    desc:'Abonné Premium'},
-      {em:'🎵', name:'Maestro',        earned: modDoneCount >= 75,   desc:'75 modules'},
-    ];
-    grid.innerHTML = BADGES_DEF.map(function(b) {
-      return '<div style="background:var(--card);border:1px solid ' + (b.earned ? 'rgba(255,211,42,.5)' : 'var(--brd)') + ';border-radius:12px;padding:12px 8px;text-align:center;opacity:' + (b.earned ? '1' : '0.4') + '">'
-        + '<div style="font-size:28px">' + b.em + '</div>'
-        + '<div style="font-size:11px;font-weight:800;color:' + (b.earned ? 'var(--gold)' : 'var(--text2)') + ';margin-top:5px">' + b.name + '</div>'
-        + '<div style="font-size:10px;color:var(--text2);margin-top:2px">' + b.desc + '</div>'
-        + '</div>';
-    }).join('');
-  }
-}
-
-// ===== BUILD PROFILE SCREEN =====
-function buildProfile() {
-  var name = window._vp_name || userName || 'Chanteur';
-  var xpVal = xp || 0;
-  var modDoneCount = MODS.filter(function(m){ return m.done; }).length;
-  var chDoneCount = CHALLENGES.filter(function(c){ return c.done; }).length;
-  var level = getCurrentLevel();
-  var badgesEarned = [xpVal>=100, modDoneCount>=1, (streak||0)>=3, modDoneCount>=10, xpVal>=500, isPremium||false].filter(Boolean).length;
-  
-  var el;
-  
-  // Avatar
-  el = document.getElementById('prof-av');
-  if (el) el.textContent = name.charAt(0).toUpperCase();
-  
-  // Name
-  el = document.getElementById('prof-name');
-  if (el) el.textContent = name;
-  
-  // Level
-  el = document.getElementById('prof-level');
-  if (el) el.textContent = (level.em || '🌱') + ' Niveau ' + ((level.id||0)+1) + ' — ' + (level.name || 'Débutant');
-  
-  // Plan badge
-  el = document.getElementById('prof-plan-badge');
-  if (el) {
-    if (isPremium) {
-      el.textContent = '👑 Plan Premium';
-      el.style.background = 'rgba(255,211,42,.15)';
-      el.style.borderColor = 'rgba(255,211,42,.4)';
-      el.style.color = 'var(--gold)';
-    } else {
-      el.textContent = '🆓 Plan Gratuit';
-    }
-  }
-  
-  // Stats
-  el = document.getElementById('ps-xp');  if (el) el.textContent = xpVal;
-  el = document.getElementById('ps-mod'); if (el) el.textContent = modDoneCount;
-  el = document.getElementById('ps-ch');  if (el) el.textContent = chDoneCount;
-  el = document.getElementById('ps-bdg'); if (el) el.textContent = badgesEarned;
-}
-
-
 function buildSettings() {
   const al = document.getElementById('app-langs');
   const ll = document.getElementById('learn-langs');
@@ -2844,7 +2726,7 @@ function navTo(id, idx) {
   if (id === 'home') buildAll();
   else if (id === 'settings') buildSettings();
   else if (id === 'prem') buildFeatures();
-  else if (id === 'challenges-screen') { buildChallengesScreen(); var nc=document.getElementById('notif-ch'); if(nc) nc.style.display='none'; }
+  else if (id === 'challenges-screen') { buildChallengesScreen(); const nc=document.getElementById('notif-ch'); if(nc) nc.style.display='none'; }
   else if (id === 'profile') buildProfile();
 }
 function closeModal(modalId) {
@@ -3226,6 +3108,89 @@ function sendWhatsApp() {
 }
 
 
+
+
+function buildChallengesScreen() {
+  var xpVal = xp || 0;
+  // XP chip
+  var chip = document.getElementById('ch-xp-chip');
+  if (chip) chip.textContent = '⚡ ' + xpVal + ' XP';
+  // Counts
+  var done = CHALLENGES.filter(function(c){ return c.done; }).length;
+  var active = CHALLENGES.filter(function(c){ return !c.done && xpVal >= (c.req||0); }).length;
+  var locked = CHALLENGES.filter(function(c){ return !c.done && xpVal < (c.req||0); }).length;
+  var el = document.getElementById('ch-done'); if(el) el.textContent = done;
+  el = document.getElementById('ch-active'); if(el) el.textContent = active;
+  el = document.getElementById('ch-locked'); if(el) el.textContent = locked;
+  // List
+  var list = document.getElementById('challenges-list');
+  if (list) {
+    list.innerHTML = CHALLENGES.map(function(ch) {
+      var canDo = xpVal >= (ch.req||0);
+      var icon = ch.done ? '✅' : canDo ? (ch.em||'🔥') : '🔒';
+      var bc = ch.done ? 'rgba(46,213,115,.4)' : canDo ? 'rgba(255,71,87,.3)' : 'var(--brd)';
+      var nc2 = ch.done ? 'var(--b1)' : canDo ? 'var(--a1)' : 'var(--text2)';
+      var tag = ch.done
+        ? '<span style="font-size:10px;font-weight:800;color:var(--b1);background:rgba(46,213,115,.1);padding:3px 8px;border-radius:10px;white-space:nowrap">✅ Fait</span>'
+        : canDo
+        ? '<span style="font-size:10px;font-weight:800;color:var(--a1);background:rgba(255,71,87,.1);padding:3px 8px;border-radius:10px;white-space:nowrap">🔥 À faire</span>'
+        : '<span style="font-size:10px;color:var(--text2);white-space:nowrap">🔒 ' + (ch.req||0) + ' XP</span>';
+      return '<div style="background:var(--card);border:1px solid ' + bc + ';border-radius:14px;padding:14px;margin-bottom:10px;display:flex;align-items:center;gap:12px">'
+        + '<div style="font-size:26px">' + icon + '</div>'
+        + '<div style="flex:1">'
+        + '<div style="font-size:14px;font-weight:800;color:' + nc2 + '">' + (ch.name||'Challenge') + '</div>'
+        + '<div style="font-size:12px;color:var(--text2);margin-top:2px">' + (ch.desc||'') + '</div>'
+        + '<div style="font-size:11px;color:var(--gold);font-weight:700;margin-top:3px">+' + (ch.xp||0) + ' XP</div>'
+        + '</div>' + tag + '</div>';
+    }).join('');
+  }
+  // Badges
+  var grid = document.getElementById('badges-grid');
+  if (grid) {
+    var modsDone = MODS.filter(function(m){ return m.done; }).length;
+    var st = streak || 0;
+    var BDEFS = [
+      {em:'🌱',name:'Premier Pas',earned:modsDone>=1,desc:'1 module'},
+      {em:'🔥',name:'En Feu',earned:st>=3,desc:'3 jours'},
+      {em:'🎤',name:'Chanteur',earned:modsDone>=10,desc:'10 modules'},
+      {em:'⭐',name:'Étoile',earned:xpVal>=500,desc:'500 XP'},
+      {em:'💎',name:'Assidu',earned:modsDone>=25,desc:'25 modules'},
+      {em:'🏆',name:'Champion',earned:modsDone>=50,desc:'50 modules'},
+      {em:'👑',name:'Légende',earned:xpVal>=5000,desc:'5000 XP'},
+      {em:'💫',name:'Premium',earned:isPremium||false,desc:'Premium'},
+      {em:'🎵',name:'Maestro',earned:modsDone>=75,desc:'75 modules'},
+    ];
+    grid.innerHTML = BDEFS.map(function(b){
+      return '<div style="background:var(--card);border:1px solid '+(b.earned?'rgba(255,211,42,.5)':'var(--brd)')+';border-radius:12px;padding:12px 8px;text-align:center;opacity:'+(b.earned?'1':'0.4')+'">'
+        +'<div style="font-size:28px">'+b.em+'</div>'
+        +'<div style="font-size:11px;font-weight:800;color:'+(b.earned?'var(--gold)':'var(--text2)')+';margin-top:4px">'+b.name+'</div>'
+        +'<div style="font-size:10px;color:var(--text2);margin-top:2px">'+b.desc+'</div>'
+        +'</div>';
+    }).join('');
+  }
+}
+
+function buildProfile() {
+  var name = window._vp_name || userName || 'Chanteur';
+  var xpVal = xp || 0;
+  var modsDone = MODS.filter(function(m){ return m.done; }).length;
+  var chsDone = CHALLENGES.filter(function(c){ return c.done; }).length;
+  var level = getCurrentLevel();
+  var bdgEarned = [xpVal>=100,modsDone>=1,(streak||0)>=3,modsDone>=10,xpVal>=500,isPremium||false].filter(Boolean).length;
+  var el;
+  el = document.getElementById('prof-av'); if(el) el.textContent = name.charAt(0).toUpperCase();
+  el = document.getElementById('prof-name'); if(el) el.textContent = name;
+  el = document.getElementById('prof-level'); if(el) el.textContent = (level.em||'🌱') + ' Niveau ' + ((level.id||0)+1) + ' — ' + (level.name||'Débutant');
+  el = document.getElementById('prof-plan-badge');
+  if(el) {
+    if(isPremium){ el.textContent='👑 Plan Premium'; el.style.background='rgba(255,211,42,.15)'; el.style.borderColor='rgba(255,211,42,.4)'; el.style.color='var(--gold)'; }
+    else { el.textContent='🆓 Plan Gratuit'; }
+  }
+  el = document.getElementById('ps-xp');  if(el) el.textContent = xpVal;
+  el = document.getElementById('ps-mod'); if(el) el.textContent = modsDone;
+  el = document.getElementById('ps-ch');  if(el) el.textContent = chsDone;
+  el = document.getElementById('ps-bdg'); if(el) el.textContent = bdgEarned;
+}
 </script>
 <!-- BOTTOM NAV -->
 <div id="bnav" style="position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:rgba(10,12,26,.95);border-top:1px solid rgba(255,255,255,.06);display:none;z-index:100;backdrop-filter:blur(10px)">
