@@ -2726,8 +2726,8 @@ function navTo(id, idx) {
   if (id === 'home') buildAll();
   else if (id === 'settings') buildSettings();
   else if (id === 'prem') { buildFeatures(); setTimeout(function(){ const m=document.getElementById('wa-modal'); if(m) m.style.display='flex'; }, 300); }
-  else if (id === 'challenges-screen') { buildChallengesScreen(); buildBadgesGrid(); const nc=document.getElementById('notif-ch'); if(nc) nc.style.display='none'; }
-  else if (id === 'profile') buildAll();
+  else if (id === 'challenges-screen') { buildChallengesScreen_fix(); const nc=document.getElementById('notif-ch'); if(nc) nc.style.display='none'; }
+  else if (id === 'profile') buildProfile_fix();
 }
 function closeModal(modalId) {
   const el = document.getElementById(modalId || 'prem-modal');
@@ -3107,6 +3107,91 @@ function sendWhatsApp() {
   toast("📲 WhatsApp ouvert — envoyez votre transaction !");
 }
 
+
+
+function buildChallengesScreen_fix() {
+  // Build challenges list
+  buildChallengesSection();
+  buildBadges();
+  
+  // Also populate the challenges-list and badges-grid directly
+  var xpChip = document.getElementById('ch-xp-chip');
+  if(xpChip) xpChip.textContent = '⚡ ' + (window.xp || 0) + ' XP';
+  
+  var doneCh = document.getElementById('ch-done');
+  var activeCh = document.getElementById('ch-active');
+  var lockedCh = document.getElementById('ch-locked');
+  
+  var done = 0, active = 0, locked = 0;
+  (CHALLENGES || []).forEach(function(ch) {
+    if(ch.done) done++;
+    else if((window.xp||0) >= (ch.minXP||0)) active++;
+    else locked++;
+  });
+  
+  if(doneCh) doneCh.textContent = done;
+  if(activeCh) activeCh.textContent = active;
+  if(lockedCh) lockedCh.textContent = locked;
+  
+  // Build challenges list
+  var list = document.getElementById('challenges-list');
+  if(list && typeof CHALLENGES !== 'undefined') {
+    list.innerHTML = CHALLENGES.map(function(ch) {
+      var canDo = (window.xp||0) >= (ch.minXP||0);
+      var color = ch.done ? 'var(--b1)' : canDo ? 'var(--a1)' : 'var(--text2)';
+      var icon = ch.done ? '✅' : canDo ? '🔥' : '🔒';
+      return '<div style="background:var(--card);border:1px solid var(--brd);border-radius:14px;padding:14px;margin-bottom:10px">' +
+        '<div style="display:flex;align-items:center;gap:10px">' +
+        '<div style="font-size:24px">' + icon + '</div>' +
+        '<div style="flex:1">' +
+        '<div style="font-size:14px;font-weight:800;color:' + color + '">' + ch.title + '</div>' +
+        '<div style="font-size:12px;color:var(--text2);margin-top:3px">' + ch.desc + '</div>' +
+        '<div style="font-size:11px;color:var(--gold);margin-top:4px">+' + ch.xp + ' XP' + (ch.minXP ? ' · Requis: ' + ch.minXP + ' XP' : '') + '</div>' +
+        '</div></div></div>';
+    }).join('');
+  } else if(list) {
+    list.innerHTML = '<div style="text-align:center;padding:30px;color:var(--text2)">Complétez des modules pour débloquer des challenges !</div>';
+  }
+  
+  // Build badges
+  var badgesGrid = document.getElementById('badges-grid');
+  if(badgesGrid && typeof BADGES !== 'undefined') {
+    badgesGrid.innerHTML = BADGES.map(function(b) {
+      var earned = b.check ? b.check() : false;
+      return '<div style="background:var(--card);border:1px solid ' + (earned?'var(--gold)':'var(--brd)') + ';border-radius:12px;padding:12px 8px;text-align:center;opacity:' + (earned?'1':'0.5') + '">' +
+        '<div style="font-size:28px">' + b.em + '</div>' +
+        '<div style="font-size:11px;font-weight:800;color:' + (earned?'var(--gold)':'var(--text2)') + ';margin-top:4px">' + b.name + '</div>' +
+        '</div>';
+    }).join('');
+  }
+}
+
+function buildProfile_fix() {
+  var name = window._vp_name || 'Chanteur';
+  var xpVal = window.xp || 0;
+  var modDone = (typeof MODS !== 'undefined') ? MODS.filter(function(m){return m.done;}).length : 0;
+  var level = typeof getCurrentLevel === 'function' ? getCurrentLevel() : {name:'Débutant', em:'🌱'};
+  var isPrem = window.isPremium || false;
+  
+  var av = document.getElementById('prof-av');
+  var nm = document.getElementById('prof-name');
+  var lv = document.getElementById('prof-level');
+  var pl = document.getElementById('prof-plan-badge');
+  var psXp = document.getElementById('ps-xp');
+  var psMod = document.getElementById('ps-mod');
+  var psCh = document.getElementById('ps-ch');
+  
+  if(av) av.textContent = name.charAt(0).toUpperCase();
+  if(nm) nm.textContent = name;
+  if(lv) lv.textContent = (level.em||'🌱') + ' ' + (level.name||'Débutant');
+  if(pl) { pl.textContent = isPrem ? '👑 Premium' : '🆓 Gratuit'; pl.style.background = isPrem ? 'linear-gradient(135deg,var(--gold),#ff6b35)' : 'rgba(255,255,255,.1)'; }
+  if(psXp) psXp.textContent = xpVal;
+  if(psMod) psMod.textContent = modDone;
+  if(psCh) {
+    var chDone = (typeof CHALLENGES !== 'undefined') ? CHALLENGES.filter(function(c){return c.done;}).length : 0;
+    psCh.textContent = chDone;
+  }
+}
 
 </script>
 <!-- BOTTOM NAV -->
