@@ -21,7 +21,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
 .app{max-width:480px;margin:0 auto;min-height:100vh;position:relative}
 
 /* SCREENS */
-.screen{display:none!important;flex-direction:column;width:100%;min-height:100vh;padding-bottom:72px;position:relative}.screen.active{display:flex!important;flex-direction:column}
+.screen{display:none!important;flex-direction:column;width:100%;padding-bottom:80px;position:relative}.screen.active{display:flex!important;flex-direction:column}
 .screen.active{display:flex}#login.screen.active{flex-direction:column}
 
 /* SPLASH */
@@ -476,8 +476,8 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 </head>
-<body style="overflow:hidden;height:100vh">
-<div class="app" style="overflow:hidden;max-height:100vh;overflow-y:auto">
+<body style="overflow-y:auto;min-height:100vh">
+<div class="app" style="min-height:100vh">
 
 <!-- SPLASH -->
 <div id="splash" class="screen active">
@@ -725,7 +725,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 
 <!-- PREMIUM -->
-<div id="prem" class="screen" style="padding-bottom:20px;overflow-y:auto;max-height:100vh">
+<div id="prem" class="screen" style="padding-bottom:80px">
   <div style="background:linear-gradient(135deg,#160430,#0a1a40);padding:24px 16px 20px;text-align:center;position:relative;overflow:hidden">
     <div style="font-size:46px;margin-bottom:12px;animation:crownPulse 2s ease infinite">👑</div>
     <div style="font-family:'Playfair Display',serif;font-size:30px;font-weight:800;margin-bottom:7px">Premium VocalPro</div>
@@ -2706,10 +2706,14 @@ function skipStep() { curStep = Math.min(curStep + 1, curMod.steps.length - 1); 
 
 function navTo(id, idx) {
   // Hide all screens
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.screen').forEach(s => { s.classList.remove('active'); s.scrollTop = 0; });
   // Show target screen
   const target = document.getElementById(id);
-  if (target) target.classList.add('active');
+  if (target) { target.classList.add('active'); target.scrollTop = 0; }
+  // Scroll app to top
+  const app = document.querySelector('.app');
+  if (app) app.scrollTop = 0;
+  window.scrollTo(0, 0);
   // Show nav
   const nav = document.getElementById('bnav');
   if (nav) { nav.style.display = 'flex'; nav.style.flexDirection = 'row'; }
