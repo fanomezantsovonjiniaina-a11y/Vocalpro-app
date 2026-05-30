@@ -761,6 +761,8 @@ document.addEventListener('DOMContentLoaded', function() {
       <div style="display:flex;flex-direction:column;gap:7px">
         <button style="width:100%;padding:11px;border-radius:20px;font-family:'Outfit',sans-serif;font-size:11px;font-weight:800;cursor:pointer;background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;border:none;box-shadow:0 4px 14px rgba(37,211,102,.3)" onclick="openWA()">📲 Orange Money / MVola</button>
 
+        <button style="width:100%;padding:11px;border-radius:20px;font-family:'Outfit',sans-serif;font-size:11px;font-weight:800;cursor:pointer;background:linear-gradient(135deg,#003087,#009cde);color:#fff;border:none;box-shadow:0 4px 14px rgba(0,48,135,.3)" onclick="window.open('https://www.paypal.me/tandancefashion/5','_blank')">💳 Payer via PayPal (~5€)</button>
+
         <button style="width:100%;padding:11px;border-radius:20px;font-family:'Outfit',sans-serif;font-size:11px;font-weight:800;cursor:pointer;background:linear-gradient(135deg,#ff6b35,#ff4757);color:#fff;border:none;box-shadow:0 4px 14px rgba(255,71,87,.3)" onclick="openForm()">📋 Envoyer preuve de paiement</button>
       </div>
     </div>
@@ -823,7 +825,7 @@ const aiHist = [];
 // ===== MODULES (16 total: 3 free + 13 premium) =====
 const MODS = [
   // ---- FREE ----
-  {id:0, nm:"Échauffement I — Respiration", em:"🌡️", col:"#36d7b7", xp:20, free:false, done:false, cat:"warmup", steps:[
+  {id:0, nm:"Échauffement I — Respiration", em:"🌡️", col:"#36d7b7", xp:20, free:true, done:false, cat:"warmup", steps:[
     {t:"breath"},
     {t:"piano_ex", nm:"Piano suit — DO MI SOL", desc:"Le piano joue la mélodie — chantez chaque note immédiatement !", sequence:["DO","MI","SOL","MI","DO"], tempo:900},
     {t:"scales"},
@@ -832,7 +834,7 @@ const MODS = [
     {t:"video", nm:"Échauffement vocal pro", url:"https://youtu.be/Xxedcl77oK4"},
     {t:"done"}
   ]},
-  {id:1, nm:"Respiration & Souffle", em:"💨", col:"#74b9ff", xp:25, free:false, done:false, cat:"warmup", steps:[
+  {id:1, nm:"Respiration & Souffle", em:"💨", col:"#74b9ff", xp:25, free:true, done:false, cat:"warmup", steps:[
     {t:"breath"},
     {t:"tech", nm:"Respiration costale", em:"💨",
       desc:"La respiration costale utilise le diaphragme pour maximiser le souffle. C'est la technique de base de tout chanteur professionnel.",
@@ -843,7 +845,7 @@ const MODS = [
     {t:"quiz", q:"Quelle partie du corps actionne la respiration diaphragmatique ?", opts:["Les épaules","Le diaphragme","La gorge"], ok:1},
     {t:"done"}
   ]},
-  {id:2, nm:"Projection vocale", em:"📢", col:"#ff5e62", xp:30, free:false, done:false, cat:"technique", steps:[
+  {id:2, nm:"Projection vocale", em:"📢", col:"#ff5e62", xp:30, free:true, done:false, cat:"technique", steps:[
     {t:"breath"},
     {t:"tech", nm:"Projection depuis le diaphragme", em:"📢",
       desc:"La projection permet d'être entendu sans forcer la gorge. Elle vient du diaphragme — jamais du cou ou de la gorge.",
@@ -1782,9 +1784,8 @@ function getNextLevel() {
 }
 
 function isModUnlocked(modIndex) {
-  // All modules require Premium
-  if (!isPremium) return false;
   if (MODS[modIndex] && MODS[modIndex].free) return true;
+  if (!isPremium) return false;
   const cur = getCurrentLevel();
   return modIndex < cur.unlock;
 }
@@ -2079,8 +2080,8 @@ function buildGrid() {
     const d = document.createElement('div'); d.className = 'mod';
 
     // Determine lock state
-    const isPremLocked = !isPremium;
-    const isLevelLocked = isPremium && globalIdx >= cur.unlock;
+    const isPremLocked = !m.free && !isPremium;
+    const isLevelLocked = m.free ? false : isPremium && globalIdx >= cur.unlock;
     const xpNeeded = isLevelLocked ? (LEVELS.find(l => l.unlock > globalIdx)?.minXP || 999) : 0;
 
     let overlay = '';
@@ -2095,7 +2096,8 @@ function buildGrid() {
 
     d.innerHTML = `<div class="mod-xp">+${m.xp}XP</div>${done}<div class="mod-em" style="${lockedStyle}">${m.em}</div><div class="mod-nm">${m.nm}</div><div class="mod-mt">${m.steps.length} étapes</div><div class="mod-bar"><div class="mod-bf" style="width:${m.done?100:0}%;background:${m.done?'var(--g1)':m.col}"></div></div>${overlay}`;
 
-    if (isPremLocked) d.onclick = () => { const _pm2=document.getElementById('prem-modal');if(_pm2)_pm2.style.display='flex'; };
+    if (m.free) d.onclick = () => openMod(m);
+    else if (isPremLocked) d.onclick = () => { const _pm2=document.getElementById('prem-modal');if(_pm2)_pm2.style.display='flex'; };
     else if (isLevelLocked) d.onclick = () => toast('🔒 Gagnez ' + xpNeeded + ' XP pour débloquer ce module !');
     else d.onclick = () => openMod(m);
 
@@ -3134,7 +3136,7 @@ let isPremium = false;
 // Format: VOCAL + secret + MOIS + ANNEE
 // Le secret "8383" est connu de vous seul
 function getMonthlyCode() {
-  return 'VOCALPRO83';
+  return 'VONJY33';
 }
 
 // Affiche le accès à vie/année d'expiration
