@@ -11,98 +11,155 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-
-      - name: Install Bubblewrap
-        run: npm install -g @bubblewrap/cli
-
-      - name: Generate Keystore
+      - name: Create Android Project
         run: |
-          keytool -genkeypair \
-            -v \
-            -keystore android.keystore \
-            -alias vocalpro \
-            -keyalg RSA \
-            -keysize 2048 \
-            -validity 10000 \
-            -storepass vocalpro2026 \
-            -keypass vocalpro2026 \
-            -dname "CN=VocalPro, OU=App, O=VocalPro, L=Antananarivo, ST=MG, C=MG"
+          mkdir -p vocalpro-android/app/src/main/java/mg/vocalpro/app
+          mkdir -p vocalpro-android/app/src/main/res/layout
+          mkdir -p vocalpro-android/app/src/main/res/values
+          mkdir -p vocalpro-android/app/src/main/res/mipmap-hdpi
+          mkdir -p vocalpro-android/gradle/wrapper
 
-      - name: Create TWA Manifest
-        run: |
-          cat > twa-manifest.json << 'EOF'
-          {
-            "packageId": "io.github.vocalpro.app",
-            "host": "fanomezantsovonjiniaina-a11y.github.io",
-            "name": "VocalPro — Coach Vocal",
-            "launcherName": "VocalPro",
-            "display": "standalone",
-            "themeColor": "#ff5e62",
-            "navigationColor": "#07080f",
-            "navigationColorDark": "#07080f",
-            "navigationDividerColor": "#07080f",
-            "navigationDividerColorDark": "#07080f",
-            "backgroundColor": "#07080f",
-            "startUrl": "/Vocalpro-app/",
-            "iconUrl": "https://fanomezantsovonjiniaina-a11y.github.io/Vocalpro-app/icon-512.png",
-            "maskableIconUrl": "https://fanomezantsovonjiniaina-a11y.github.io/Vocalpro-app/icon-512.png",
-            "monochromeIconUrl": "https://fanomezantsovonjiniaina-a11y.github.io/Vocalpro-app/icon-512.png",
-            "splashScreenFadeOutDuration": 300,
-            "signingKey": {
-              "path": "../android.keystore",
-              "alias": "vocalpro"
-            },
-            "shortcuts": [],
-            "generatorApp": "bubblewrap-cli",
-            "webManifestUrl": "https://fanomezantsovonjiniaina-a11y.github.io/Vocalpro-app/manifest.json",
-            "isChromeOSOnly": false,
-            "isMetaQuest": false,
-            "fullScopeUrl": "https://fanomezantsovonjiniaina-a11y.github.io/Vocalpro-app/",
-            "minSdkVersion": 19,
-            "orientation": "portrait",
-            "fingerprints": [],
-            "enableNotifications": false,
-            "enableSiteSettingsShortcut": true,
-            "fallbackType": "customtabs",
-            "alphaVersion": false,
-            "sdkVersion": "34",
-            "features": {}
+          # Copy icon
+          cp icon-512.png vocalpro-android/app/src/main/res/mipmap-hdpi/ic_launcher.png
+
+          # settings.gradle
+          cat > vocalpro-android/settings.gradle << 'EOF'
+          rootProject.name = "VocalPro"
+          include ':app'
+          EOF
+
+          # build.gradle (root)
+          cat > vocalpro-android/build.gradle << 'EOF'
+          buildscript {
+              repositories { google(); mavenCentral() }
+              dependencies { classpath 'com.android.tools.build:gradle:8.2.0' }
+          }
+          allprojects { repositories { google(); mavenCentral() } }
+          EOF
+
+          # app/build.gradle
+          cat > vocalpro-android/app/build.gradle << 'EOF'
+          plugins { id 'com.android.application' }
+          android {
+              compileSdk 34
+              defaultConfig {
+                  applicationId "mg.vocalpro.app"
+                  minSdk 21
+                  targetSdk 34
+                  versionCode 1
+                  versionName "1.0"
+              }
+              buildTypes {
+                  release {
+                      minifyEnabled false
+                      signingConfig signingConfigs.debug
+                  }
+              }
+              namespace "mg.vocalpro.app"
           }
           EOF
 
-      - name: Build APK with Bubblewrap
-        run: |
-          mkdir apk-build && cd apk-build
-          cp ../twa-manifest.json twa-manifest.json
-          bubblewrap build \
-            --signingKeyPath="../android.keystore" \
-            --signingKeyAlias="vocalpro"
-        env:
-          BUBBLEWRAP_KEYSTORE_PASSWORD: vocalpro2026
-          BUBBLEWRAP_KEY_PASSWORD: vocalpro2026
+          # AndroidManifest.xml
+          cat > vocalpro-android/app/src/main/AndroidManifest.xml << 'EOF'
+          <?xml version="1.0" encoding="utf-8"?>
+          <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+              <uses-permission android:name="android.permission.INTERNET"/>
+              <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+              <application
+                  android:label="VocalPro"
+                  android:icon="@mipmap/ic_launcher"
+                  android:usesCleartextTraffic="false"
+                  android:theme="@style/AppTheme">
+                  <activity
+                      android:name=".MainActivity"
+                      android:exported="true"
+                      android:configChanges="orientation|screenSize">
+                      <intent-filter>
+                          <action android:name="android.intent.action.MAIN"/>
+                          <category android:name="android.intent.category.LAUNCHER"/>
+                      </intent-filter>
+                  </activity>
+              </application>
+          </manifest>
+          EOF
 
-      - name: Find APK
-        run: find . -name "*.apk" 2>/dev/null
+          # MainActivity.java
+          cat > vocalpro-android/app/src/main/java/mg/vocalpro/app/MainActivity.java << 'EOF'
+          package mg.vocalpro.app;
+          import android.app.Activity;
+          import android.os.Bundle;
+          import android.webkit.*;
+          import android.view.View;
+          public class MainActivity extends Activity {
+              WebView webView;
+              @Override
+              protected void onCreate(Bundle savedInstanceState) {
+                  super.onCreate(savedInstanceState);
+                  webView = new WebView(this);
+                  webView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
+                  WebSettings s = webView.getSettings();
+                  s.setJavaScriptEnabled(true);
+                  s.setDomStorageEnabled(true);
+                  s.setMediaPlaybackRequiresUserGesture(false);
+                  s.setAllowFileAccess(true);
+                  webView.setWebChromeClient(new WebChromeClient() {
+                      @Override
+                      public void onPermissionRequest(PermissionRequest req) { req.grant(req.getResources()); }
+                  });
+                  webView.loadUrl("https://fanomezantsovonjiniaina-a11y.github.io/Vocalpro-app/");
+                  setContentView(webView);
+              }
+              @Override
+              public void onBackPressed() {
+                  if (webView.canGoBack()) webView.goBack();
+                  else super.onBackPressed();
+              }
+          }
+          EOF
+
+          # styles.xml
+          cat > vocalpro-android/app/src/main/res/values/styles.xml << 'EOF'
+          <?xml version="1.0" encoding="utf-8"?>
+          <resources>
+              <style name="AppTheme" parent="android:Theme.Material.NoActionBar">
+                  <item name="android:statusBarColor">#ff5e62</item>
+              </style>
+          </resources>
+          EOF
+
+          # gradle wrapper
+          cat > vocalpro-android/gradle/wrapper/gradle-wrapper.properties << 'EOF'
+          distributionUrl=https\://services.gradle.org/distributions/gradle-8.4-bin.zip
+          EOF
+
+          cat > vocalpro-android/gradlew << 'EOF'
+          #!/bin/sh
+          exec gradle "$@"
+          EOF
+          chmod +x vocalpro-android/gradlew
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Build APK
+        run: |
+          cd vocalpro-android
+          gradle assembleRelease --no-daemon
+        env:
+          ANDROID_HOME: ${{ env.ANDROID_HOME }}
+
+      - name: Find and Upload APK
+        run: find vocalpro-android -name "*.apk" | head -5
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: VocalPro-APK
-          path: |
-            apk-build/app-release-signed.apk
-            apk-build/app-release.apk
-            apk-build/*.apk
+          path: vocalpro-android/app/build/outputs/apk/**/*.apk
           retention-days: 30
