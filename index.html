@@ -465,6 +465,11 @@ try {
     auth.onAuthStateChanged(function(user) {
       if(user) {
         window._vp_name = user.displayName || user.email.split("@")[0];
+        userName = window._vp_name;
+        localStorage.setItem('vp_user', userName);
+        // Auto-enter app if login screen is still showing (ex: after Google redirect)
+        var loginScreen = document.getElementById('login');
+        if(loginScreen && loginScreen.classList.contains('active')) { enterApp(); }
         db.collection('users').doc(user.uid).get().then(function(doc) {
           if(doc.exists) {
             const data = doc.data();
