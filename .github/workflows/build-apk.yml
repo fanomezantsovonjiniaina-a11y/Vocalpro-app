@@ -1,0 +1,55 @@
+name: Build APK (TWA)
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Bubblewrap
+        run: npm install -g @bubblewrap/cli
+
+      - name: Init Bubblewrap project
+        run: |
+          mkdir apk-build && cd apk-build
+          bubblewrap init \
+            --manifest "https://fanomezantsovonjiniaina-a11y.github.io/Vocalpro-app/manifest.json" \
+            --directory . \
+            --skipPwaValidation
+        env:
+          BUBBLEWRAP_KEYSTORE_PASSWORD: vocalpro2026
+          BUBBLEWRAP_KEY_PASSWORD: vocalpro2026
+
+      - name: Build APK
+        run: |
+          cd apk-build
+          bubblewrap build
+        env:
+          BUBBLEWRAP_KEYSTORE_PASSWORD: vocalpro2026
+          BUBBLEWRAP_KEY_PASSWORD: vocalpro2026
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: VocalPro-APK
+          path: apk-build/app-release-signed.apk
+          retention-days: 30
