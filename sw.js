@@ -1,9 +1,7 @@
-const CACHE = 'vocalpro-v2';
+const CACHE = 'vocalpro-v3';
 const ASSETS = [
-  '/',
-  '/index.html',
-  '/manifest.json',
-  '/icon-512.png',
+  '/Vocalpro-app/manifest.json',
+  '/Vocalpro-app/icon-512.png',
   'https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=Playfair+Display:wght@700;800&display=swap',
 ];
 
@@ -22,12 +20,12 @@ self.addEventListener('activate', e => {
 });
 
 self.addEventListener('fetch', e => {
-  // Ne pas intercepter les requêtes Firebase / Google API
   const url = e.request.url;
+  // Ne jamais cacher index.html — toujours réseau
+  if (url.includes('/Vocalpro-app/') && (url.endsWith('/') || url.includes('index.html'))) return;
+  // Ne pas intercepter Firebase / Google API
   if (url.includes('firebaseapp') || url.includes('googleapis.com/identitytoolkit')
-    || url.includes('firestore') || url.includes('translate.google')) {
-    return;
-  }
+    || url.includes('firestore') || url.includes('translate.google')) return;
   e.respondWith(
     caches.match(e.request).then(cached => {
       if (cached) return cached;
@@ -36,7 +34,7 @@ self.addEventListener('fetch', e => {
         const clone = res.clone();
         caches.open(CACHE).then(c => c.put(e.request, clone));
         return res;
-      }).catch(() => caches.match('/index.html'));
+      });
     })
   );
 });
