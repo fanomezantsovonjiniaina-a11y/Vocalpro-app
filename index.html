@@ -3166,11 +3166,17 @@ function doLogin() {
       })
       .then(function(r) {
         window._vp_name = r.user.displayName || email.split("@")[0];
+        userName = window._vp_name;
+        localStorage.setItem('vp_user', userName);
         enterApp();
       })
       .catch(function(e) {
+        // Firebase failed — enter in offline/local mode
         if(btn) { btn.disabled=false; btn.textContent="Se connecter 🎙️"; }
-        showErr(e.message);
+        userName = email.split("@")[0];
+        window._vp_name = userName;
+        localStorage.setItem('vp_user', userName);
+        enterApp();
       });
   }
 }
