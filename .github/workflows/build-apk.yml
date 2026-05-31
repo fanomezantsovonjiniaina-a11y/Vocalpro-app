@@ -28,28 +28,81 @@ jobs:
       - name: Install Bubblewrap
         run: npm install -g @bubblewrap/cli
 
-      - name: Init Bubblewrap project
+      - name: Generate Keystore
+        run: |
+          keytool -genkeypair \
+            -v \
+            -keystore android.keystore \
+            -alias vocalpro \
+            -keyalg RSA \
+            -keysize 2048 \
+            -validity 10000 \
+            -storepass vocalpro2026 \
+            -keypass vocalpro2026 \
+            -dname "CN=VocalPro, OU=App, O=VocalPro, L=Antananarivo, ST=MG, C=MG"
+
+      - name: Create TWA Manifest
+        run: |
+          cat > twa-manifest.json << 'EOF'
+          {
+            "packageId": "io.github.vocalpro.app",
+            "host": "fanomezantsovonjiniaina-a11y.github.io",
+            "name": "VocalPro — Coach Vocal",
+            "launcherName": "VocalPro",
+            "display": "standalone",
+            "themeColor": "#ff5e62",
+            "navigationColor": "#07080f",
+            "navigationColorDark": "#07080f",
+            "navigationDividerColor": "#07080f",
+            "navigationDividerColorDark": "#07080f",
+            "backgroundColor": "#07080f",
+            "startUrl": "/Vocalpro-app/",
+            "iconUrl": "https://fanomezantsovonjiniaina-a11y.github.io/Vocalpro-app/icon-512.png",
+            "maskableIconUrl": "https://fanomezantsovonjiniaina-a11y.github.io/Vocalpro-app/icon-512.png",
+            "monochromeIconUrl": "https://fanomezantsovonjiniaina-a11y.github.io/Vocalpro-app/icon-512.png",
+            "splashScreenFadeOutDuration": 300,
+            "signingKey": {
+              "path": "../android.keystore",
+              "alias": "vocalpro"
+            },
+            "shortcuts": [],
+            "generatorApp": "bubblewrap-cli",
+            "webManifestUrl": "https://fanomezantsovonjiniaina-a11y.github.io/Vocalpro-app/manifest.json",
+            "isChromeOSOnly": false,
+            "isMetaQuest": false,
+            "fullScopeUrl": "https://fanomezantsovonjiniaina-a11y.github.io/Vocalpro-app/",
+            "minSdkVersion": 19,
+            "orientation": "portrait",
+            "fingerprints": [],
+            "enableNotifications": false,
+            "enableSiteSettingsShortcut": true,
+            "fallbackType": "customtabs",
+            "alphaVersion": false,
+            "sdkVersion": "34",
+            "features": {}
+          }
+          EOF
+
+      - name: Build APK with Bubblewrap
         run: |
           mkdir apk-build && cd apk-build
-          bubblewrap init \
-            --manifest "https://fanomezantsovonjiniaina-a11y.github.io/Vocalpro-app/manifest.json" \
-            --directory . \
-            --skipPwaValidation
+          cp ../twa-manifest.json twa-manifest.json
+          bubblewrap build \
+            --signingKeyPath="../android.keystore" \
+            --signingKeyAlias="vocalpro"
         env:
           BUBBLEWRAP_KEYSTORE_PASSWORD: vocalpro2026
           BUBBLEWRAP_KEY_PASSWORD: vocalpro2026
 
-      - name: Build APK
-        run: |
-          cd apk-build
-          bubblewrap build
-        env:
-          BUBBLEWRAP_KEYSTORE_PASSWORD: vocalpro2026
-          BUBBLEWRAP_KEY_PASSWORD: vocalpro2026
+      - name: Find APK
+        run: find . -name "*.apk" 2>/dev/null
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: VocalPro-APK
-          path: apk-build/app-release-signed.apk
+          path: |
+            apk-build/app-release-signed.apk
+            apk-build/app-release.apk
+            apk-build/*.apk
           retention-days: 30
