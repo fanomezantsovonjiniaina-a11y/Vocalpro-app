@@ -17,7 +17,7 @@
   --brd:rgba(255,255,255,0.07);--brd2:rgba(255,255,255,0.16);
   --r:16px;--r2:12px;--r3:8px;
 }
-body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);height:100vh;overflow:hidden;overscroll-behavior:none}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);height:100vh;overflow:hidden}
 .app{max-width:480px;margin:0 auto;height:100vh;overflow:hidden;position:relative;display:flex;flex-direction:column}
 
 /* SCREENS */
@@ -436,10 +436,9 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);heig
 .av-chip{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--a1),var(--a3));display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;color:#fff;cursor:pointer;border:2px solid rgba(255,71,87,.3);flex-shrink:0}
 </style>
 <script>
-// Unregister any old service workers to prevent stale cache issues
 if('serviceWorker' in navigator) {
-  navigator.serviceWorker.getRegistrations().then(function(regs) {
-    regs.forEach(function(r) { r.unregister(); });
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(() => {});
   });
 }
 </script>
@@ -449,6 +448,41 @@ if('serviceWorker' in navigator) {
 <script>
 var auth = null;
 var db = null;
+var _redirectChecked = false; // true after getRedirectResult() resolves
+var _splashDone = false;
+var _waitingForLogin = false;
+var _appEntered = false;
+
+function _doEnterApp(user) {
+  if(_appEntered) return;
+  _appEntered = true;
+  window._vp_name = user.displayName || (user.email ? user.email.split("@")[0] : 'Chanteur');
+  userName = window._vp_name;
+  localStorage.setItem('vp_user', userName);
+  if(!_splashDone) {
+    _splashDone = true;
+    var splash = document.getElementById('splash');
+    if(splash) splash.className = 'screen';
+  }
+  enterApp();
+}
+
+function _showLogin() {
+  if(_appEntered) return;
+  var savedUser = localStorage.getItem('vp_user');
+  if(savedUser) { userName = savedUser; window._vp_name = userName; _appEntered = true; enterApp(); return; }
+  var login = document.getElementById('login');
+  if(login) login.className = 'screen active';
+}
+
+function _onRedirectChecked() {
+  _redirectChecked = true;
+  if(_waitingForLogin && !_appEntered) {
+    _waitingForLogin = false;
+    _showLogin();
+  }
+}
+
 try {
   var firebaseConfig = {
     apiKey: "AIzaSyB9Ksn0wPSvrUFB1CEJDMqB8X4fx2Tx-z4",
@@ -463,36 +497,50 @@ try {
     auth = firebase.auth();
     auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
     db = firebase.firestore();
+
+    // getRedirectResult MUST be called before onAuthStateChanged logic
+    // It resolves AFTER the redirect is processed
+    auth.getRedirectResult().then(function(result) {
+      if(result && result.user) {
+        _doEnterApp(result.user);
+      }
+      _onRedirectChecked();
+    }).catch(function(err) {
+      console.log('Redirect error:', err.code);
+      _onRedirectChecked();
+    });
+
     auth.onAuthStateChanged(function(user) {
       if(user) {
-        window._vp_name = user.displayName || user.email.split("@")[0];
-        userName = window._vp_name;
-        localStorage.setItem('vp_user', userName);
-        // Auto-enter app if login screen is still showing (ex: after Google redirect)
-        var loginScreen = document.getElementById('login');
-        if(loginScreen && loginScreen.classList.contains('active')) { enterApp(); }
-        db.collection('users').doc(user.uid).get().then(function(doc) {
-          if(doc.exists) {
-            const data = doc.data();
-            // Vérifier premium avec expiry Firestore
-            if(data.isPremium === true && data.premiumExpiry) {
-              const exp = new Date(data.premiumExpiry);
-              if(exp > new Date()) {
-                isPremium = true;
-                // Sync localStorage aussi
-                localStorage.setItem('vp_prem', '1');
-                localStorage.setItem('vp_prem_exp', exp.getTime().toString());
-                MODS.forEach(function(m) { m.free = true; });
-                buildGrid();
+        _doEnterApp(user);
+        if(db) {
+          db.collection('users').doc(user.uid).get().then(function(doc) {
+            if(doc.exists) {
+              const data = doc.data();
+              if(data.isPremium === true && data.premiumExpiry) {
+                const exp = new Date(data.premiumExpiry);
+                if(exp > new Date()) {
+                  isPremium = true;
+                  localStorage.setItem('vp_prem', '1');
+                  localStorage.setItem('vp_prem_exp', exp.getTime().toString());
+                  MODS.forEach(function(m) { m.free = true; });
+                  buildGrid();
+                }
               }
             }
-          }
-          db.collection('users').doc(user.uid).set({
-            email: user.email,
-            name: user.displayName || user.email.split("@")[0],
-            lastLogin: new Date().toISOString()
-          }, { merge: true });
-        }).catch(function(e) { console.log('Firestore error:', e); });
+            db.collection('users').doc(user.uid).set({
+              email: user.email,
+              name: user.displayName || user.email.split("@")[0],
+              lastLogin: new Date().toISOString()
+            }, { merge: true });
+          }).catch(function(e) { console.log('Firestore error:', e); });
+        }
+      } else {
+        // null user: only show login if redirect check is done (no pending redirect)
+        if(_redirectChecked && !_appEntered) {
+          _waitingForLogin = false;
+          _showLogin();
+        }
       }
     });
   }
@@ -500,17 +548,24 @@ try {
 </script>
 
 <script>
-// SPLASH → LOGIN - only fires once from splash screen
-var _splashDone = false;
 function goToLogin() {
   if(_splashDone) return;
   _splashDone = true;
   var splash = document.getElementById('splash');
   if(splash) splash.className = 'screen';
-  var login = document.getElementById('login');
-  if(login) login.className = 'screen active';
+  if(_appEntered) return; // already entering app
+  if(!_redirectChecked) {
+    // Firebase redirect not yet resolved — wait
+    _waitingForLogin = true;
+    // Hard fallback after 6s total
+    setTimeout(function() {
+      if(!_appEntered) { _waitingForLogin = false; _showLogin(); }
+    }, 6000);
+    return;
+  }
+  _showLogin();
 }
-// Auto advance splash
+// Auto advance splash after 2.5s
 setTimeout(goToLogin, 2500);
 // Click splash to advance
 document.addEventListener('DOMContentLoaded', function() {
@@ -3083,6 +3138,17 @@ function googleLogin() {
   });
 }
 
+function doLogin(){
+  const email = document.getElementById('inp-email').value.trim();
+  const pass = document.getElementById('inp-pass').value.trim();
+  const name = document.getElementById('inp-name').value.trim();
+  const err = document.getElementById('login-err');
+  if(!email || !pass){err.textContent='Veuillez remplir tous les champs.';err.style.display='block';return;}
+  if(name) userName = name;
+  else userName = email.split('@')[0];
+  err.style.display='none';
+  enterApp();
+}
 function guestLogin(){userName='Chanteur';enterApp();}
 function enterApp(){
   // Chargement de la progression sauvegardée
@@ -3130,40 +3196,61 @@ function googleLogin() {
 }
 
 function doLogin() {
+  // Check Firebase is ready
+  if(typeof firebase === 'undefined' || typeof auth === 'undefined') {
+    var err = document.getElementById("login-err");
+    if(err) err.textContent = "Connexion internet requise";
+    return;
+  }
+  
   var isSignup = document.getElementById("ltab-up") && document.getElementById("ltab-up").classList.contains("on");
-  var email = ((document.getElementById("inp-email")||{}).value||"").trim().toLowerCase();
-  var pass = ((document.getElementById("inp-pass")||{}).value||"").trim();
-  var name = ((document.getElementById("inp-name")||{}).value||"").trim();
+  var email = (document.getElementById("inp-email")||{}).value||"";
+  var pass = (document.getElementById("inp-pass")||{}).value||"";
+  var name = (document.getElementById("inp-name")||{}).value||"";
   var err = document.getElementById("login-err");
-
-  function showErr(txt) { if(err) { err.textContent = txt; err.style.color = "var(--a1)"; err.style.display="block"; } }
-
+  
+  function showErr(txt) { if(err) { err.textContent = txt; err.style.color = "var(--a1)"; } }
+  function showOk(txt) { if(err) { err.textContent = txt; err.style.color = "var(--b1)"; } }
+  
+  email = email.trim().toLowerCase();
+  pass = pass.trim();
+  
   if(!email || !email.includes("@")) { showErr("Entrez un email valide"); return; }
   if(pass.length < 6) { showErr("Mot de passe : 6 caractères minimum"); return; }
-
-  var storedUsers = JSON.parse(localStorage.getItem('vp_users')||'{}');
-
+  
+  var btn = document.getElementById("btn-do-login");
+  if(btn) { btn.disabled = true; btn.textContent = "..."; }
+  
   if(isSignup) {
-    if(!name) { showErr("Entrez votre prénom"); return; }
-    if(storedUsers[email]) { showErr("Email déjà utilisé — connectez-vous"); return; }
-    storedUsers[email] = { pass: pass, name: name };
-    localStorage.setItem('vp_users', JSON.stringify(storedUsers));
-    userName = name;
+    if(!name.trim()) { showErr("Entrez votre prénom"); if(btn) { btn.disabled=false; btn.textContent="Créer mon compte 🎙️"; } return; }
+    auth.createUserWithEmailAndPassword(email, pass)
+      .then(function(r) { return r.user.updateProfile({displayName: name.trim()}); })
+      .then(function() {
+        window._vp_name = name.trim();
+        showOk("✅ Compte créé !");
+        setTimeout(function() { enterApp(); }, 600);
+      })
+      .catch(function(e) {
+        if(btn) { btn.disabled=false; btn.textContent="Créer mon compte 🎙️"; }
+        if(e.code==="auth/email-already-in-use") showErr("Email déjà utilisé — connectez-vous");
+        else if(e.code==="auth/weak-password") showErr("Mot de passe trop court (6 min)");
+        else showErr(e.message);
+      });
   } else {
-    var user = storedUsers[email];
-    if(!user || user.pass !== pass) { showErr("Email ou mot de passe incorrect"); return; }
-    userName = user.name || email.split("@")[0];
+    auth.signInWithEmailAndPassword(email, pass)
+      .then(function(r) {
+        window._vp_name = r.user.displayName || email.split("@")[0];
+        enterApp();
+      })
+      .catch(function(e) {
+        if(btn) { btn.disabled=false; btn.textContent="Se connecter 🎙️"; }
+        if(e.code==="auth/user-not-found"||e.code==="auth/invalid-credential"||e.code==="auth/wrong-password") {
+          showErr("Email ou mot de passe incorrect");
+        } else {
+          showErr(e.message);
+        }
+      });
   }
-
-  window._vp_name = userName;
-  localStorage.setItem('vp_user', userName);
-  // Sync Firebase en arrière-plan (sans bloquer)
-  if(typeof auth !== 'undefined') {
-    auth.signInWithEmailAndPassword(email, pass).catch(function() {
-      auth.createUserWithEmailAndPassword(email, pass).catch(function(){});
-    });
-  }
-  enterApp();
 }
 
 function doLogout(){ document.getElementById("bnav").style.display="none"; document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active")); document.getElementById("login").classList.add("active"); }
