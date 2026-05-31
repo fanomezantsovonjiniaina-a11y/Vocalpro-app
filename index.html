@@ -448,8 +448,40 @@ if('serviceWorker' in navigator) {
 <script>
 var auth = null;
 var db = null;
-// _authState: undefined=not resolved yet, null=no user, object=logged in user
-var _authState = undefined;
+var _redirectChecked = false; // true after getRedirectResult() resolves
+var _splashDone = false;
+var _waitingForLogin = false;
+var _appEntered = false;
+
+function _doEnterApp(user) {
+  if(_appEntered) return;
+  _appEntered = true;
+  window._vp_name = user.displayName || (user.email ? user.email.split("@")[0] : 'Chanteur');
+  userName = window._vp_name;
+  localStorage.setItem('vp_user', userName);
+  if(!_splashDone) {
+    _splashDone = true;
+    var splash = document.getElementById('splash');
+    if(splash) splash.className = 'screen';
+  }
+  enterApp();
+}
+
+function _showLogin() {
+  if(_appEntered) return;
+  var savedUser = localStorage.getItem('vp_user');
+  if(savedUser) { userName = savedUser; window._vp_name = userName; _appEntered = true; enterApp(); return; }
+  var login = document.getElementById('login');
+  if(login) login.className = 'screen active';
+}
+
+function _onRedirectChecked() {
+  _redirectChecked = true;
+  if(_waitingForLogin && !_appEntered) {
+    _waitingForLogin = false;
+    _showLogin();
+  }
+}
 
 try {
   var firebaseConfig = {
@@ -465,46 +497,50 @@ try {
     auth = firebase.auth();
     auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
     db = firebase.firestore();
+
+    // getRedirectResult MUST be called before onAuthStateChanged logic
+    // It resolves AFTER the redirect is processed
+    auth.getRedirectResult().then(function(result) {
+      if(result && result.user) {
+        _doEnterApp(result.user);
+      }
+      _onRedirectChecked();
+    }).catch(function(err) {
+      console.log('Redirect error:', err.code);
+      _onRedirectChecked();
+    });
+
     auth.onAuthStateChanged(function(user) {
-      _authState = user || null;
       if(user) {
-        window._vp_name = user.displayName || user.email.split("@")[0];
-        userName = window._vp_name;
-        localStorage.setItem('vp_user', userName);
-        // If splash still showing: enter app directly (handles Google redirect timing)
-        if(!_splashDone) {
-          _splashDone = true;
-          var splash = document.getElementById('splash');
-          if(splash) splash.className = 'screen';
-          enterApp();
-          return;
-        }
-        // If login screen is showing: enter app
-        var loginScreen = document.getElementById('login');
-        if(loginScreen && loginScreen.classList.contains('active')) { enterApp(); }
-        db.collection('users').doc(user.uid).get().then(function(doc) {
-          if(doc.exists) {
-            const data = doc.data();
-            if(data.isPremium === true && data.premiumExpiry) {
-              const exp = new Date(data.premiumExpiry);
-              if(exp > new Date()) {
-                isPremium = true;
-                localStorage.setItem('vp_prem', '1');
-                localStorage.setItem('vp_prem_exp', exp.getTime().toString());
-                MODS.forEach(function(m) { m.free = true; });
-                buildGrid();
+        _doEnterApp(user);
+        if(db) {
+          db.collection('users').doc(user.uid).get().then(function(doc) {
+            if(doc.exists) {
+              const data = doc.data();
+              if(data.isPremium === true && data.premiumExpiry) {
+                const exp = new Date(data.premiumExpiry);
+                if(exp > new Date()) {
+                  isPremium = true;
+                  localStorage.setItem('vp_prem', '1');
+                  localStorage.setItem('vp_prem_exp', exp.getTime().toString());
+                  MODS.forEach(function(m) { m.free = true; });
+                  buildGrid();
+                }
               }
             }
-          }
-          db.collection('users').doc(user.uid).set({
-            email: user.email,
-            name: user.displayName || user.email.split("@")[0],
-            lastLogin: new Date().toISOString()
-          }, { merge: true });
-        }).catch(function(e) { console.log('Firestore error:', e); });
+            db.collection('users').doc(user.uid).set({
+              email: user.email,
+              name: user.displayName || user.email.split("@")[0],
+              lastLogin: new Date().toISOString()
+            }, { merge: true });
+          }).catch(function(e) { console.log('Firestore error:', e); });
+        }
       } else {
-        // No Firebase user — if splash timer already waiting, show login now
-        _showLoginIfWaiting();
+        // null user: only show login if redirect check is done (no pending redirect)
+        if(_redirectChecked && !_appEntered) {
+          _waitingForLogin = false;
+          _showLogin();
+        }
       }
     });
   }
@@ -512,47 +548,22 @@ try {
 </script>
 
 <script>
-var _splashDone = false;
-var _waitingForLogin = false;
-
-function _showLoginIfWaiting() {
-  if(_waitingForLogin) {
-    _waitingForLogin = false;
-    var savedUser = localStorage.getItem('vp_user');
-    if(savedUser) { userName = savedUser; window._vp_name = userName; enterApp(); return; }
-    var login = document.getElementById('login');
-    if(login) login.className = 'screen active';
-  }
-}
-
 function goToLogin() {
   if(_splashDone) return;
   _splashDone = true;
   var splash = document.getElementById('splash');
   if(splash) splash.className = 'screen';
-  // If Firebase already resolved with a user → enterApp (handled in onAuthStateChanged)
-  // If Firebase resolved with null → show login
-  // If Firebase not yet resolved → wait for it
-  if(_authState === undefined) {
-    // Firebase still loading — wait (onAuthStateChanged will call _showLoginIfWaiting)
+  if(_appEntered) return; // already entering app
+  if(!_redirectChecked) {
+    // Firebase redirect not yet resolved — wait
     _waitingForLogin = true;
-    // Hard fallback: if Firebase never resolves in 5s, show login anyway
+    // Hard fallback after 6s total
     setTimeout(function() {
-      if(_waitingForLogin) {
-        _waitingForLogin = false;
-        var savedUser = localStorage.getItem('vp_user');
-        if(savedUser) { userName = savedUser; window._vp_name = userName; enterApp(); return; }
-        var login = document.getElementById('login');
-        if(login) login.className = 'screen active';
-      }
-    }, 5000);
+      if(!_appEntered) { _waitingForLogin = false; _showLogin(); }
+    }, 6000);
     return;
   }
-  // Firebase already resolved, no user
-  var savedUser = localStorage.getItem('vp_user');
-  if(savedUser) { userName = savedUser; window._vp_name = userName; enterApp(); return; }
-  var login = document.getElementById('login');
-  if(login) login.className = 'screen active';
+  _showLogin();
 }
 // Auto advance splash after 2.5s
 setTimeout(goToLogin, 2500);
