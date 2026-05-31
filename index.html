@@ -3121,69 +3121,40 @@ function googleLogin() {
 }
 
 function doLogin() {
-  // Check Firebase is ready
-  if(typeof firebase === 'undefined' || typeof auth === 'undefined') {
-    var err = document.getElementById("login-err");
-    if(err) err.textContent = "Connexion internet requise";
-    return;
-  }
-  
   var isSignup = document.getElementById("ltab-up") && document.getElementById("ltab-up").classList.contains("on");
-  var email = (document.getElementById("inp-email")||{}).value||"";
-  var pass = (document.getElementById("inp-pass")||{}).value||"";
-  var name = (document.getElementById("inp-name")||{}).value||"";
+  var email = ((document.getElementById("inp-email")||{}).value||"").trim().toLowerCase();
+  var pass = ((document.getElementById("inp-pass")||{}).value||"").trim();
+  var name = ((document.getElementById("inp-name")||{}).value||"").trim();
   var err = document.getElementById("login-err");
-  
-  function showErr(txt) { if(err) { err.textContent = txt; err.style.color = "var(--a1)"; } }
-  function showOk(txt) { if(err) { err.textContent = txt; err.style.color = "var(--b1)"; } }
-  
-  email = email.trim().toLowerCase();
-  pass = pass.trim();
-  
+
+  function showErr(txt) { if(err) { err.textContent = txt; err.style.color = "var(--a1)"; err.style.display="block"; } }
+
   if(!email || !email.includes("@")) { showErr("Entrez un email valide"); return; }
   if(pass.length < 6) { showErr("Mot de passe : 6 caractères minimum"); return; }
-  
-  var btn = document.getElementById("btn-do-login");
-  if(btn) { btn.disabled = true; btn.textContent = "..."; }
-  
+
+  var storedUsers = JSON.parse(localStorage.getItem('vp_users')||'{}');
+
   if(isSignup) {
-    if(!name.trim()) { showErr("Entrez votre prénom"); if(btn) { btn.disabled=false; btn.textContent="Créer mon compte 🎙️"; } return; }
-    auth.createUserWithEmailAndPassword(email, pass)
-      .then(function(r) { return r.user.updateProfile({displayName: name.trim()}); })
-      .then(function() {
-        window._vp_name = name.trim();
-        showOk("✅ Compte créé !");
-        setTimeout(function() { enterApp(); }, 600);
-      })
-      .catch(function(e) {
-        if(btn) { btn.disabled=false; btn.textContent="Créer mon compte 🎙️"; }
-        if(e.code==="auth/email-already-in-use") showErr("Email déjà utilisé — connectez-vous");
-        else if(e.code==="auth/weak-password") showErr("Mot de passe trop court (6 min)");
-        else showErr(e.message);
-      });
+    if(!name) { showErr("Entrez votre prénom"); return; }
+    if(storedUsers[email]) { showErr("Email déjà utilisé — connectez-vous"); return; }
+    storedUsers[email] = { pass: pass, name: name };
+    localStorage.setItem('vp_users', JSON.stringify(storedUsers));
+    userName = name;
   } else {
-    auth.signInWithEmailAndPassword(email, pass)
-      .catch(function(e) {
-        if(e.code==="auth/user-not-found"||e.code==="auth/invalid-credential"||e.code==="auth/invalid-email"||e.code==="auth/wrong-password") {
-          return auth.createUserWithEmailAndPassword(email, pass);
-        }
-        throw e;
-      })
-      .then(function(r) {
-        window._vp_name = r.user.displayName || email.split("@")[0];
-        userName = window._vp_name;
-        localStorage.setItem('vp_user', userName);
-        enterApp();
-      })
-      .catch(function(e) {
-        // Firebase failed — enter in offline/local mode
-        if(btn) { btn.disabled=false; btn.textContent="Se connecter 🎙️"; }
-        userName = email.split("@")[0];
-        window._vp_name = userName;
-        localStorage.setItem('vp_user', userName);
-        enterApp();
-      });
+    var user = storedUsers[email];
+    if(!user || user.pass !== pass) { showErr("Email ou mot de passe incorrect"); return; }
+    userName = user.name || email.split("@")[0];
   }
+
+  window._vp_name = userName;
+  localStorage.setItem('vp_user', userName);
+  // Sync Firebase en arrière-plan (sans bloquer)
+  if(typeof auth !== 'undefined') {
+    auth.signInWithEmailAndPassword(email, pass).catch(function() {
+      auth.createUserWithEmailAndPassword(email, pass).catch(function(){});
+    });
+  }
+  enterApp();
 }
 
 function doLogout(){ document.getElementById("bnav").style.display="none"; document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active")); document.getElementById("login").classList.add("active"); }
