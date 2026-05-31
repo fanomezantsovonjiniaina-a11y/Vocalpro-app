@@ -3130,30 +3130,24 @@ function getMonthlyCode() {
 }
 
 function getExpiry() {
-  const now = new Date();
-  const months = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
-  const lastDay = new Date(now.getFullYear(), now.getMonth()+1, 0).getDate();
-  return lastDay + ' ' + months[now.getMonth()] + ' ' + now.getFullYear();
+  return 'Accès permanent';
 }
 
 function getPremiumExpiryDate() {
-  const now = new Date();
-  return new Date(now.getFullYear(), now.getMonth()+1, 0, 23, 59, 59);
+  // Far future date = permanent
+  return new Date('2099-12-31T23:59:59');
 }
 
 // ===== PERSISTANCE PREMIUM (localStorage + Firestore) =====
 function savePremiumStorage() {
   try {
-    const exp = getPremiumExpiryDate();
     localStorage.setItem('vp_prem', '1');
-    localStorage.setItem('vp_prem_exp', exp.getTime().toString());
+    localStorage.setItem('vp_prem_exp', '9999999999999');
   } catch(e) {}
-  // Sync Firestore si connecté
   try {
     if (auth && auth.currentUser && db) {
-      const exp = getPremiumExpiryDate();
       db.collection('users').doc(auth.currentUser.uid).set({
-        isPremium: true, premiumExpiry: exp.toISOString()
+        isPremium: true, premiumExpiry: '2099-12-31T23:59:59'
       }, { merge: true });
     }
   } catch(e) {}
