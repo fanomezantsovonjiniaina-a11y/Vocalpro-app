@@ -3057,15 +3057,10 @@ function googleLogin() {
     return;
   }
   var provider = new firebase.auth.GoogleAuthProvider();
-  auth.signInWithPopup(provider)
-    .then(function(result) {
-      window._vp_name = result.user.displayName || result.user.email.split("@")[0];
-      enterApp();
-    })
-    .catch(function(e) {
-      var err = document.getElementById("login-err");
-      if(err) { err.textContent = "Erreur Google : " + e.message; err.style.color = "var(--a1)"; }
-    });
+  auth.signInWithRedirect(provider).catch(function(e) {
+    var err = document.getElementById("login-err");
+    if(err) { err.textContent = "Erreur Google : " + e.message; err.style.color = "var(--a1)"; }
+  });
 }
 
 function doLogin(){
@@ -3119,15 +3114,10 @@ function googleLogin() {
     return;
   }
   var provider = new firebase.auth.GoogleAuthProvider();
-  auth.signInWithPopup(provider)
-    .then(function(result) {
-      window._vp_name = result.user.displayName || result.user.email.split("@")[0];
-      enterApp();
-    })
-    .catch(function(e) {
-      var err = document.getElementById("login-err");
-      if(err) { err.textContent = "Erreur Google : " + e.message; err.style.color = "var(--a1)"; }
-    });
+  auth.signInWithRedirect(provider).catch(function(e) {
+    var err = document.getElementById("login-err");
+    if(err) { err.textContent = "Erreur Google : " + e.message; err.style.color = "var(--a1)"; }
+  });
 }
 
 function doLogin() {
