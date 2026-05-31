@@ -435,6 +435,13 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);heig
 
 .av-chip{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--a1),var(--a3));display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;color:#fff;cursor:pointer;border:2px solid rgba(255,71,87,.3);flex-shrink:0}
 </style>
+<script>
+if('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(() => {});
+  });
+}
+</script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
@@ -459,16 +466,25 @@ try {
       if(user) {
         window._vp_name = user.displayName || user.email.split("@")[0];
         db.collection('users').doc(user.uid).get().then(function(doc) {
-          if(doc.exists && doc.data().isPremium === true) {
-            isPremium = true;
-            MODS.forEach(function(m) { m.free = true; });
-            buildGrid();
+          if(doc.exists) {
+            const data = doc.data();
+            // Vérifier premium avec expiry Firestore
+            if(data.isPremium === true && data.premiumExpiry) {
+              const exp = new Date(data.premiumExpiry);
+              if(exp > new Date()) {
+                isPremium = true;
+                // Sync localStorage aussi
+                localStorage.setItem('vp_prem', '1');
+                localStorage.setItem('vp_prem_exp', exp.getTime().toString());
+                MODS.forEach(function(m) { m.free = true; });
+                buildGrid();
+              }
+            }
           }
           db.collection('users').doc(user.uid).set({
             email: user.email,
             name: user.displayName || user.email.split("@")[0],
-            lastLogin: new Date(),
-            isPremium: isPremium
+            lastLogin: new Date().toISOString()
           }, { merge: true });
         }).catch(function(e) { console.log('Firestore error:', e); });
       }
@@ -738,7 +754,7 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
   </div>
   <div style="padding:0 16px">
-    <button style="width:100%;padding:15px;background:linear-gradient(135deg,var(--a1),var(--a2));color:#fff;border:none;border-radius:var(--r2);font-family:'Outfit',sans-serif;font-size:15px;font-weight:900;cursor:pointer;margin-bottom:8px;box-shadow:0 4px 18px rgba(255,71,87,.3)" onclick="navTo('prem',1)">👑 Passer à Premium — 20 000 Ar</button>
+    <button id="btn-go-premium" style="width:100%;padding:15px;background:linear-gradient(135deg,var(--a1),var(--a2));color:#fff;border:none;border-radius:var(--r2);font-family:'Outfit',sans-serif;font-size:15px;font-weight:900;cursor:pointer;margin-bottom:8px;box-shadow:0 4px 18px rgba(255,71,87,.3)" onclick="navTo('prem',1)">👑 Passer à Premium — 20 000 Ar/mois</button>
     <button style="width:100%;padding:11px;background:transparent;color:var(--text2);border:1px solid var(--brd);border-radius:var(--r2);font-family:'Outfit',sans-serif;font-size:13px;cursor:pointer;margin-bottom:14px" onclick="navTo('settings',4)">⚙️ Paramètres</button>
   </div>
 </div>
@@ -748,7 +764,7 @@ document.addEventListener('DOMContentLoaded', function() {
   <div style="background:linear-gradient(135deg,#160430,#0a1a40);padding:24px 16px 20px;text-align:center;position:relative;overflow:hidden">
     <div style="font-size:46px;margin-bottom:12px;animation:crownPulse 2s ease infinite">👑</div>
     <div style="font-family:'Playfair Display',serif;font-size:30px;font-weight:800;margin-bottom:7px">Premium VocalPro</div>
-    <div style="font-size:13px;color:var(--text2);line-height:1.65;max-width:320px;margin:0 auto">Accès à vie — Paiement unique de 20 000 Ar</div>
+    <div style="font-size:13px;color:var(--text2);line-height:1.65;max-width:320px;margin:0 auto">Abonnement mensuel — 20 000 Ar / mois · Renouvellement automatique</div>
   </div>
   <div style="display:flex;gap:10px;padding:16px">
     
@@ -756,7 +772,7 @@ document.addEventListener('DOMContentLoaded', function() {
       <div style="position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--a1),var(--a2));color:#fff;font-size:10px;font-weight:800;padding:3px 13px;border-radius:11px;white-space:nowrap">⭐ Recommandé</div>
       <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--text2);margin-bottom:8px">Premium</div>
       <div style="font-size:26px;font-weight:900">20 000 Ar</div>
-      <div style="font-size:11px;color:var(--text2);margin-bottom:11px">/ unique</div>
+      <div style="font-size:11px;color:var(--text2);margin-bottom:11px">/ mois</div>
       <div style="font-size:11px;color:var(--text2);line-height:2;margin-bottom:13px">98 modules<br>Vidéos HD<br>Challenges exclusifs<br>Badges Premium<br>Sans pub</div>
       <div style="display:flex;flex-direction:column;gap:7px">
         <button style="width:100%;padding:11px;border-radius:20px;font-family:'Outfit',sans-serif;font-size:11px;font-weight:800;cursor:pointer;background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;border:none;box-shadow:0 4px 14px rgba(37,211,102,.3)" onclick="openWA()">📲 Orange Money / MVola</button>
@@ -2711,6 +2727,7 @@ function nextStep() {
     const newLvl = getCurrentLevel();
     const leveledUp = newLvl.id > prevLvl;
     checkChallenges();
+    saveProgress();
     goHome();
     if (leveledUp) {
       showConfetti();
@@ -2745,7 +2762,7 @@ function navTo(id, idx) {
   // Run screen-specific build functions
   if (id === 'home') buildAll();
   else if (id === 'settings') buildSettings();
-  else if (id === 'prem') { buildFeatures(); setTimeout(function(){ const m=document.getElementById('wa-modal'); if(m) m.style.display='flex'; }, 300); }
+  else if (id === 'prem') { buildFeatures(); buildPremiumScreen(); }
   else if (id === 'challenges-screen') { 
     setTimeout(function() {
     // Populate challenges stats
@@ -2913,8 +2930,8 @@ function buildAdminMessages() {
   const lastDay = getLastDay();
   const nextMonth = getNextMonthName();
 
-  safeSet('admin-code', code);
-  safeSet('admin-exp', 'Expire le ' + lastDay + ' ' + month + ' ' + year);
+  safeSet('adm-code', code);
+  safeSet('adm-exp', 'Valable jusqu\'au ' + lastDay + ' ' + month + ' ' + year);
 
   const msgs = {
     activation: `Bonjour ! 🎙️ Merci pour votre abonnement VocalPro Premium !
@@ -2954,25 +2971,52 @@ Continuez à pratiquer chaque jour — vous progressez ! 🌟`,
 
     expiration: `Bonjour ! ⏰
 
-Votre accès VocalPro Premium a expiré.
+Votre abonnement VocalPro Premium a expiré.
 
-Pour continuer :
-💚 Envoyez *20 000 Ar* via Orange Money/MVola
-📲 Répondez avec votre numéro de transaction
-🔑 Recevez votre code immédiatement !
+Pour renouveler :
+💚 Envoyez *20 000 Ar* via Orange Money ou MVola
+📲 Répondez à ce message avec votre numéro de transaction
+🔑 Recevez votre nouveau code immédiatement !
 
 Votre progression est sauvegardée — reprenez où vous en étiez ! 🎙️`
   };
 
-  ['activation','rappel','renouvellement','expiration'].forEach(key => {
-    const el = document.getElementById('msg-' + key);
-    if (el) el.textContent = msgs[key];
-  });
+  // Injecte les messages dans le panel admin
+  const msgsEl = document.getElementById('adm-msgs');
+  if (msgsEl) {
+    msgsEl.innerHTML = '';
+    Object.entries({
+      activation: {label:'✅ Activation', col:'#25d366'},
+      rappel:     {label:'🔔 Rappel',     col:'#ffd32a'},
+      renouvellement: {label:'🔄 Renouvellement', col:'#74b9ff'},
+      expiration: {label:'⏰ Expiration',  col:'#ff5e62'},
+    }).forEach(([key, meta]) => {
+      const card = document.createElement('div');
+      card.style.cssText = 'background:var(--card);border:1px solid var(--brd);border-radius:13px;padding:12px;margin-bottom:8px';
+      const lbl = document.createElement('div');
+      lbl.style.cssText = 'font-size:12px;font-weight:800;color:'+meta.col+';margin-bottom:6px';
+      lbl.textContent = meta.label;
+      const body = document.createElement('div');
+      body.style.cssText = 'font-size:11px;color:var(--text2);line-height:1.6;background:var(--bg3);border-radius:8px;padding:8px;white-space:pre-wrap;max-height:80px;overflow:hidden;text-overflow:ellipsis';
+      body.textContent = msgs[key];
+      const btn = document.createElement('button');
+      btn.style.cssText = 'width:100%;padding:9px;background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;border:none;border-radius:10px;font-family:\'Outfit\',sans-serif;font-size:12px;font-weight:800;cursor:pointer;margin-top:7px';
+      btn.textContent = '💬 Copier le message';
+      btn.onclick = () => {
+        navigator.clipboard.writeText(msgs[key]).then(
+          () => toast('✅ Message copié !'),
+          () => toast('✅ Copiez ce message dans WhatsApp')
+        );
+      };
+      card.append(lbl, body, btn);
+      msgsEl.appendChild(card);
+    });
+  }
   window._adminMsgs = msgs;
 }
 
 function openAdmin() {
-  buildAdminMsgs();
+  buildAdminMessages();
   const m = document.getElementById('admin-modal');
   if (m) m.style.display = 'flex';
 }
@@ -3037,14 +3081,31 @@ function doLogin(){
 }
 function guestLogin(){userName='Chanteur';enterApp();}
 function enterApp(){
+  // Chargement de la progression sauvegardée
+  loadProgress();
+
+  // Vérification du statut premium (localStorage puis Firestore)
+  if (!isPremium && checkPremiumStorage()) {
+    isPremium = true;
+  }
+
   (function(){const _e=document.getElementById('login');if(_e)_e.classList.remove('active');})();
   (function(){const _e=document.getElementById('home');if(_e)_e.classList.add('active');})();
   const _bnav=document.getElementById('bnav');if(_bnav){_bnav.style.display='flex';_bnav.style.flexDirection='row';}
+
+  // Fix XSS: utiliser textContent + élément séparé au lieu de innerHTML
   const hn = document.getElementById('hero-name');
-  if(hn) hn.innerHTML = userName + ' <span style="color:var(--a1)">🎙️</span>';
+  if(hn) {
+    hn.textContent = '';
+    const nameTxt = document.createTextNode(userName + ' ');
+    const micSpan = document.createElement('span');
+    micSpan.style.color = 'var(--a1)';
+    micSpan.textContent = '🎙️';
+    hn.append(nameTxt, micSpan);
+  }
   const av = document.getElementById('av-chip');
   if(av) av.textContent = userName.charAt(0).toUpperCase();
-  // Only unlock modules if Premium
+
   if(isPremium) { MODS.forEach(function(m){ m.free = true; }); }
   buildAll();
 }
@@ -3132,56 +3193,169 @@ function doLogout(){ document.getElementById("bnav").style.display="none"; docum
 // ===== CODE PREMIUM =====
 let isPremium = false;
 
-// Génère le code du accès à vie courant automatiquement
-// Format: VOCAL + secret + MOIS + ANNEE
-// Le secret "8383" est connu de vous seul
+// Génère le code mensuel dynamiquement (change chaque mois)
+// Le code est différent chaque mois — les anciens codes expirent automatiquement
 function getMonthlyCode() {
-  return 'VONJY33';
+  const d = new Date();
+  const m = d.getMonth();       // 0-11
+  const y = d.getFullYear() % 100; // ex: 26 pour 2026
+  // Clés divisées pour obfuscation
+  const _p1 = 'VKXLZN'; const _p2 = 'APBQCR';
+  const _s1 = 'DEFGHJ'; const _s2 = 'LMNPQS';
+  const pre = (_p1+_p2)[m] + (_p1+_p2)[(m+6)%12];
+  const num = String(((m+1)*17 + y*7) % 900 + 100);
+  const suf = (_s1+_s2)[m] + (_s1+_s2)[(m+y)%12];
+  return pre + num + suf;
 }
 
-// Affiche le accès à vie/année d'expiration
 function getExpiry() {
   const now = new Date();
   const months = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
-  // Expire fin du accès à vie courant
   const lastDay = new Date(now.getFullYear(), now.getMonth()+1, 0).getDate();
   return lastDay + ' ' + months[now.getMonth()] + ' ' + now.getFullYear();
+}
+
+function getPremiumExpiryDate() {
+  const now = new Date();
+  return new Date(now.getFullYear(), now.getMonth()+1, 0, 23, 59, 59);
+}
+
+// ===== PERSISTANCE PREMIUM (localStorage + Firestore) =====
+function savePremiumStorage() {
+  try {
+    const exp = getPremiumExpiryDate();
+    localStorage.setItem('vp_prem', '1');
+    localStorage.setItem('vp_prem_exp', exp.getTime().toString());
+  } catch(e) {}
+  // Sync Firestore si connecté
+  try {
+    if (auth && auth.currentUser && db) {
+      const exp = getPremiumExpiryDate();
+      db.collection('users').doc(auth.currentUser.uid).set({
+        isPremium: true, premiumExpiry: exp.toISOString()
+      }, { merge: true });
+    }
+  } catch(e) {}
+}
+
+function checkPremiumStorage() {
+  try {
+    if (localStorage.getItem('vp_prem') !== '1') return false;
+    const exp = parseInt(localStorage.getItem('vp_prem_exp') || '0');
+    if (Date.now() > exp) {
+      localStorage.removeItem('vp_prem');
+      localStorage.removeItem('vp_prem_exp');
+      return false;
+    }
+    return true;
+  } catch(e) { return false; }
+}
+
+// ===== PERSISTANCE PROGRESSION =====
+function saveProgress() {
+  try {
+    localStorage.setItem('vp_xp', xp);
+    localStorage.setItem('vp_streak', streak);
+    localStorage.setItem('vp_done', doneCnt);
+    localStorage.setItem('vp_last', new Date().toDateString());
+    localStorage.setItem('vp_mods', JSON.stringify(MODS.map(m => m.done ? 1 : 0)));
+    localStorage.setItem('vp_chs', JSON.stringify(CHALLENGES.map(c => c.done ? 1 : 0)));
+    localStorage.setItem('vp_bdgs', JSON.stringify(BADGES.map(b => b.earned ? 1 : 0)));
+  } catch(e) {}
+}
+
+function loadProgress() {
+  try {
+    const sxp = localStorage.getItem('vp_xp');
+    if (sxp !== null) xp = parseInt(sxp) || 0;
+
+    const sstr = localStorage.getItem('vp_streak');
+    if (sstr !== null) streak = parseInt(sstr) || 1;
+
+    const sdone = localStorage.getItem('vp_done');
+    if (sdone !== null) doneCnt = parseInt(sdone) || 0;
+
+    // Vérification streak journalier
+    const lastStr = localStorage.getItem('vp_last');
+    if (lastStr) {
+      const last = new Date(lastStr);
+      const today = new Date();
+      const diffDays = Math.floor((today.setHours(0,0,0,0) - last.setHours(0,0,0,0)) / 86400000);
+      if (diffDays > 1) streak = 1;
+    }
+
+    const smods = localStorage.getItem('vp_mods');
+    if (smods) { const a = JSON.parse(smods); a.forEach((v,i) => { if(MODS[i]) MODS[i].done = !!v; }); }
+    const schs = localStorage.getItem('vp_chs');
+    if (schs) { const a = JSON.parse(schs); a.forEach((v,i) => { if(CHALLENGES[i]) CHALLENGES[i].done = !!v; }); }
+    const sbdgs = localStorage.getItem('vp_bdgs');
+    if (sbdgs) { const a = JSON.parse(sbdgs); a.forEach((v,i) => { if(BADGES[i]) BADGES[i].earned = !!v; }); }
+  } catch(e) {}
 }
 
 function activateCode() {
   const inp = document.getElementById('code-inp');
   const val = inp.value.trim().toUpperCase();
-  const validCode = getMonthlyCode();
+  if (!val) { toast('⚠️ Entrez votre code Premium'); return; }
 
-  if (val === validCode) {
-    isPremium = true;
-    // Show success with expiry date
-    const successBox = document.getElementById('code-success-box');
-    successBox.style.display = 'block';
-    successBox.innerHTML = `
-      <div class="code-success-em">🎉</div>
-      <div class="code-success-txt">Premium activé avec succès !</div>
-      <div class="code-success-sub">Accès valable jusqu'au <b style="color:var(--a3)">${getExpiry()}</b></div>
-    `;
-    (function(){const _e=document.getElementById('code-section');if(_e)_e.style.display='none';})();
-    // Unlock all modules
-    MODS.forEach(m => m.free = true);
-    buildGrid();
-    toast('🎉 Premium activé jusqu\'au ' + getExpiry() + ' !');
-    // Update profile badge
-    const badge = document.getElementById('prof-badge');
-    if (badge) {
-      badge.style.background = 'rgba(255,200,50,.15)';
-      badge.style.border = '1px solid rgba(255,200,50,.3)';
-      badge.style.color = 'var(--a3)';
-      badge.textContent = '👑 Plan Premium — exp. ' + getExpiry();
-    }
-  } else if (val === '') {
-    toast('⚠️ Entrez votre code Premium');
-  } else {
+  if (val !== getMonthlyCode()) {
     inp.style.borderColor = 'var(--a1)';
     setTimeout(() => inp.style.borderColor = '', 1500);
     toast('❌ Code expiré ou incorrect — contactez-nous sur WhatsApp');
+    return;
+  }
+
+  isPremium = true;
+  savePremiumStorage();
+
+  const expTxt = getExpiry();
+  const successBox = document.getElementById('code-success-box');
+  if (successBox) {
+    successBox.style.display = 'block';
+    const em = document.createElement('div'); em.style.fontSize='38px'; em.style.marginBottom='8px'; em.textContent='🎉';
+    const t1 = document.createElement('div'); t1.style.cssText='font-size:15px;font-weight:800;color:var(--b1)'; t1.textContent='Premium activé !';
+    const t2 = document.createElement('div'); t2.style.cssText='font-size:12px;color:var(--text2);margin-top:4px';
+    const t2b = document.createElement('b'); t2b.style.color='var(--a3)'; t2b.textContent=expTxt;
+    t2.append('Accès valable jusqu\'au ', t2b);
+    successBox.textContent=''; successBox.append(em,t1,t2);
+  }
+  const codeSection = document.getElementById('code-section');
+  if (codeSection) codeSection.style.display = 'none';
+
+  MODS.forEach(m => m.free = true);
+  buildGrid();
+  saveProgress();
+  toast('🎉 Premium activé jusqu\'au ' + expTxt + ' !');
+
+  const badge = document.getElementById('prof-plan-badge');
+  if (badge) {
+    badge.style.background = 'rgba(255,200,50,.15)';
+    badge.style.border = '1px solid rgba(255,200,50,.3)';
+    badge.style.color = 'var(--a3)';
+    badge.textContent = '👑 Plan Premium — exp. ' + expTxt;
+  }
+}
+
+// ===== ECRAN PREMIUM =====
+function buildPremiumScreen() {
+  const successBox = document.getElementById('code-success-box');
+  const codeSection = document.getElementById('code-section');
+  if (isPremium) {
+    const expTxt = getExpiry();
+    if (successBox) {
+      successBox.style.display = 'block';
+      successBox.textContent = '';
+      const em = document.createElement('div'); em.style.cssText='font-size:38px;margin-bottom:8px'; em.textContent='👑';
+      const t1 = document.createElement('div'); t1.style.cssText='font-size:15px;font-weight:800;color:var(--b1)'; t1.textContent='Vous êtes Premium !';
+      const t2 = document.createElement('div'); t2.style.cssText='font-size:12px;color:var(--text2);margin-top:4px';
+      const b = document.createElement('b'); b.style.color='var(--a3)'; b.textContent=expTxt;
+      t2.append('Accès valable jusqu\'au ', b);
+      successBox.append(em,t1,t2);
+    }
+    if (codeSection) codeSection.style.display = 'none';
+  } else {
+    if (successBox) successBox.style.display = 'none';
+    if (codeSection) codeSection.style.display = 'block';
   }
 }
 
@@ -3248,8 +3422,8 @@ function sendWhatsApp() {
     <div style="font-size:18px;font-weight:900;margin-bottom:5px">📲 S'abonner Premium</div>
     <div style="font-size:12px;color:#8a87b0;margin-bottom:16px;line-height:1.65">Payez via <b style="color:#25d366">Orange Money</b> ou <b style="color:#e91e8c">MVola</b></div>
     <div style="background:rgba(37,211,102,.08);border:1px solid rgba(37,211,102,.2);border-radius:13px;padding:14px;text-align:center;margin-bottom:12px">
-      <div style="font-size:28px;font-weight:900;color:#25d366">20 000 Ar / unique</div>
-      <div style="font-size:11px;color:#8a87b0;margin-top:3px">Accès illimité à tous les modules</div>
+      <div style="font-size:28px;font-weight:900;color:#25d366">20 000 Ar / mois</div>
+      <div style="font-size:11px;color:#8a87b0;margin-top:3px">Accès illimité à tous les modules · Renouvelable chaque mois</div>
     </div>
     <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:13px;padding:14px;margin-bottom:14px">
       <div style="font-size:11px;font-weight:800;color:#ffd32a;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">📲 Envoyez le paiement à :</div>
@@ -3276,8 +3450,8 @@ function sendWhatsApp() {
       📋 <b style="color:var(--gold)">Étapes :</b><br>
       1️⃣ Payez 20 000 Ar sur le numéro ci-dessus<br>
       2️⃣ Envoyez la preuve de paiement<br>
-      3️⃣ Recevez votre code d'activation après <b style="color:var(--b1)">vérification</b><br>
-      4️⃣ Entrez le code dans l'app → <b style="color:var(--a1)">Accès à vie !</b>
+      3️⃣ Recevez votre <b style="color:var(--b1)">code mensuel</b> après vérification<br>
+      4️⃣ Entrez le code dans l'app → <b style="color:var(--a1)">Accès pendant 1 mois !</b>
     </div>
     <button style="width:100%;padding:14px;background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;border:none;border-radius:13px;font-family:'Outfit',sans-serif;font-size:14px;font-weight:900;cursor:pointer;margin-bottom:8px" onclick="sendWA()">💬 Envoyer preuve via WhatsApp</button>
     <button style="width:100%;padding:11px;background:transparent;color:#8a87b0;border:1px solid rgba(255,255,255,.06);border-radius:13px;font-family:'Outfit',sans-serif;font-size:13px;cursor:pointer;margin-bottom:8px" onclick="closeModal('wa-modal');openForm()">📋 Envoyer via formulaire</button>
@@ -3290,9 +3464,9 @@ function sendWhatsApp() {
   <div style="background:#0a0c1a;border:1px solid rgba(165,94,234,.25);border-radius:20px 20px 0 0;padding:22px 18px 36px;width:100%;max-width:480px;max-height:85vh;overflow-y:auto">
     <div style="font-size:17px;font-weight:900;margin-bottom:4px">🎛️ Panel Admin</div>
     <div style="font-size:12px;color:#8a87b0;margin-bottom:18px">VocalPro — Gestion abonnements</div>
-    <div style="font-size:11px;font-weight:800;text-transform:uppercase;color:#c39bd3;margin-bottom:10px">🔑 Code du accès à vie</div>
+    <div style="font-size:11px;font-weight:800;text-transform:uppercase;color:#c39bd3;margin-bottom:10px">🔑 Code mensuel courant</div>
     <div style="background:rgba(255,211,42,.08);border:1px solid rgba(255,211,42,.22);border-radius:13px;padding:16px;text-align:center;margin-bottom:12px">
-      <div style="font-size:11px;color:#8a87b0;margin-bottom:6px">Code d'activation — accès à vie</div>
+      <div style="font-size:11px;color:#8a87b0;margin-bottom:6px">Code d'activation — valable ce mois uniquement</div>
       <div id="adm-code" style="font-size:20px;font-weight:900;color:#ffd32a;letter-spacing:1px"></div>
       <div id="adm-exp" style="font-size:11px;color:#8a87b0;margin-top:4px"></div>
     </div>
