@@ -448,30 +448,6 @@ if('serviceWorker' in navigator) {
 <script>
 var auth = null;
 var db = null;
-var _splashDone = false;
-var _appEntered = false;
-var _authResolved = false;
-
-function _doEnterApp(user) {
-  if(_appEntered) return;
-  _appEntered = true;
-  window._vp_name = user.displayName || (user.email ? user.email.split("@")[0] : 'Chanteur');
-  userName = window._vp_name;
-  localStorage.setItem('vp_user', userName);
-  if(!_splashDone) {
-    _splashDone = true;
-    var splash = document.getElementById('splash');
-    if(splash) splash.className = 'screen';
-  }
-  enterApp();
-}
-
-function _showLogin() {
-  if(_appEntered) return;
-  var login = document.getElementById('login');
-  if(login) login.className = 'screen active';
-}
-
 try {
   var firebaseConfig = {
     apiKey: "AIzaSyB9Ksn0wPSvrUFB1CEJDMqB8X4fx2Tx-z4",
@@ -487,34 +463,35 @@ try {
     auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
     db = firebase.firestore();
     auth.onAuthStateChanged(function(user) {
-      _authResolved = true;
       if(user) {
-        _doEnterApp(user);
-        if(db) {
-          db.collection('users').doc(user.uid).get().then(function(doc) {
-            if(doc.exists) {
-              const data = doc.data();
-              if(data.isPremium === true && data.premiumExpiry) {
-                const exp = new Date(data.premiumExpiry);
-                if(exp > new Date()) {
-                  isPremium = true;
-                  localStorage.setItem('vp_prem', '1');
-                  localStorage.setItem('vp_prem_exp', exp.getTime().toString());
-                  MODS.forEach(function(m) { m.free = true; });
-                  buildGrid();
-                }
+        window._vp_name = user.displayName || user.email.split("@")[0];
+        userName = window._vp_name;
+        localStorage.setItem('vp_user', userName);
+        // Auto-enter app if login screen is still showing (ex: after Google redirect)
+        var loginScreen = document.getElementById('login');
+        if(loginScreen && loginScreen.classList.contains('active')) { enterApp(); }
+        db.collection('users').doc(user.uid).get().then(function(doc) {
+          if(doc.exists) {
+            const data = doc.data();
+            // Vérifier premium avec expiry Firestore
+            if(data.isPremium === true && data.premiumExpiry) {
+              const exp = new Date(data.premiumExpiry);
+              if(exp > new Date()) {
+                isPremium = true;
+                // Sync localStorage aussi
+                localStorage.setItem('vp_prem', '1');
+                localStorage.setItem('vp_prem_exp', exp.getTime().toString());
+                MODS.forEach(function(m) { m.free = true; });
+                buildGrid();
               }
             }
-            db.collection('users').doc(user.uid).set({
-              email: user.email,
-              name: user.displayName || user.email.split("@")[0],
-              lastLogin: new Date().toISOString()
-            }, { merge: true });
-          }).catch(function(e) { console.log('Firestore:', e); });
-        }
-      } else {
-        // No Firebase session — show login if splash already done
-        if(_splashDone && !_appEntered) _showLogin();
+          }
+          db.collection('users').doc(user.uid).set({
+            email: user.email,
+            name: user.displayName || user.email.split("@")[0],
+            lastLogin: new Date().toISOString()
+          }, { merge: true });
+        }).catch(function(e) { console.log('Firestore error:', e); });
       }
     });
   }
@@ -522,27 +499,23 @@ try {
 </script>
 
 <script>
+// SPLASH → LOGIN - only fires once from splash screen
+var _splashDone = false;
 function goToLogin() {
   if(_splashDone) return;
   _splashDone = true;
   var splash = document.getElementById('splash');
   if(splash) splash.className = 'screen';
-  if(_appEntered) return;
-  if(_authResolved) { _showLogin(); return; }
-  // Firebase not resolved yet — wait up to 4s more then show login
-  var _t = setTimeout(function() { if(!_appEntered) _showLogin(); }, 4000);
-  // If Firebase resolves before 4s, cancel timer and show login
-  var _check = setInterval(function() {
-    if(_authResolved || _appEntered) {
-      clearInterval(_check); clearTimeout(_t);
-      if(!_appEntered) _showLogin();
-    }
-  }, 100);
+  var login = document.getElementById('login');
+  if(login) login.className = 'screen active';
 }
+// Auto advance splash
 setTimeout(goToLogin, 2500);
+// Click splash to advance
 document.addEventListener('DOMContentLoaded', function() {
   var splash = document.getElementById('splash');
   if(splash) splash.addEventListener('click', goToLogin);
+  // Fix mobile keyboard: scroll input into view when focused or viewport resizes
   function scrollFocusedIntoView() {
     var el = document.activeElement;
     if(el && (el.id==='inp-email'||el.id==='inp-pass'||el.id==='inp-name')) {
@@ -3096,7 +3069,31 @@ function switchTab(tab){
   safeSet('btn-do-login', tab==='up'?'Créer mon compte 🎙️':'Se connecter 🎙️');
 }
 
-function guestLogin(){userName='Chanteur';window._vp_name=userName;enterApp();}
+function googleLogin() {
+  if(typeof firebase === 'undefined' || typeof auth === 'undefined') {
+    var err = document.getElementById("login-err");
+    if(err) { err.textContent = "Connexion internet requise"; err.style.color = "var(--a1)"; }
+    return;
+  }
+  var provider = new firebase.auth.GoogleAuthProvider();
+  auth.signInWithRedirect(provider).catch(function(e) {
+    var err = document.getElementById("login-err");
+    if(err) { err.textContent = "Erreur Google : " + e.message; err.style.color = "var(--a1)"; }
+  });
+}
+
+function doLogin(){
+  const email = document.getElementById('inp-email').value.trim();
+  const pass = document.getElementById('inp-pass').value.trim();
+  const name = document.getElementById('inp-name').value.trim();
+  const err = document.getElementById('login-err');
+  if(!email || !pass){err.textContent='Veuillez remplir tous les champs.';err.style.display='block';return;}
+  if(name) userName = name;
+  else userName = email.split('@')[0];
+  err.style.display='none';
+  enterApp();
+}
+function guestLogin(){userName='Chanteur';enterApp();}
 function enterApp(){
   // Chargement de la progression sauvegardée
   loadProgress();
@@ -3130,23 +3127,15 @@ function enterApp(){
 
 
 function googleLogin() {
-  if(typeof firebase === 'undefined' || !auth) {
+  if(typeof firebase === 'undefined' || typeof auth === 'undefined') {
     var err = document.getElementById("login-err");
-    if(err) { err.textContent = "Connexion internet requise"; err.style.display="block"; }
+    if(err) { err.textContent = "Connexion internet requise"; err.style.color = "var(--a1)"; }
     return;
   }
   var provider = new firebase.auth.GoogleAuthProvider();
-  // Popup: no page reload, no timing issues
-  auth.signInWithPopup(provider).then(function(result) {
-    _doEnterApp(result.user);
-  }).catch(function(e) {
-    // Popup blocked on some browsers — fallback to redirect
-    if(e.code === 'auth/popup-blocked' || e.code === 'auth/popup-closed-by-user') {
-      auth.signInWithRedirect(provider);
-    } else {
-      var err = document.getElementById("login-err");
-      if(err) { err.textContent = "Erreur : " + e.message; err.style.display="block"; }
-    }
+  auth.signInWithRedirect(provider).catch(function(e) {
+    var err = document.getElementById("login-err");
+    if(err) { err.textContent = "Erreur Google : " + e.message; err.style.color = "var(--a1)"; }
   });
 }
 
@@ -3208,14 +3197,7 @@ function doLogin() {
   }
 }
 
-function doLogout(){
-  localStorage.removeItem('vp_user');
-  _appEntered = false;
-  if(typeof auth !== 'undefined' && auth) auth.signOut().catch(function(){});
-  document.getElementById("bnav").style.display="none";
-  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
-  document.getElementById("login").classList.add("active");
-}
+function doLogout(){ document.getElementById("bnav").style.display="none"; document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active")); document.getElementById("login").classList.add("active"); }
 
 // ===== CODE PREMIUM =====
 let isPremium = false;
