@@ -467,9 +467,10 @@ try {
         window._vp_name = user.displayName || user.email.split("@")[0];
         userName = window._vp_name;
         localStorage.setItem('vp_user', userName);
-        // Auto-enter app if login screen is still showing (ex: after Google redirect)
+        // Auto-enter app: if login is showing, enter now; if splash still showing, goToLogin will check auth.currentUser
         var loginScreen = document.getElementById('login');
         if(loginScreen && loginScreen.classList.contains('active')) { enterApp(); }
+        // If splash still up (_splashDone=false), goToLogin() will detect auth.currentUser and call enterApp()
         db.collection('users').doc(user.uid).get().then(function(doc) {
           if(doc.exists) {
             const data = doc.data();
@@ -506,6 +507,23 @@ function goToLogin() {
   _splashDone = true;
   var splash = document.getElementById('splash');
   if(splash) splash.className = 'screen';
+  // After Google redirect, Firebase may already have a current user
+  if(typeof auth !== 'undefined' && auth.currentUser) {
+    var u = auth.currentUser;
+    userName = u.displayName || (u.email ? u.email.split('@')[0] : 'Chanteur');
+    window._vp_name = userName;
+    localStorage.setItem('vp_user', userName);
+    enterApp();
+    return;
+  }
+  // Also check localStorage for email login session
+  var savedUser = localStorage.getItem('vp_user');
+  if(savedUser) {
+    userName = savedUser;
+    window._vp_name = userName;
+    enterApp();
+    return;
+  }
   var login = document.getElementById('login');
   if(login) login.className = 'screen active';
 }
