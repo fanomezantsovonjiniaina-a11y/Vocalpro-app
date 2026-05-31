@@ -469,8 +469,6 @@ function _doEnterApp(user) {
 
 function _showLogin() {
   if(_appEntered) return;
-  var savedUser = localStorage.getItem('vp_user');
-  if(savedUser) { userName = savedUser; window._vp_name = userName; _appEntered = true; enterApp(); return; }
   var login = document.getElementById('login');
   if(login) login.className = 'screen active';
 }
@@ -563,6 +561,7 @@ function goToLogin() {
     }, 6000);
     return;
   }
+  // Firebase resolved with no user - show login
   _showLogin();
 }
 // Auto advance splash after 2.5s
@@ -3125,31 +3124,7 @@ function switchTab(tab){
   safeSet('btn-do-login', tab==='up'?'Créer mon compte 🎙️':'Se connecter 🎙️');
 }
 
-function googleLogin() {
-  if(typeof firebase === 'undefined' || typeof auth === 'undefined') {
-    var err = document.getElementById("login-err");
-    if(err) { err.textContent = "Connexion internet requise"; err.style.color = "var(--a1)"; }
-    return;
-  }
-  var provider = new firebase.auth.GoogleAuthProvider();
-  auth.signInWithRedirect(provider).catch(function(e) {
-    var err = document.getElementById("login-err");
-    if(err) { err.textContent = "Erreur Google : " + e.message; err.style.color = "var(--a1)"; }
-  });
-}
-
-function doLogin(){
-  const email = document.getElementById('inp-email').value.trim();
-  const pass = document.getElementById('inp-pass').value.trim();
-  const name = document.getElementById('inp-name').value.trim();
-  const err = document.getElementById('login-err');
-  if(!email || !pass){err.textContent='Veuillez remplir tous les champs.';err.style.display='block';return;}
-  if(name) userName = name;
-  else userName = email.split('@')[0];
-  err.style.display='none';
-  enterApp();
-}
-function guestLogin(){userName='Chanteur';enterApp();}
+function guestLogin(){userName='Chanteur';window._vp_name=userName;enterApp();}
 function enterApp(){
   // Chargement de la progression sauvegardée
   loadProgress();
@@ -3253,7 +3228,14 @@ function doLogin() {
   }
 }
 
-function doLogout(){ document.getElementById("bnav").style.display="none"; document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active")); document.getElementById("login").classList.add("active"); }
+function doLogout(){
+  localStorage.removeItem('vp_user');
+  _appEntered = false;
+  if(typeof auth !== 'undefined' && auth) auth.signOut().catch(function(){});
+  document.getElementById("bnav").style.display="none";
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  document.getElementById("login").classList.add("active");
+}
 
 // ===== CODE PREMIUM =====
 let isPremium = false;
