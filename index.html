@@ -448,6 +448,9 @@ if('serviceWorker' in navigator) {
 <script>
 var auth = null;
 var db = null;
+// _authState: undefined=not resolved yet, null=no user, object=logged in user
+var _authState = undefined;
+
 try {
   var firebaseConfig = {
     apiKey: "AIzaSyB9Ksn0wPSvrUFB1CEJDMqB8X4fx2Tx-z4",
@@ -463,23 +466,29 @@ try {
     auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
     db = firebase.firestore();
     auth.onAuthStateChanged(function(user) {
+      _authState = user || null;
       if(user) {
         window._vp_name = user.displayName || user.email.split("@")[0];
         userName = window._vp_name;
         localStorage.setItem('vp_user', userName);
-        // Auto-enter app: if login is showing, enter now; if splash still showing, goToLogin will check auth.currentUser
+        // If splash still showing: enter app directly (handles Google redirect timing)
+        if(!_splashDone) {
+          _splashDone = true;
+          var splash = document.getElementById('splash');
+          if(splash) splash.className = 'screen';
+          enterApp();
+          return;
+        }
+        // If login screen is showing: enter app
         var loginScreen = document.getElementById('login');
         if(loginScreen && loginScreen.classList.contains('active')) { enterApp(); }
-        // If splash still up (_splashDone=false), goToLogin() will detect auth.currentUser and call enterApp()
         db.collection('users').doc(user.uid).get().then(function(doc) {
           if(doc.exists) {
             const data = doc.data();
-            // Vérifier premium avec expiry Firestore
             if(data.isPremium === true && data.premiumExpiry) {
               const exp = new Date(data.premiumExpiry);
               if(exp > new Date()) {
                 isPremium = true;
-                // Sync localStorage aussi
                 localStorage.setItem('vp_prem', '1');
                 localStorage.setItem('vp_prem_exp', exp.getTime().toString());
                 MODS.forEach(function(m) { m.free = true; });
@@ -493,6 +502,9 @@ try {
             lastLogin: new Date().toISOString()
           }, { merge: true });
         }).catch(function(e) { console.log('Firestore error:', e); });
+      } else {
+        // No Firebase user — if splash timer already waiting, show login now
+        _showLoginIfWaiting();
       }
     });
   }
@@ -500,34 +512,49 @@ try {
 </script>
 
 <script>
-// SPLASH → LOGIN - only fires once from splash screen
 var _splashDone = false;
+var _waitingForLogin = false;
+
+function _showLoginIfWaiting() {
+  if(_waitingForLogin) {
+    _waitingForLogin = false;
+    var savedUser = localStorage.getItem('vp_user');
+    if(savedUser) { userName = savedUser; window._vp_name = userName; enterApp(); return; }
+    var login = document.getElementById('login');
+    if(login) login.className = 'screen active';
+  }
+}
+
 function goToLogin() {
   if(_splashDone) return;
   _splashDone = true;
   var splash = document.getElementById('splash');
   if(splash) splash.className = 'screen';
-  // After Google redirect, Firebase may already have a current user
-  if(typeof auth !== 'undefined' && auth.currentUser) {
-    var u = auth.currentUser;
-    userName = u.displayName || (u.email ? u.email.split('@')[0] : 'Chanteur');
-    window._vp_name = userName;
-    localStorage.setItem('vp_user', userName);
-    enterApp();
+  // If Firebase already resolved with a user → enterApp (handled in onAuthStateChanged)
+  // If Firebase resolved with null → show login
+  // If Firebase not yet resolved → wait for it
+  if(_authState === undefined) {
+    // Firebase still loading — wait (onAuthStateChanged will call _showLoginIfWaiting)
+    _waitingForLogin = true;
+    // Hard fallback: if Firebase never resolves in 5s, show login anyway
+    setTimeout(function() {
+      if(_waitingForLogin) {
+        _waitingForLogin = false;
+        var savedUser = localStorage.getItem('vp_user');
+        if(savedUser) { userName = savedUser; window._vp_name = userName; enterApp(); return; }
+        var login = document.getElementById('login');
+        if(login) login.className = 'screen active';
+      }
+    }, 5000);
     return;
   }
-  // Also check localStorage for email login session
+  // Firebase already resolved, no user
   var savedUser = localStorage.getItem('vp_user');
-  if(savedUser) {
-    userName = savedUser;
-    window._vp_name = userName;
-    enterApp();
-    return;
-  }
+  if(savedUser) { userName = savedUser; window._vp_name = userName; enterApp(); return; }
   var login = document.getElementById('login');
   if(login) login.className = 'screen active';
 }
-// Auto advance splash
+// Auto advance splash after 2.5s
 setTimeout(goToLogin, 2500);
 // Click splash to advance
 document.addEventListener('DOMContentLoaded', function() {
