@@ -499,10 +499,13 @@ try {
 </script>
 
 <script>
-// SPLASH → LOGIN - runs immediately
+// SPLASH → LOGIN - only fires once from splash screen
+var _splashDone = false;
 function goToLogin() {
-  var screens = document.querySelectorAll('.screen');
-  screens.forEach(function(s) { s.className = 'screen'; });
+  if(_splashDone) return;
+  _splashDone = true;
+  var splash = document.getElementById('splash');
+  if(splash) splash.className = 'screen';
   var login = document.getElementById('login');
   if(login) login.className = 'screen active';
 }
