@@ -448,10 +448,9 @@ if('serviceWorker' in navigator) {
 <script>
 var auth = null;
 var db = null;
-var _redirectChecked = false; // true after getRedirectResult() resolves
 var _splashDone = false;
-var _waitingForLogin = false;
 var _appEntered = false;
+var _authResolved = false;
 
 function _doEnterApp(user) {
   if(_appEntered) return;
@@ -473,14 +472,6 @@ function _showLogin() {
   if(login) login.className = 'screen active';
 }
 
-function _onRedirectChecked() {
-  _redirectChecked = true;
-  if(_waitingForLogin && !_appEntered) {
-    _waitingForLogin = false;
-    _showLogin();
-  }
-}
-
 try {
   var firebaseConfig = {
     apiKey: "AIzaSyB9Ksn0wPSvrUFB1CEJDMqB8X4fx2Tx-z4",
@@ -495,20 +486,8 @@ try {
     auth = firebase.auth();
     auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
     db = firebase.firestore();
-
-    // getRedirectResult MUST be called before onAuthStateChanged logic
-    // It resolves AFTER the redirect is processed
-    auth.getRedirectResult().then(function(result) {
-      if(result && result.user) {
-        _doEnterApp(result.user);
-      }
-      _onRedirectChecked();
-    }).catch(function(err) {
-      console.log('Redirect error:', err.code);
-      _onRedirectChecked();
-    });
-
     auth.onAuthStateChanged(function(user) {
+      _authResolved = true;
       if(user) {
         _doEnterApp(user);
         if(db) {
@@ -531,14 +510,11 @@ try {
               name: user.displayName || user.email.split("@")[0],
               lastLogin: new Date().toISOString()
             }, { merge: true });
-          }).catch(function(e) { console.log('Firestore error:', e); });
+          }).catch(function(e) { console.log('Firestore:', e); });
         }
       } else {
-        // null user: only show login if redirect check is done (no pending redirect)
-        if(_redirectChecked && !_appEntered) {
-          _waitingForLogin = false;
-          _showLogin();
-        }
+        // No Firebase session — show login if splash already done
+        if(_splashDone && !_appEntered) _showLogin();
       }
     });
   }
@@ -551,26 +527,22 @@ function goToLogin() {
   _splashDone = true;
   var splash = document.getElementById('splash');
   if(splash) splash.className = 'screen';
-  if(_appEntered) return; // already entering app
-  if(!_redirectChecked) {
-    // Firebase redirect not yet resolved — wait
-    _waitingForLogin = true;
-    // Hard fallback after 6s total
-    setTimeout(function() {
-      if(!_appEntered) { _waitingForLogin = false; _showLogin(); }
-    }, 6000);
-    return;
-  }
-  // Firebase resolved with no user - show login
-  _showLogin();
+  if(_appEntered) return;
+  if(_authResolved) { _showLogin(); return; }
+  // Firebase not resolved yet — wait up to 4s more then show login
+  var _t = setTimeout(function() { if(!_appEntered) _showLogin(); }, 4000);
+  // If Firebase resolves before 4s, cancel timer and show login
+  var _check = setInterval(function() {
+    if(_authResolved || _appEntered) {
+      clearInterval(_check); clearTimeout(_t);
+      if(!_appEntered) _showLogin();
+    }
+  }, 100);
 }
-// Auto advance splash after 2.5s
 setTimeout(goToLogin, 2500);
-// Click splash to advance
 document.addEventListener('DOMContentLoaded', function() {
   var splash = document.getElementById('splash');
   if(splash) splash.addEventListener('click', goToLogin);
-  // Fix mobile keyboard: scroll input into view when focused or viewport resizes
   function scrollFocusedIntoView() {
     var el = document.activeElement;
     if(el && (el.id==='inp-email'||el.id==='inp-pass'||el.id==='inp-name')) {
@@ -3158,15 +3130,23 @@ function enterApp(){
 
 
 function googleLogin() {
-  if(typeof firebase === 'undefined' || typeof auth === 'undefined') {
+  if(typeof firebase === 'undefined' || !auth) {
     var err = document.getElementById("login-err");
-    if(err) { err.textContent = "Connexion internet requise"; err.style.color = "var(--a1)"; }
+    if(err) { err.textContent = "Connexion internet requise"; err.style.display="block"; }
     return;
   }
   var provider = new firebase.auth.GoogleAuthProvider();
-  auth.signInWithRedirect(provider).catch(function(e) {
-    var err = document.getElementById("login-err");
-    if(err) { err.textContent = "Erreur Google : " + e.message; err.style.color = "var(--a1)"; }
+  // Popup: no page reload, no timing issues
+  auth.signInWithPopup(provider).then(function(result) {
+    _doEnterApp(result.user);
+  }).catch(function(e) {
+    // Popup blocked on some browsers — fallback to redirect
+    if(e.code === 'auth/popup-blocked' || e.code === 'auth/popup-closed-by-user') {
+      auth.signInWithRedirect(provider);
+    } else {
+      var err = document.getElementById("login-err");
+      if(err) { err.textContent = "Erreur : " + e.message; err.style.display="block"; }
+    }
   });
 }
 
