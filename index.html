@@ -3158,17 +3158,19 @@ function doLogin() {
       });
   } else {
     auth.signInWithEmailAndPassword(email, pass)
+      .catch(function(e) {
+        if(e.code==="auth/user-not-found"||e.code==="auth/invalid-credential"||e.code==="auth/invalid-email"||e.code==="auth/wrong-password") {
+          return auth.createUserWithEmailAndPassword(email, pass);
+        }
+        throw e;
+      })
       .then(function(r) {
         window._vp_name = r.user.displayName || email.split("@")[0];
         enterApp();
       })
       .catch(function(e) {
         if(btn) { btn.disabled=false; btn.textContent="Se connecter 🎙️"; }
-        if(e.code==="auth/user-not-found"||e.code==="auth/invalid-credential"||e.code==="auth/wrong-password") {
-          showErr("Email ou mot de passe incorrect");
-        } else {
-          showErr(e.message);
-        }
+        showErr(e.message);
       });
   }
 }
