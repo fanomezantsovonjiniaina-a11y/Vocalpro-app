@@ -508,13 +508,18 @@ setTimeout(goToLogin, 4000);
 document.addEventListener('DOMContentLoaded', function() {
   var splash = document.getElementById('splash');
   if(splash) splash.addEventListener('click', goToLogin);
-  // Fix mobile keyboard: scroll input into view when focused
+  // Fix mobile keyboard: scroll input into view when focused or viewport resizes
+  function scrollFocusedIntoView() {
+    var el = document.activeElement;
+    if(el && (el.id==='inp-email'||el.id==='inp-pass'||el.id==='inp-name')) {
+      el.scrollIntoView({behavior:'smooth', block:'center'});
+    }
+  }
   ['inp-email','inp-pass','inp-name'].forEach(function(id) {
     var el = document.getElementById(id);
-    if(el) el.addEventListener('focus', function() {
-      setTimeout(function() { el.scrollIntoView({behavior:'smooth', block:'center'}); }, 300);
-    });
+    if(el) el.addEventListener('focus', function() { setTimeout(scrollFocusedIntoView, 400); });
   });
+  window.addEventListener('resize', function() { setTimeout(scrollFocusedIntoView, 100); });
 });
 </script>
 </head>
