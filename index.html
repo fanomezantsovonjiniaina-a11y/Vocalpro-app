@@ -3243,16 +3243,7 @@ let isPremium = false;
 // Génère le code mensuel dynamiquement (change chaque mois)
 // Le code est différent chaque mois — les anciens codes expirent automatiquement
 function getMonthlyCode() {
-  const d = new Date();
-  const m = d.getMonth();       // 0-11
-  const y = d.getFullYear() % 100; // ex: 26 pour 2026
-  // Clés divisées pour obfuscation
-  const _p1 = 'VKXLZN'; const _p2 = 'APBQCR';
-  const _s1 = 'DEFGHJ'; const _s2 = 'LMNPQS';
-  const pre = (_p1+_p2)[m] + (_p1+_p2)[(m+6)%12];
-  const num = String(((m+1)*17 + y*7) % 900 + 100);
-  const suf = (_s1+_s2)[m] + (_s1+_s2)[(m+y)%12];
-  return pre + num + suf;
+  return 'Vonjy8383';
 }
 
 function getExpiry() {
