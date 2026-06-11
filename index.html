@@ -786,7 +786,7 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
   </div>
   <div style="padding:0 16px">
-    <button id="btn-go-premium" style="width:100%;padding:15px;background:linear-gradient(135deg,var(--a1),var(--a2));color:#fff;border:none;border-radius:var(--r2);font-family:'Outfit',sans-serif;font-size:15px;font-weight:900;cursor:pointer;margin-bottom:8px;box-shadow:0 4px 18px rgba(255,71,87,.3)" onclick="navTo('prem',1)">👑 Passer à Premium — 20 000 Ar/mois</button>
+    <div style="margin-bottom:8px"></div>
     <button style="width:100%;padding:11px;background:transparent;color:var(--text2);border:1px solid var(--brd);border-radius:var(--r2);font-family:'Outfit',sans-serif;font-size:13px;cursor:pointer;margin-bottom:14px" onclick="navTo('settings',4)">⚙️ Paramètres</button>
   </div>
 </div>
@@ -1832,10 +1832,7 @@ function getNextLevel() {
 }
 
 function isModUnlocked(modIndex) {
-  if (MODS[modIndex] && MODS[modIndex].free) return true;
-  if (!isPremium) return false;
-  const cur = getCurrentLevel();
-  return modIndex < cur.unlock;
+  return true;
 }
 
 function checkChallenges() {
@@ -2767,65 +2764,13 @@ function nextStep() {
     } else {
       toast('🎉 +' + curMod.xp + ' XP gagnés !');
     }
-    // Show interstitial ad for non-premium users (1 time out of 2)
-    if (!isPremium) {
-      _adCounter = (_adCounter || 0) + 1;
-      if (_adCounter % 2 === 0) showAdInterstitial();
-    }
     return;
   }
   curStep++; renderDots(); renderStep();
 }
 
 // ===== AD MANAGEMENT =====
-var _adCounter = 0;
-var _adSkipTimer = null;
-
-function showAdInterstitial() {
-  const bg = document.getElementById('ad-interstitial-bg');
-  if (!bg) return;
-  bg.classList.add('open');
-  const skipBtn = document.getElementById('ad-skip-btn');
-  const countEl = document.getElementById('ad-skip-count');
-  if (skipBtn) { skipBtn.disabled = true; skipBtn.style.opacity = '.4'; }
-  let sec = 5;
-  if (countEl) countEl.textContent = sec;
-  _adSkipTimer = setInterval(() => {
-    sec--;
-    if (countEl) countEl.textContent = Math.max(sec, 0);
-    if (sec <= 0) {
-      clearInterval(_adSkipTimer);
-      if (skipBtn) { skipBtn.disabled = false; skipBtn.style.opacity = '1'; }
-    }
-  }, 1000);
-  // Init AdSense slot
-  try { (window.adsbygoogle = window.adsbygoogle || []).push({}); } catch(e) {}
-}
-
-function closeAdInterstitial() {
-  const bg = document.getElementById('ad-interstitial-bg');
-  if (bg) bg.classList.remove('open');
-  if (_adSkipTimer) { clearInterval(_adSkipTimer); _adSkipTimer = null; }
-}
-
-function initAds() {
-  if (isPremium) {
-    // Hide all ad banners for premium users
-    ['ad-home-top','ad-home-bottom'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.style.display = 'none';
-    });
-  } else {
-    // Show banner ads for free users and init AdSense
-    ['ad-home-top','ad-home-bottom'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) {
-        el.style.display = 'flex';
-        try { (window.adsbygoogle = window.adsbygoogle || []).push({}); } catch(e) {}
-      }
-    });
-  }
-}
+function initAds() {}
 function skipStep() { curStep = Math.min(curStep + 1, curMod.steps.length - 1); renderDots(); renderStep(); }
 
 function navTo(id, idx) {
@@ -2915,18 +2860,12 @@ function navTo(id, idx) {
         if(profAv) profAv.textContent = name[0].toUpperCase();
       }
       if(profLevel) profLevel.textContent = lvl.em + ' ' + lvl.name + ' — ' + xp + ' XP';
-      if(profBadge) {
-        if(isPremium) { profBadge.textContent = '👑 Plan Premium'; profBadge.style.color='var(--gold)'; profBadge.style.borderColor='rgba(255,211,42,.4)'; profBadge.style.background='rgba(255,211,42,.12)'; }
-        else { profBadge.textContent = '🆓 Plan Gratuit'; }
-      }
+      if(profBadge) { profBadge.textContent = '✅ Accès Gratuit Complet'; }
       // Stats
       const psXp = document.getElementById('ps-xp'); if(psXp) psXp.textContent = xp;
       const psMod = document.getElementById('ps-mod'); if(psMod) psMod.textContent = doneCnt;
       const psCh = document.getElementById('ps-ch'); if(psCh) psCh.textContent = CHALLENGES.filter(c=>c.done).length;
       const psBdg = document.getElementById('ps-bdg'); if(psBdg) psBdg.textContent = BADGES.filter(b=>b.earned).length;
-      // Hide premium button if already premium
-      const premBtn = document.querySelector('#profile button[onclick="navTo(\'prem\',1)"]');
-      if(premBtn && isPremium) { premBtn.textContent = '👑 Vous êtes Premium !'; premBtn.style.background='linear-gradient(135deg,var(--gold),#ff9f43)'; premBtn.onclick=null; premBtn.style.cursor='default'; }
     }, 100);
   }
 }
@@ -3216,7 +3155,7 @@ function doLogout(){
 }
 
 // ===== CODE PREMIUM =====
-let isPremium = false;
+let isPremium = true;
 
 // Génère le code mensuel dynamiquement (change chaque mois)
 // Le code est différent chaque mois — les anciens codes expirent automatiquement
