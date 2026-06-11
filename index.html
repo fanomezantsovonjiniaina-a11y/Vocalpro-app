@@ -3077,7 +3077,13 @@ function googleLogin() {
     return;
   }
   var provider = new firebase.auth.GoogleAuthProvider();
-  auth.signInWithRedirect(provider).catch(function(e) {
+  auth.signInWithPopup(provider).then(function(result) {
+    var user = result.user;
+    userName = user.displayName || user.email;
+    window._vp_name = userName;
+    localStorage.setItem('vp_user', userName);
+    enterApp();
+  }).catch(function(e) {
     var err = document.getElementById("login-err");
     if(err) { err.textContent = "Erreur Google : " + e.message; err.style.color = "var(--a1)"; }
   });
@@ -3135,7 +3141,13 @@ function googleLogin() {
     return;
   }
   var provider = new firebase.auth.GoogleAuthProvider();
-  auth.signInWithRedirect(provider).catch(function(e) {
+  auth.signInWithPopup(provider).then(function(result) {
+    var user = result.user;
+    userName = user.displayName || user.email;
+    window._vp_name = userName;
+    localStorage.setItem('vp_user', userName);
+    enterApp();
+  }).catch(function(e) {
     var err = document.getElementById("login-err");
     if(err) { err.textContent = "Erreur Google : " + e.message; err.style.color = "var(--a1)"; }
   });
