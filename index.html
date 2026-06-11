@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
 <title>VocalPro — Coach vocal complet</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+<!-- Google AdSense — remplacez ca-pub-XXXXXXXXXXXXXXXX par votre vrai Publisher ID -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{
@@ -378,6 +380,21 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);heig
 .bi-em{font-size:26px;margin-bottom:4px}
 .bi-nm{font-size:9px;font-weight:800;color:var(--text2);line-height:1.3}
 
+/* ADS */
+.ad-banner{margin:0 16px 14px;border-radius:var(--r2);overflow:hidden;background:var(--card);border:1px solid var(--brd);min-height:60px;display:flex;align-items:center;justify-content:center;position:relative}
+.ad-banner ins.adsbygoogle{display:block;width:100%}
+.ad-label{position:absolute;top:3px;right:6px;font-size:9px;color:var(--text3);font-weight:700;letter-spacing:.3px;text-transform:uppercase;pointer-events:none}
+.ad-interstitial-bg{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:600;display:none;align-items:flex-end;justify-content:center}
+.ad-interstitial-bg.open{display:flex}
+.ad-interstitial{background:var(--bg2);border:1px solid var(--brd2);border-radius:var(--r) var(--r) 0 0;padding:16px 16px 36px;width:100%;max-width:480px}
+.ad-interstitial-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.ad-interstitial-lbl{font-size:11px;color:var(--text2);font-weight:700}
+.ad-interstitial-skip{background:transparent;border:1px solid var(--brd2);border-radius:20px;color:var(--text2);font-family:'Outfit',sans-serif;font-size:11px;font-weight:800;padding:5px 12px;cursor:pointer;min-width:70px;text-align:center}
+.ad-interstitial-ad{background:var(--card);border:1px solid var(--brd);border-radius:var(--r2);min-height:250px;display:flex;align-items:center;justify-content:center;overflow:hidden;margin-bottom:12px}
+.ad-interstitial-msg{font-size:13px;color:var(--text2);text-align:center;line-height:1.65;padding:0 8px}
+.ad-interstitial-msg span{color:var(--a3);font-weight:800}
+.no-ads-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(46,204,113,.12);border:1px solid rgba(46,204,113,.25);border-radius:12px;padding:5px 12px;font-size:11px;font-weight:800;color:var(--g1)}
+
 /* CONFETTI */
 .confetti-wrap{position:fixed;inset:0;pointer-events:none;z-index:999;overflow:hidden}
 .conf{position:absolute;width:8px;height:8px;border-radius:2px;animation:confFall linear forwards}
@@ -606,9 +623,29 @@ document.addEventListener('DOMContentLoaded', function() {
     <div class="pbar"><div class="pbar-fill" id="daily-bar" style="width:0%"></div></div>
     <div class="daily-bot"><span id="daily-left">16 restants</span><span id="daily-str">🔥 1 jour</span></div>
   </div>
+  <!-- Bannière pub top (cachée pour premium) -->
+  <div class="ad-banner" id="ad-home-top" style="display:none">
+    <span class="ad-label">Pub</span>
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+         data-ad-slot="1111111111"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+  </div>
   <div class="cats" id="cats"></div>
   <div class="sec-hd"><h2>Modules d'entraînement</h2><div class="sec-line"></div></div>
   <div class="grid" id="grid"></div>
+  <!-- Bannière pub bas (cachée pour premium) -->
+  <div class="ad-banner" id="ad-home-bottom" style="display:none;margin-bottom:8px">
+    <span class="ad-label">Pub</span>
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+         data-ad-slot="2222222222"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+  </div>
 </div>
 
 <!-- EXERCISE -->
@@ -2728,9 +2765,64 @@ function nextStep() {
     } else {
       toast('🎉 +' + curMod.xp + ' XP gagnés !');
     }
+    // Show interstitial ad for non-premium users (1 time out of 2)
+    if (!isPremium) {
+      _adCounter = (_adCounter || 0) + 1;
+      if (_adCounter % 2 === 0) showAdInterstitial();
+    }
     return;
   }
   curStep++; renderDots(); renderStep();
+}
+
+// ===== AD MANAGEMENT =====
+var _adCounter = 0;
+var _adSkipTimer = null;
+
+function showAdInterstitial() {
+  const bg = document.getElementById('ad-interstitial-bg');
+  if (!bg) return;
+  bg.classList.add('open');
+  const skipBtn = document.getElementById('ad-skip-btn');
+  const countEl = document.getElementById('ad-skip-count');
+  if (skipBtn) { skipBtn.disabled = true; skipBtn.style.opacity = '.4'; }
+  let sec = 5;
+  if (countEl) countEl.textContent = sec;
+  _adSkipTimer = setInterval(() => {
+    sec--;
+    if (countEl) countEl.textContent = Math.max(sec, 0);
+    if (sec <= 0) {
+      clearInterval(_adSkipTimer);
+      if (skipBtn) { skipBtn.disabled = false; skipBtn.style.opacity = '1'; }
+    }
+  }, 1000);
+  // Init AdSense slot
+  try { (window.adsbygoogle = window.adsbygoogle || []).push({}); } catch(e) {}
+}
+
+function closeAdInterstitial() {
+  const bg = document.getElementById('ad-interstitial-bg');
+  if (bg) bg.classList.remove('open');
+  if (_adSkipTimer) { clearInterval(_adSkipTimer); _adSkipTimer = null; }
+}
+
+function initAds() {
+  if (isPremium) {
+    // Hide all ad banners for premium users
+    ['ad-home-top','ad-home-bottom'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = 'none';
+    });
+  } else {
+    // Show banner ads for free users and init AdSense
+    ['ad-home-top','ad-home-bottom'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.style.display = 'flex';
+        try { (window.adsbygoogle = window.adsbygoogle || []).push({}); } catch(e) {}
+      }
+    });
+  }
 }
 function skipStep() { curStep = Math.min(curStep + 1, curMod.steps.length - 1); renderDots(); renderStep(); }
 
@@ -3096,6 +3188,7 @@ function enterApp(){
 
   if(isPremium) { MODS.forEach(function(m){ m.free = true; }); }
   buildAll();
+  setTimeout(initAds, 500);
 }
 
 
@@ -3222,6 +3315,7 @@ function activateCode() {
 
   isPremium = true;
   savePremiumStorage();
+  initAds(); // Remove ads immediately on activation
 
   const expTxt = getExpiry();
   const successBox = document.getElementById('code-success-box');
@@ -3400,6 +3494,26 @@ function sendWhatsApp() {
     <div id="rp-xp" style="display:inline-block;background:rgba(255,211,42,.1);border:1px solid rgba(255,211,42,.25);border-radius:12px;padding:8px 20px;font-size:22px;font-weight:900;color:#ffd32a;margin-bottom:16px">+50 XP</div>
     <div id="rp-sub" style="font-size:13px;color:#8a87b0;line-height:1.7;margin-bottom:20px">Félicitations !</div>
     <button style="width:100%;padding:14px;background:linear-gradient(135deg,#ffd32a,#ff6b35);color:#fff;border:none;border-radius:13px;font-family:'Outfit',sans-serif;font-size:15px;font-weight:900;cursor:pointer" onclick="closeReward()">🎉 Super !</button>
+  </div>
+</div>
+
+<!-- INTERSTITIAL PUB (utilisateurs gratuits) -->
+<div id="ad-interstitial-bg" class="ad-interstitial-bg">
+  <div class="ad-interstitial">
+    <div class="ad-interstitial-top">
+      <div class="ad-interstitial-lbl">Publicité · <span id="ad-skip-count" style="color:var(--a3);font-weight:900">5</span>s</div>
+      <button id="ad-skip-btn" class="ad-interstitial-skip" onclick="closeAdInterstitial()" disabled>Passer ▶</button>
+    </div>
+    <div class="ad-interstitial-ad">
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+           data-ad-slot="3333333333"
+           data-ad-format="rectangle"
+           data-full-width-responsive="true"></ins>
+    </div>
+    <div class="ad-interstitial-msg">💡 Supprimez les pubs avec <span>VocalPro Premium</span> — 20 000 Ar/mois</div>
+    <button style="width:100%;padding:11px;background:linear-gradient(135deg,var(--a1),var(--a2));color:#fff;border:none;border-radius:var(--r2);font-family:'Outfit',sans-serif;font-size:13px;font-weight:800;cursor:pointer;margin-top:10px" onclick="closeAdInterstitial();navTo('prem',1)">👑 Passer à Premium</button>
   </div>
 </div>
 
