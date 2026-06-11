@@ -582,19 +582,13 @@ document.addEventListener('DOMContentLoaded', function() {
     <!-- Card -->
     <div style="width:100%;max-width:360px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:24px;padding:24px 20px;position:relative;z-index:1">
 
-      <div style="font-size:13px;color:rgba(255,255,255,.5);text-align:center;margin-bottom:20px">Entrez votre numéro pour continuer</div>
-
-      <!-- Numéro téléphone -->
-      <div style="margin-bottom:16px">
-        <div style="font-size:11px;font-weight:800;color:rgba(255,255,255,.5);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">📱 Numéro de téléphone</div>
-        <input id="inp-tel" type="text" inputmode="numeric" autocomplete="off" placeholder="034 00 000 00" style="width:100%;padding:14px 16px;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.12);border-radius:12px;font-family:'Outfit',sans-serif;font-size:16px;color:#fff;outline:none;box-sizing:border-box;letter-spacing:1px" onkeydown="if(event.key==='Enter')doLogin()">
-      </div>
+      <div style="font-size:13px;color:rgba(255,255,255,.5);text-align:center;margin-bottom:24px">Connectez-vous pour continuer</div>
 
       <!-- Erreur -->
       <div id="login-err" style="min-height:18px;font-size:12px;font-weight:700;text-align:center;color:#ff8080;margin-bottom:12px"></div>
 
-      <!-- Bouton -->
-      <button onclick="doLogin()" style="width:100%;padding:15px;background:linear-gradient(135deg,#ff6b6b,#ffa07a);color:#fff;border:none;border-radius:13px;font-family:'Outfit',sans-serif;font-size:15px;font-weight:900;cursor:pointer;margin-bottom:12px;box-shadow:0 4px 20px rgba(255,107,107,.35)">Continuer 🎙️</button>
+      <!-- Bouton Google -->
+      <button onclick="googleLogin()" style="width:100%;padding:15px;background:#fff;color:#333;border:none;border-radius:13px;font-family:'Outfit',sans-serif;font-size:15px;font-weight:900;cursor:pointer;margin-bottom:12px;box-shadow:0 4px 20px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;gap:10px"><img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" style="width:22px;height:22px">Se connecter avec Google</button>
 
       <!-- Invité -->
       <button onclick="guestLogin()" style="width:100%;padding:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:12px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;color:rgba(255,255,255,.5);cursor:pointer">👤 Continuer sans compte</button>
