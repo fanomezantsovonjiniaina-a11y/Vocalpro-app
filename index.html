@@ -609,7 +609,7 @@ document.addEventListener('DOMContentLoaded', function() {
   <div class="topbar">
     <div class="brand">VocalPro 🎙️</div>
     <div class="topbar-r">
-      <div class="pill lang-pill" id="langBtn" onclick="navTo('settings',3)">🇫🇷 FR</div>
+      <div class="pill lang-pill" id="langBtn" onclick="navTo('settings',1)">🇫🇷 FR</div>
       <div class="pill xp-pill" id="xpBtn">⚡ 0 XP</div>
     </div>
   </div>
@@ -683,56 +683,7 @@ document.addEventListener('DOMContentLoaded', function() {
   </div>
   <div class="sett-sec">
     <div class="sett-hd">Préférences</div>
-    
-      <button class="msg-copy-btn" onclick="copyCode()">📋 Copier le code</button>
-    </div>
-
-    <!-- MESSAGES WHATSAPP -->
-    <div class="admin-sec">
-      <div class="admin-sec-title">💬 Messages WhatsApp prêts</div>
-
-      <!-- Message activation -->
-      <div class="msg-card">
-        <div class="msg-card-top">
-          <div class="msg-card-name">✅ Activation Premium</div>
-          <div class="msg-card-tag" style="background:rgba(37,211,102,.15);color:#25d366">Nouveau</div>
-        </div>
-        <div class="msg-card-body" id="msg-activation"></div>
-        <button class="msg-copy-btn" onclick="copyMsg('activation')">💬 Copier & Ouvrir WhatsApp</button>
-      </div>
-
-      <!-- Message rappel paiement -->
-      <div class="msg-card">
-        <div class="msg-card-top">
-          <div class="msg-card-name">🔔 Rappel paiement</div>
-          <div class="msg-card-tag" style="background:rgba(255,200,50,.15);color:var(--a3)">Rappel</div>
-        </div>
-        <div class="msg-card-body" id="msg-rappel"></div>
-        <button class="msg-copy-btn" style="background:linear-gradient(135deg,var(--a3),var(--a2))" onclick="copyMsg('rappel')">💬 Copier le message</button>
-      </div>
-
-      <!-- Message renouvellement -->
-      <div class="msg-card">
-        <div class="msg-card-top">
-          <div class="msg-card-name">🔄 Renouvellement</div>
-          <div class="msg-card-tag" style="background:rgba(116,185,255,.15);color:#74b9ff">Mensuel</div>
-        </div>
-        <div class="msg-card-body" id="msg-renouvellement"></div>
-        <button class="msg-copy-btn" style="background:linear-gradient(135deg,#74b9ff,#a29bfe)" onclick="copyMsg('renouvellement')">💬 Copier le message</button>
-      </div>
-
-      <!-- Message expiration -->
-      <div class="msg-card">
-        <div class="msg-card-top">
-          <div class="msg-card-name">⏰ Abonnement expiré</div>
-          <div class="msg-card-tag" style="background:rgba(255,94,98,.15);color:var(--a1)">Expiré</div>
-        </div>
-        <div class="msg-card-body" id="msg-expiration"></div>
-        <button class="msg-copy-btn" style="background:linear-gradient(135deg,var(--a1),var(--a2))" onclick="copyMsg('expiration')">💬 Copier le message</button>
-      </div>
-    </div>
-
-    <button class="admin-close" onclick="closeAdmin()">✕ Fermer</button>
+    <button class="msg-copy-btn" onclick="copyCode()">📋 Copier le code</button>
   </div>
 </div>
 
@@ -2172,6 +2123,95 @@ function buildSettings() {
   });
   const lf = LANGS_APP.find(l => l.c === appLang);
   safeSet('langBtn', (lf ? lf.f : '🌐') + ' ' + appLang.toUpperCase());
+  applyUILang();
+}
+
+const UI_STRINGS = {
+  fr: {
+    bn0: 'Accueil', bn1: 'Langues', bn2: 'Challenges', bn3: 'Profil', bn4: 'Réglages',
+    heroTitle: 'Exercices <span style="color:var(--a1)">vocaux</span> complets',
+    heroSub: 'Échauffement · Technique · Solfège · Avancé',
+    loginSub: 'Coach vocal professionnel',
+    loginCard: 'Connectez-vous pour continuer',
+    loginGoogle: 'Se connecter avec Google',
+    loginGuest: '👤 Continuer sans compte',
+    settingsTitle: 'Paramètres',
+    settingsAppLang: "Langue de l'application",
+    settingsLearnLang: "Langue d'apprentissage",
+    settingsPref: 'Préférences',
+  },
+  en: {
+    bn0: 'Home', bn1: 'Languages', bn2: 'Challenges', bn3: 'Profile', bn4: 'Settings',
+    heroTitle: 'Complete <span style="color:var(--a1)">vocal</span> exercises',
+    heroSub: 'Warm-up · Technique · Solfège · Advanced',
+    loginSub: 'Professional vocal coach',
+    loginCard: 'Sign in to continue',
+    loginGoogle: 'Sign in with Google',
+    loginGuest: '👤 Continue without account',
+    settingsTitle: 'Settings',
+    settingsAppLang: 'App language',
+    settingsLearnLang: 'Learning language',
+    settingsPref: 'Preferences',
+  },
+  mg: {
+    bn0: 'Fandraisana', bn1: 'Fiteny', bn2: 'Challenges', bn3: 'Mpamorona', bn4: 'Fandrindrana',
+    heroTitle: 'Fiofanana <span style="color:var(--a1)">vokaly</span> feno',
+    heroSub: 'Fanafanana · Teknika · Solfège · Avo lenta',
+    loginSub: 'Mpanazatra vokaly matihanina',
+    loginCard: 'Midira mba hanohy',
+    loginGoogle: 'Midira amin\'ny Google',
+    loginGuest: '👤 Hanohy tsy misy kaonty',
+    settingsTitle: 'Fandrindrana',
+    settingsAppLang: 'Fiteny fampiasana',
+    settingsLearnLang: 'Fiteny ianarana',
+    settingsPref: 'Fisafidianana',
+  }
+};
+
+function applyUILang() {
+  const s = UI_STRINGS[appLang] || UI_STRINGS.fr;
+  // Bottom nav labels (all have bn*-label ids)
+  ['bn0','bn1','bn2','bn3','bn4'].forEach(id => {
+    const el = document.getElementById(id + '-label');
+    if (el && s[id]) el.textContent = s[id];
+  });
+  // Hero
+  const heroTitle = document.querySelector('#home .hero h1');
+  if (heroTitle) heroTitle.innerHTML = s.heroTitle;
+  const heroSub = document.querySelector('#home .hero p');
+  if (heroSub) heroSub.textContent = s.heroSub;
+  // Login subtitle
+  const loginSub = document.querySelector('#login .splash-brand + div, #login [style*="Coach vocal"]');
+  document.querySelectorAll('#login [style*="Coach"], #login [style*="coach"]').forEach(el => {
+    if (el.textContent.trim().length < 60) el.textContent = s.loginSub;
+  });
+  // Login card text
+  document.querySelectorAll('#login [style*="Connectez"], #login [style*="Sign"]').forEach(el => {
+    if (el.textContent.trim().length < 60) el.textContent = s.loginCard;
+  });
+  // Login buttons - find by text content
+  document.querySelectorAll('#login button').forEach(btn => {
+    const t = btn.textContent.trim();
+    if (t.includes('Google') || t.includes('connecter')) {
+      // Keep Google logo, just update text
+      const img = btn.querySelector('img');
+      btn.innerHTML = '';
+      if (img) btn.appendChild(img);
+      btn.appendChild(document.createTextNode(' ' + s.loginGoogle));
+    } else if (t.includes('sans compte') || t.includes('without account') || t.includes('tsy misy')) {
+      btn.textContent = s.loginGuest;
+    }
+  });
+  // Settings heading
+  const settingsPageTitle = document.querySelector('#settings .topbar div[style*="flex:1"]');
+  if (settingsPageTitle) settingsPageTitle.textContent = s.settingsTitle;
+  // Settings section headers
+  document.querySelectorAll('#settings .sett-hd').forEach(hd => {
+    const t = hd.textContent.trim();
+    if (t.includes('application') || t.includes('App lang') || t.includes('fampiasana')) hd.textContent = s.settingsAppLang;
+    else if (t.includes('apprentissage') || t.includes('Learning') || t.includes('ianarana')) hd.textContent = s.settingsLearnLang;
+    else if (t.includes('férences') || t.includes('Preferences') || t.includes('fidianana')) hd.textContent = s.settingsPref;
+  });
 }
 
 function buildFeatures() {
@@ -3348,20 +3388,20 @@ function sendWhatsApp() {
 <!-- BOTTOM NAV -->
 <div id="bnav" style="position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:rgba(10,12,26,.95);border-top:1px solid rgba(255,255,255,.06);display:none;z-index:100;backdrop-filter:blur(10px)">
   <div style="flex:1;padding:10px 0;text-align:center;cursor:pointer;color:#3a3760;font-size:10px;font-weight:800;display:flex;flex-direction:column;align-items:center" id="bn0" onclick="navTo('home',0)">
-    <span style="font-size:23px;margin-bottom:2px">🏠</span><span>Accueil</span>
+    <span style="font-size:23px;margin-bottom:2px">🏠</span><span id="bn0-label">Accueil</span>
   </div>
-  <div style="flex:1;padding:10px 0;text-align:center;cursor:pointer;color:#3a3760;font-size:10px;font-weight:800;display:flex;flex-direction:column;align-items:center" id="bn1" onclick="navTo('prem',1)">
-    <span style="font-size:23px;margin-bottom:2px">👑</span><span>Premium</span>
+  <div style="flex:1;padding:10px 0;text-align:center;cursor:pointer;color:#3a3760;font-size:10px;font-weight:800;display:flex;flex-direction:column;align-items:center" id="bn1" onclick="navTo('settings',1)">
+    <span style="font-size:23px;margin-bottom:2px">🌍</span><span id="bn1-label">Langues</span>
   </div>
   <div style="flex:1;padding:10px 0;text-align:center;cursor:pointer;color:#3a3760;font-size:10px;font-weight:800;display:flex;flex-direction:column;align-items:center;position:relative" id="bn2" onclick="navTo('challenges-screen',2)">
-    <span style="font-size:23px;margin-bottom:2px">🔥</span><span>Challenges</span>
+    <span style="font-size:23px;margin-bottom:2px">🔥</span><span id="bn2-label">Challenges</span>
     <div id="notif-ch" style="position:absolute;top:6px;right:calc(50% - 16px);width:7px;height:7px;border-radius:50%;background:var(--a1);display:none"></div>
   </div>
   <div style="flex:1;padding:10px 0;text-align:center;cursor:pointer;color:#3a3760;font-size:10px;font-weight:800;display:flex;flex-direction:column;align-items:center" id="bn3" onclick="navTo('profile',3)">
-    <span style="font-size:23px;margin-bottom:2px">👤</span><span>Profil</span>
+    <span style="font-size:23px;margin-bottom:2px">👤</span><span id="bn3-label">Profil</span>
   </div>
   <div style="flex:1;padding:10px 0;text-align:center;cursor:pointer;color:#3a3760;font-size:10px;font-weight:800;display:flex;flex-direction:column;align-items:center" id="bn4" onclick="navTo('settings',4)">
-    <span style="font-size:23px;margin-bottom:2px">⚙️</span><span>Réglages</span>
+    <span style="font-size:23px;margin-bottom:2px">⚙️</span><span id="bn4-label">Réglages</span>
   </div>
 </div>
 
