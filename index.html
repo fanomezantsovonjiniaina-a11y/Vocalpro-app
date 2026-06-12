@@ -2698,7 +2698,7 @@ function renderVideo(b, s) {
   b.innerHTML = '<div class="card" style="background:linear-gradient(135deg,rgba(255,0,0,.05),rgba(255,71,87,.02));border-color:rgba(255,0,0,.15)">' +
     '<div class="card-hd" style="color:#ff4757">🎬 ' + (s.nm || 'Masterclass vidéo') + '</div>' +
     '<div class="card-desc">' + (s.desc || 'Regardez et pratiquez immédiatement.') + '</div>' +
-    (embedUrl ? '<div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:12px;margin-bottom:14px;background:#000"><iframe src="' + embedUrl + '" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;border-radius:12px" allowfullscreen loading="lazy"></iframe></div>' : '') +
+    (url ? '<a href="' + url + '" target="_blank" style="display:block;width:100%;padding:14px;background:linear-gradient(135deg,#ff0000,#cc0000);color:#fff;border:none;border-radius:13px;font-family:Outfit,sans-serif;font-size:15px;font-weight:800;cursor:pointer;text-align:center;text-decoration:none;margin-bottom:14px;box-sizing:border-box">▶ Ouvrir dans YouTube</a>' : '') +
     '<div class="tip-box">💡 Regardez puis mettez en pause et pratiquez chaque technique immédiatement.</div>' +
     '</div>';
 }
