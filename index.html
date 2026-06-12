@@ -460,32 +460,23 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);heig
 #jeux{padding-bottom:80px;overflow-y:auto}
 .jeux-header{padding:14px 16px 8px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
 .jeux-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:800;background:linear-gradient(135deg,var(--a1),var(--a2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.jeux-xp-chip{background:rgba(255,211,42,.1);border:1px solid rgba(255,211,42,.25);border-radius:20px;padding:5px 12px;font-size:12px;font-weight:800;color:var(--a3)}
+.jeux-xp-chip{background:rgba(255,211,42,.12);border:1px solid rgba(255,211,42,.3);border-radius:20px;padding:5px 12px;font-size:12px;font-weight:800;color:var(--a3)}
 
-/* ENHANCED LEVEL CARD */
-.jeux-level-card{margin:0 16px 14px;border-radius:20px;padding:18px;position:relative;overflow:hidden;transition:background .6s,border-color .6s,box-shadow .6s}
-.jeux-level-card.tier-0{background:linear-gradient(135deg,rgba(20,40,20,.97),rgba(10,30,15,.97));border:1px solid rgba(46,204,113,.4);box-shadow:0 4px 32px rgba(46,204,113,.2)}
-.jeux-level-card.tier-1{background:linear-gradient(135deg,rgba(15,30,60,.97),rgba(10,20,50,.97));border:1px solid rgba(54,215,183,.4);box-shadow:0 4px 32px rgba(54,215,183,.2)}
-.jeux-level-card.tier-2{background:linear-gradient(135deg,rgba(30,15,60,.97),rgba(13,10,50,.97));border:1px solid rgba(165,94,234,.4);box-shadow:0 4px 32px rgba(165,94,234,.2)}
-.jeux-level-card.tier-3{background:linear-gradient(135deg,rgba(50,30,10,.97),rgba(40,20,5,.97));border:1px solid rgba(255,200,50,.5);box-shadow:0 4px 32px rgba(255,200,50,.3);animation:glow 2s ease infinite}
-.jeux-level-card.tier-legend{background:linear-gradient(135deg,rgba(60,45,5,.97),rgba(40,30,0,.97));border:2px solid gold;box-shadow:0 0 50px rgba(255,215,0,.5);animation:glow 1.5s ease infinite}
-.jeux-level-card::before{content:'✨ ⭐ 💫 ✨ ⭐';position:absolute;top:6px;right:8px;font-size:11px;letter-spacing:3px;opacity:.25;animation:starsDrift 4s ease-in-out infinite alternate}
-@keyframes starsDrift{from{transform:translateX(0) rotate(0deg);opacity:.2}to{transform:translateX(-6px) rotate(10deg);opacity:.35}}
-.jeux-lv-row{display:flex;align-items:center;gap:14px;margin-bottom:10px}
-.jeux-lv-badge{width:68px;height:68px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:900;color:#fff;flex-shrink:0;text-shadow:0 0 12px rgba(255,255,255,.5);transition:background .6s,box-shadow .6s}
-.jeux-lv-badge.tier-0{background:linear-gradient(135deg,#2ecc71,#82e0aa);box-shadow:0 0 20px rgba(46,204,113,.6)}
-.jeux-lv-badge.tier-1{background:linear-gradient(135deg,#36d7b7,#74b9ff);box-shadow:0 0 20px rgba(54,215,183,.6)}
-.jeux-lv-badge.tier-2{background:linear-gradient(135deg,#9b59b6,#e84393);box-shadow:0 0 20px rgba(155,89,182,.6)}
-.jeux-lv-badge.tier-3{background:linear-gradient(135deg,#ffd700,#ff8c00);box-shadow:0 0 20px rgba(255,215,0,.6);animation:glow 2s ease infinite}
-.jeux-lv-badge.tier-legend{background:linear-gradient(135deg,#ffd700,#ffa500,#ff6347);box-shadow:0 0 40px rgba(255,215,0,.8);animation:glow 1s ease infinite;font-size:32px}
-.jeux-lv-info{flex:1}
-.jeux-lv-name{font-size:17px;font-weight:900}
-.jeux-lv-sub{font-size:11px;color:var(--text2);margin-top:2px}
-.jeux-stars{font-size:16px;letter-spacing:2px;margin-top:4px;filter:drop-shadow(0 0 4px gold)}
-.jeux-tier-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:12px;font-size:10px;font-weight:800;margin-top:4px}
-.jeux-next-tier{font-size:10px;color:var(--text2);margin-top:3px}
-.jeux-prog-row{display:flex;justify-content:space-between;font-size:11px;color:var(--text2);margin-bottom:4px}
-.jeux-pbar{height:8px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden}
+/* DIFFICULTY SELECTOR */
+.diff-selector{display:flex;gap:8px;padding:0 16px 14px}
+.diff-btn{flex:1;padding:12px 6px;border-radius:18px;border:2px solid rgba(255,255,255,.08);font-family:'Outfit',sans-serif;cursor:pointer;transition:all .22s cubic-bezier(.34,1.56,.64,1);display:flex;flex-direction:column;align-items:center;gap:4px;background:var(--card);color:rgba(255,255,255,.4)}
+.diff-btn:active{transform:scale(.93)}
+.diff-btn.active.facile{background:linear-gradient(160deg,#0d3d22,#1a5c35);border-color:#2ecc71;color:#2ecc71;box-shadow:0 6px 24px rgba(46,204,113,.35);transform:scale(1.04)}
+.diff-btn.active.moyen{background:linear-gradient(160deg,#3d2d00,#5a4300);border-color:#ffc832;color:#ffc832;box-shadow:0 6px 24px rgba(255,200,50,.35);transform:scale(1.04)}
+.diff-btn.active.difficile{background:linear-gradient(160deg,#3d0d0d,#5c1414);border-color:#ff5e62;color:#ff5e62;box-shadow:0 6px 24px rgba(255,94,98,.35);transform:scale(1.04)}
+.diff-icon{font-size:24px}
+.diff-label{font-size:12px;font-weight:900;letter-spacing:.3px}
+.diff-stars{font-size:10px;letter-spacing:3px;opacity:.8}
+
+/* SCORE BAR */
+.jeux-score-bar{margin:0 16px 14px;background:linear-gradient(135deg,rgba(24,26,46,.95),rgba(18,20,38,.95));border:1px solid var(--brd);border-radius:16px;padding:12px 8px;display:flex;justify-content:space-around;align-items:center;backdrop-filter:blur(8px)}
+.jeux-score-num{font-size:22px;font-weight:900;text-align:center;line-height:1}
+.jeux-score-lbl{font-size:10px;color:var(--text2);font-weight:700;text-align:center;margin-top:3px}
 .jeux-pbar-fill{height:100%;border-radius:4px;transition:width .5s}
 
 /* GAME SELECTOR CARDS */
@@ -948,20 +939,23 @@ document.addEventListener('DOMContentLoaded', function() {
     <div class="jeux-title">🎮 Jeux Vocaux</div>
     <div class="jeux-xp-chip" id="jeux-xp-chip">⚡ 0 XP</div>
   </div>
-  <!-- Per-game level card -->
-  <div class="jeux-level-card tier-0" id="jeux-level-card">
-    <div class="jeux-lv-row">
-      <div class="jeux-lv-badge tier-0" id="jeux-lv-badge">1</div>
-      <div class="jeux-lv-info">
-        <div class="jeux-lv-name" id="jeux-lv-name">Niveau 1 — Débutant</div>
-        <div class="jeux-lv-sub" id="jeux-lv-sub">3 bonnes réponses pour monter !</div>
-        <div class="jeux-tier-badge" id="jeux-tier-badge" style="background:rgba(46,204,113,.2);color:#2ecc71">🌱 Débutant</div>
-        <div class="jeux-stars" id="jeux-stars"></div>
-        <div class="jeux-next-tier" id="jeux-next-tier"></div>
-      </div>
-    </div>
-    <div class="jeux-prog-row"><span id="jeux-prog-lbl">0 / 3 bonnes réponses</span><span id="jeux-prog-xp">0 XP de jeux</span></div>
-    <div class="jeux-pbar"><div class="jeux-pbar-fill" id="jeux-pbar-fill" style="width:0%;background:linear-gradient(90deg,#2ecc71,#82e0aa)"></div></div>
+  <!-- Difficulty selector -->
+  <div class="diff-selector">
+    <button class="diff-btn facile active" id="diff-facile" onclick="setDifficulty('facile')">
+      <span class="diff-icon">🟢</span>
+      <span class="diff-label">Facile</span>
+      <span class="diff-stars">★</span>
+    </button>
+    <button class="diff-btn moyen" id="diff-moyen" onclick="setDifficulty('moyen')">
+      <span class="diff-icon">🟡</span>
+      <span class="diff-label">Moyen</span>
+      <span class="diff-stars">★★</span>
+    </button>
+    <button class="diff-btn difficile" id="diff-difficile" onclick="setDifficulty('difficile')">
+      <span class="diff-icon">🔴</span>
+      <span class="diff-label">Difficile</span>
+      <span class="diff-stars">★★★</span>
+    </button>
   </div>
   <!-- Game selector grid -->
   <div class="game-selector-grid" id="game-selector-grid">
@@ -971,71 +965,60 @@ document.addEventListener('DOMContentLoaded', function() {
       <div class="gs-card-desc">Rotation automatique des jeux</div>
     </div>
     <div class="gs-card note" id="gs-note" onclick="selectGameMode('note')">
-      <div class="gs-card-level" id="gs-note-lv">Niv.1</div>
       <div class="gs-card-icon">🎵</div>
       <div class="gs-card-name">Note</div>
       <div class="gs-card-desc">Identifiez les notes</div>
-      <div class="gs-card-best" id="gs-note-best">MEILLEUR: Niv.1</div>
     </div>
     <div class="gs-card rhythm" id="gs-rhythm" onclick="selectGameMode('rhythm')">
-      <div class="gs-card-level" id="gs-rhythm-lv">Niv.1</div>
       <div class="gs-card-icon">🥁</div>
       <div class="gs-card-name">Rythme</div>
       <div class="gs-card-desc">Reproduisez le rythme</div>
-      <div class="gs-card-best" id="gs-rhythm-best">MEILLEUR: Niv.1</div>
     </div>
     <div class="gs-card speed" id="gs-speed" onclick="selectGameMode('speed')">
-      <div class="gs-card-level" id="gs-speed-lv">Niv.1</div>
       <div class="gs-card-icon">🏃</div>
       <div class="gs-card-name">Vitesse</div>
       <div class="gs-card-desc">Tapez vite les notes</div>
-      <div class="gs-card-best" id="gs-speed-best">MEILLEUR: Niv.1</div>
     </div>
     <div class="gs-card melody" id="gs-melody" onclick="selectGameMode('melody')">
-      <div class="gs-card-level" id="gs-melody-lv">Niv.1</div>
       <div class="gs-card-icon">🎶</div>
       <div class="gs-card-name">Mélodie</div>
       <div class="gs-card-desc">Mémorisez la séquence</div>
-      <div class="gs-card-best" id="gs-melody-best">MEILLEUR: Niv.1</div>
     </div>
     <div class="gs-card pitch" id="gs-pitch" onclick="selectGameMode('pitch')">
-      <div class="gs-card-level" id="gs-pitch-lv">Niv.1</div>
       <div class="gs-card-icon">🎤</div>
       <div class="gs-card-name">Chant</div>
       <div class="gs-card-desc">Chantez la note juste</div>
-      <div class="gs-card-best" id="gs-pitch-best">MEILLEUR: Niv.1</div>
     </div>
     <div class="gs-card chord" id="gs-chord" onclick="selectGameMode('chord')">
-      <div class="gs-card-level" id="gs-chord-lv">Niv.1</div>
       <div class="gs-card-icon">🎸</div>
       <div class="gs-card-name">Accords</div>
       <div class="gs-card-desc">Identifiez l'accord</div>
-      <div class="gs-card-best" id="gs-chord-best">MEILLEUR: Niv.1</div>
     </div>
     <div class="gs-card battle" id="gs-battle" onclick="selectGameMode('battle')">
-      <div class="gs-card-level" id="gs-battle-lv">Niv.1</div>
       <div class="gs-card-icon">⚔️</div>
       <div class="gs-card-name">Battle</div>
       <div class="gs-card-desc">Battez votre record</div>
-      <div class="gs-card-best" id="gs-battle-best">MEILLEUR: Niv.1</div>
     </div>
   </div>
   <!-- Game area -->
   <div class="game-area" id="game-area">
-    <div style="text-align:center;color:var(--text2);font-size:14px;padding:20px 0">Choisissez un jeu ci-dessus !</div>
+    <div style="text-align:center;color:var(--text2);font-size:14px;padding:24px 0">Choisissez un jeu ci-dessus !</div>
   </div>
-  <div style="margin:0 16px 14px;display:flex;gap:8px">
-    <div style="flex:1;background:var(--card);border:1px solid var(--brd);border-radius:var(--r2);padding:12px 8px;text-align:center">
-      <div style="font-size:20px;font-weight:900;color:var(--g1)" id="jeux-stat-correct">0</div>
-      <div class="stat-l">Correctes</div>
+  <!-- Score bar -->
+  <div class="jeux-score-bar">
+    <div>
+      <div class="jeux-score-num" style="color:var(--g1)" id="jeux-stat-correct">0</div>
+      <div class="jeux-score-lbl">✅ Correctes</div>
     </div>
-    <div style="flex:1;background:var(--card);border:1px solid var(--brd);border-radius:var(--r2);padding:12px 8px;text-align:center">
-      <div style="font-size:20px;font-weight:900;color:var(--a1)" id="jeux-stat-wrong">0</div>
-      <div class="stat-l">Erreurs</div>
+    <div style="width:1px;height:32px;background:var(--brd)"></div>
+    <div>
+      <div class="jeux-score-num" style="color:var(--a1)" id="jeux-stat-wrong">0</div>
+      <div class="jeux-score-lbl">❌ Erreurs</div>
     </div>
-    <div style="flex:1;background:var(--card);border:1px solid var(--brd);border-radius:var(--r2);padding:12px 8px;text-align:center">
-      <div style="font-size:20px;font-weight:900;color:var(--a3)" id="jeux-stat-streak">0</div>
-      <div class="stat-l">Série</div>
+    <div style="width:1px;height:32px;background:var(--brd)"></div>
+    <div>
+      <div class="jeux-score-num" style="color:var(--a3)" id="jeux-stat-streak">0</div>
+      <div class="jeux-score-lbl">🔥 Série</div>
     </div>
   </div>
 </div>
@@ -3827,19 +3810,52 @@ function sendWhatsApp() {
   toast("📲 WhatsApp ouvert — envoyez votre transaction !");
 }
 
-// ===== JEUX VOCAUX — 300 LEVELS PER GAME =====
+// ===== JEUX VOCAUX — DIFFICULTY SYSTEM =====
 
-// Per-game levels (each 1-300)
-var _defaultGameLevels = { note:1, rhythm:1, speed:1, melody:1, pitch:1, chord:1, battle:1 };
-var gameLevels = (function(){
-  try { var d=JSON.parse(localStorage.getItem('vp_game_levels')||'{}'); return Object.assign({},_defaultGameLevels,d); } catch(e){ return Object.assign({},_defaultGameLevels); }
-})();
+var _gameDifficulty = localStorage.getItem('vp_diff') || 'facile';
 
-// Per-game correct streaks (to track XP progress toward next level)
-var _defaultGameStreaks = { note:0, rhythm:0, speed:0, melody:0, pitch:0, chord:0, battle:0 };
-var gameStreaks = (function(){
-  try { var d=JSON.parse(localStorage.getItem('vp_game_streaks')||'{}'); return Object.assign({},_defaultGameStreaks,d); } catch(e){ return Object.assign({},_defaultGameStreaks); }
-})();
+// Difficulty configs per game
+var DIFF = {
+  note: {
+    facile:    { notes:['Do','Ré','Mi','Fa','Sol','La','Si'], choices:4, time:10 },
+    moyen:     { notes:['Do','Ré','Mi','Fa','Sol','La','Si','Do#','Fa#','Sol#'], choices:5, time:6 },
+    difficile: { notes:['Do','Ré','Mi','Fa','Sol','La','Si','Do#','Ré#','Fa#','Sol#','La#'], choices:7, time:4 }
+  },
+  rhythm: {
+    facile:    { beats:4, bpm:75, patterns:[[1,0,1,0],[1,1,0,0],[0,1,0,1]] },
+    moyen:     { beats:6, bpm:100, patterns:[[1,0,1,0,1,0],[1,1,0,1,0,0],[0,1,1,0,1,1]] },
+    difficile: { beats:8, bpm:130, patterns:[[1,0,1,1,0,1,0,1],[1,1,0,0,1,0,1,1],[0,1,0,1,1,0,1,0]] }
+  },
+  speed: {
+    facile:    { len:4, timeBonus:20 },
+    moyen:     { len:6, timeBonus:12 },
+    difficile: { len:8, timeBonus:6 }
+  },
+  melody: {
+    facile:    { len:3, ms:700 },
+    moyen:     { len:5, ms:500 },
+    difficile: { len:7, ms:320 }
+  },
+  pitch: {
+    facile:    { notes:['Do','Mi','Sol'], tolerance:30 },
+    moyen:     { notes:['Do','Ré','Mi','Fa','Sol','La'], tolerance:20 },
+    difficile: { notes:['Do','Ré','Mi','Fa','Sol','La','Si','Do#','Ré#'], tolerance:12 }
+  },
+  chord: {
+    facile:    { chords:['Do Maj','Sol Maj','Fa Maj'], time:10 },
+    moyen:     { chords:['Do Maj','Sol Maj','Fa Maj','Ré min','La min','Mi min'], time:7 },
+    difficile: { chords:['Do Maj','Sol Maj','Fa Maj','Ré min','La min','Mi min','Do#Maj','Sib Maj'], time:4 }
+  },
+  battle: {
+    facile:    { rounds:5, time:12 },
+    moyen:     { rounds:8, time:8 },
+    difficile: { rounds:12, time:5 }
+  }
+};
+
+// compat — gameLevels still used by some old code, map to difficulty pseudo-level
+var gameLevels = { note:1, rhythm:1, speed:1, melody:1, pitch:1, chord:1, battle:1 };
+var gameStreaks = { note:0, rhythm:0, speed:0, melody:0, pitch:0, chord:0, battle:0 };
 
 var gameXP = parseInt(localStorage.getItem('vp_game_xp') || '0');
 var gameTotalCorrect = parseInt(localStorage.getItem('vp_game_correct') || '0');
@@ -3902,8 +3918,6 @@ var INTERVALS = [
 ];
 
 function saveGameProgress() {
-  localStorage.setItem('vp_game_levels', JSON.stringify(gameLevels));
-  localStorage.setItem('vp_game_streaks', JSON.stringify(gameStreaks));
   localStorage.setItem('vp_game_xp', gameXP);
   localStorage.setItem('vp_game_correct', gameTotalCorrect);
   localStorage.setItem('vp_game_wrong', gameTotalWrong);
@@ -4157,80 +4171,25 @@ function getCurrentGameMode() {
   return _forceGameMode === 'auto' ? _autoGameType : _forceGameMode;
 }
 
-function updateJeuxUI() {
-  var mode = getCurrentGameMode();
-  var level = gameLevels[mode] || 1;
-  var streak = gameStreaks[mode] || 0;
-  var tierIdx = getTierIndex(level);
-  var tier = TIER_COLORS[tierIdx];
-  var tierName = TIER_NAMES[tierIdx];
-  var tierClass = getTierClass(tierIdx);
+window.setDifficulty = function(d) {
+  _gameDifficulty = d;
+  localStorage.setItem('vp_diff', d);
+  ['facile','moyen','difficile'].forEach(function(x) {
+    var b = document.getElementById('diff-' + x);
+    if (b) b.classList.toggle('active', x === d);
+  });
+  buildJeux();
+};
 
-  var lv = document.getElementById('jeux-lv-badge');
-  var lvName = document.getElementById('jeux-lv-name');
-  var lvSub = document.getElementById('jeux-lv-sub');
-  var stars = document.getElementById('jeux-stars');
-  var progLbl = document.getElementById('jeux-prog-lbl');
-  var progXP = document.getElementById('jeux-prog-xp');
-  var pbar = document.getElementById('jeux-pbar-fill');
+function updateJeuxUI() {
   var xpChip = document.getElementById('jeux-xp-chip');
   var statCorrect = document.getElementById('jeux-stat-correct');
   var statWrong = document.getElementById('jeux-stat-wrong');
   var statStreak = document.getElementById('jeux-stat-streak');
-  var card = document.getElementById('jeux-level-card');
-  var tierBadge = document.getElementById('jeux-tier-badge');
-  var nextTierEl = document.getElementById('jeux-next-tier');
-
-  // Update badge and card tier
-  if (lv) {
-    lv.textContent = level === 300 ? '👑' : level;
-    lv.className = 'jeux-lv-badge ' + tierClass;
-  }
-  if (card) card.className = 'jeux-level-card ' + tierClass;
-  if (lvName) lvName.textContent = 'Niveau ' + level + ' / 300 — ' + tierName;
-  if (lvSub) {
-    var need = 3 - (streak % 3);
-    lvSub.textContent = need + ' bonne(s) réponse(s) pour monter !';
-  }
-  if (tierBadge) {
-    tierBadge.style.background = tier.bg;
-    tierBadge.style.color = tier.color;
-    tierBadge.textContent = tier.icon + ' ' + tierName;
-  }
-  if (stars) {
-    var starCount = Math.floor(level / 50);
-    var s = '';
-    for (var i = 0; i < starCount; i++) s += '⭐';
-    stars.textContent = s;
-  }
-  if (nextTierEl) {
-    if (level < 300) {
-      var nextTierStart = TIER_RANGES[Math.min(tierIdx+1, 6)][0];
-      var levelsLeft = nextTierStart - level;
-      if (tierIdx < 6) nextTierEl.textContent = '→ Prochain palier dans ' + levelsLeft + ' niveaux';
-      else nextTierEl.textContent = '';
-    } else {
-      nextTierEl.textContent = '🏆 NIVEAU MAXIMUM ATTEINT !';
-      nextTierEl.style.color = 'gold';
-    }
-  }
-
-  var prog = (streak % 3);
-  if (progLbl) progLbl.textContent = prog + ' / 3 bonnes réponses';
-  if (progXP) progXP.textContent = gameXP + ' XP de jeux';
-  if (pbar) { pbar.style.width = ((prog / 3) * 100) + '%'; pbar.style.background = tier.bar; }
   if (xpChip) xpChip.textContent = '⚡ ' + gameXP + ' XP';
   if (statCorrect) statCorrect.textContent = gameTotalCorrect;
   if (statWrong) statWrong.textContent = gameTotalWrong;
   if (statStreak) statStreak.textContent = gameSessionStreak;
-
-  // Update game selector cards
-  ['note','rhythm','speed','melody','pitch','chord','battle'].forEach(function(gm) {
-    var lvEl = document.getElementById('gs-'+gm+'-lv');
-    var bestEl = document.getElementById('gs-'+gm+'-best');
-    if (lvEl) lvEl.textContent = 'Niv.' + (gameLevels[gm]||1);
-    if (bestEl) bestEl.textContent = 'MEILLEUR: Niv.' + (gameLevels[gm]||1);
-  });
 }
 
 function stopGameTimer() {
@@ -4290,18 +4249,8 @@ function onCorrectAnswer() {
     setTimeout(function(){showWowEffect('combo');},300);
   }
 
-  // Advance auto type after each question
   if (_forceGameMode === 'auto') getNextAutoType();
-
-  // Check level up — need 3 correct per level
-  var streak = gameStreaks[mode];
-  if (streak > 0 && streak % 3 === 0 && gameLevels[mode] < 300) {
-    gameLevels[mode]++;
-    saveGameProgress();
-    setTimeout(function() { showLevelUp(mode); }, 800);
-  } else {
-    setTimeout(function() { buildJeux(); }, 1400);
-  }
+  setTimeout(function() { buildJeux(); }, 1400);
 }
 
 function onWrongAnswer(correctAnswer) {
@@ -4385,32 +4334,20 @@ function spawnGameConfetti() {
 
 // ===== GAME BUILDERS =====
 
-function buildNoteGame(level) {
-  var cfg = getNoteGameConfig(level);
+function diffLabel(d) {
+  return d === 'facile' ? '🟢 Facile' : d === 'moyen' ? '🟡 Moyen' : '🔴 Difficile';
+}
+
+function buildNoteGame(diff) {
+  var cfg = DIFF.note[diff] || DIFF.note.facile;
   var notes = cfg.notes;
   var correct = notes[Math.floor(Math.random() * notes.length)];
   var freq = getFreqByName(correct);
   var choiceCount = cfg.choices;
-  var timeLimit = cfg.timeLimit;
-  var oscType = cfg.oscType;
-  var chordMode = cfg.chordMode;
+  var timeLimit = cfg.time;
 
   var others = shuffle(notes.filter(function(n) { return n !== correct; }));
   var choices = shuffle([correct].concat(others.slice(0, choiceCount - 1)));
-
-  // Chord mode: also play 2 extra notes above
-  var chordFreqs = null;
-  if (chordMode) {
-    var majorThird = freq * Math.pow(2, 4/12);
-    var perfectFifth = freq * Math.pow(2, 7/12);
-    chordFreqs = [freq, majorThird, perfectFifth];
-  }
-
-  var questionText = chordMode ? 'Quelle est la note fondamentale ?' : 'Quelle note entendez-vous ?';
-  var instrText = chordMode ? 'Accord joué — identifiez la fondamentale ! Niv.' + level + '/300' :
-    (level <= 50 ? 'Appuyez sur 🎵 et choisissez la note · Niv.' + level + '/300' :
-     level <= 150 ? 'Écoutez et identifiez · Niv.' + level + '/300' :
-     'Oreille de maître requise ! · Niv.' + level + '/300');
 
   gameAnswered = false;
 
@@ -4419,11 +4356,11 @@ function buildNoteGame(level) {
     ? '<div class="game-combo visible" id="game-combo">🔥 x' + comboCount + '</div>'
     : '<div class="game-combo" id="game-combo"></div>';
 
-  var colsCls = choiceCount > 6 ? 'grid-template-columns:repeat(4,1fr)' : (choiceCount > 4 ? 'grid-template-columns:1fr 1fr 1fr' : '');
+  var colsCls = choiceCount > 5 ? 'grid-template-columns:repeat(3,1fr)' : choiceCount > 4 ? 'grid-template-columns:1fr 1fr 1fr' : '';
 
-  var html = '<div class="game-type-badge">🎵 Identification de Note — Niv. ' + level + '/300</div>'
-    + '<div class="game-question">' + questionText + '</div>'
-    + '<div class="game-instruct">' + instrText + '</div>'
+  var html = '<div class="game-type-badge">🎵 Identification de Note · ' + diffLabel(diff) + '</div>'
+    + '<div class="game-question">Quelle note entendez-vous ?</div>'
+    + '<div class="game-instruct">Appuyez sur 🎵 pour écouter, puis choisissez</div>'
     + comboHtml
     + '<button class="game-play-btn" id="game-play-btn" onclick="gamePlayNote()">🎵</button>'
     + '<div class="game-timer-bar"><div class="game-timer-fill" style="width:0%"></div></div>'
@@ -4433,15 +4370,15 @@ function buildNoteGame(level) {
         return '<button class="game-opt" onclick="gameNoteAnswer(this,\'' + c + '\',\'' + correct + '\',' + timeLimit + ')">' + c + '</button>';
       }).join('')
     + '</div>'
-    + '<div style="text-align:center;font-size:11px;color:var(--text2);margin-top:8px">⏱ ' + timeLimit.toFixed(1) + 's · ' + (oscType==='sawtooth' ? '⚡ Mode Expert' : '') + '</div>';
+    + '<div style="text-align:center;font-size:11px;color:var(--text2);margin-top:8px">⏱ ' + timeLimit + 's</div>';
 
   var area = document.getElementById('game-area');
   if (area) area.innerHTML = html;
 
   window._gameCorrect = correct;
   window._gameFreq = freq;
-  window._gameChordFreqs = chordFreqs;
-  window._gameOscType = oscType;
+  window._gameChordFreqs = null;
+  window._gameOscType = diff === 'difficile' ? 'sawtooth' : 'sine';
   window._gameTimeLimit = timeLimit;
 }
 
@@ -4480,61 +4417,37 @@ window.gameNoteAnswer = function(el, chosen, correct, timeLimit) {
   }
 };
 
-function buildRhythmGame(level) {
-  // 300-level rhythm game
-  var subLevel = level; // 1-300
-  var totalBeats = level <= 100 ? 4 : level <= 200 ? 6 : 8;
-  bpm = Math.min(bpm, 220);
-  var beatMs = Math.round(60000 / bpm);
-
-  // Generate pattern: array of true/false (active beat or rest)
-  var pattern = [];
-  if (level <= 100) {
-    var patterns4 = [
-      [1,0,1,0],[1,1,0,0],[0,1,0,1],[1,0,0,1],[1,1,1,0]
-    ];
-    pattern = patterns4[Math.floor(Math.random() * patterns4.length)];
-  } else if (level <= 200) {
-    var patterns6 = [
-      [1,0,1,0,1,0],[1,1,0,1,0,0],[0,1,1,0,1,1],[1,0,0,1,1,0]
-    ];
-    pattern = patterns6[Math.floor(Math.random() * patterns6.length)];
-  } else {
-    var patterns8 = [
-      [1,0,1,1,0,1,0,1],[1,1,0,0,1,0,1,1],[0,1,0,1,1,0,1,0],[1,0,1,0,1,1,0,1]
-    ];
-    pattern = patterns8[Math.floor(Math.random() * patterns8.length)];
-  }
+function buildRhythmGame(diff) {
+  var cfg = DIFF.rhythm[diff] || DIFF.rhythm.facile;
+  var totalBeats = cfg.beats;
+  var bpmVal = cfg.bpm;
+  var beatMs = Math.round(60000 / bpmVal);
+  var patterns = cfg.patterns;
+  var pattern = patterns[Math.floor(Math.random() * patterns.length)];
 
   gameAnswered = false;
   rhythmPattern = pattern;
   rhythmTaps = [];
   rhythmBeatIdx = 0;
-  window._rhythmBPM = bpm;
+  window._rhythmBPM = bpmVal;
   window._rhythmBeatMs = beatMs;
   window._rhythmPattern = pattern;
   window._rhythmTotalBeats = totalBeats;
   window._rhythmPlaying = false;
-  window._rhythmLevel = level;
 
-  var dots = pattern.map(function(b) {
-    return '<div class="rdot' + (b ? '' : ' empty') + '" id="rdot-' + pattern.indexOf(b) + '"></div>';
-  }).join('');
-  // Fix: use index
-  dots = pattern.map(function(b, i) {
+  var dots = pattern.map(function(b, i) {
     return '<div class="rdot' + (b ? '' : ' empty') + '" id="rdot-' + i + '"></div>';
   }).join('');
 
-  var html = '<div class="game-type-badge">🥁 Jeu de Rythme — Niv. ' + level + '/300</div>'
+  var html = '<div class="game-type-badge">🥁 Jeu de Rythme · ' + diffLabel(diff) + '</div>'
     + '<div class="game-question">Reproduisez ce rythme !</div>'
-    + '<div class="game-instruct">' + bpm + ' BPM · ' + totalBeats + ' temps — Appuyez sur les ●</div>'
+    + '<div class="game-instruct">' + bpmVal + ' BPM · ' + totalBeats + ' temps</div>'
     + '<div class="rhythm-dots" id="rhythm-dots">' + dots + '</div>'
     + '<div style="text-align:center;margin-bottom:8px">'
     + '<button class="game-play-btn" id="rhythm-preview-btn" onclick="rhythmPreview()" style="width:60px;height:60px;font-size:22px">▶️</button>'
     + '</div>'
     + '<button class="tap-btn" id="tap-btn" onclick="rhythmTap()" disabled style="opacity:.4">🥁 TAP</button>'
-    + '<div class="game-feedback" id="rhythm-feedback">Écoutez d\'abord, puis tapez !</div>'
-    + '<div style="text-align:center;font-size:11px;color:var(--text2);margin-top:8px">Niveau ' + level + '/300 · ' + bpm + ' BPM</div>';
+    + '<div class="game-feedback" id="rhythm-feedback">Écoutez d\'abord, puis tapez !</div>';
 
   var area = document.getElementById('game-area');
   if (area) area.innerHTML = html;
@@ -4747,67 +4660,63 @@ function buildJeux() {
   if (window._pitchStopFn) { try { window._pitchStopFn(); } catch(e){} window._pitchStopFn = null; }
 
   var type = _forceGameMode === 'auto' ? _autoGameType : _forceGameMode;
-  var level = gameLevels[type] || 1;
+  var diff = _gameDifficulty || 'facile';
 
   updateJeuxUI();
 
+  // sync difficulty buttons UI
+  ['facile','moyen','difficile'].forEach(function(x) {
+    var b = document.getElementById('diff-' + x);
+    if (b) b.classList.toggle('active', x === diff);
+  });
+
   if (type === 'note') {
-    buildNoteGame(level);
+    buildNoteGame(diff);
   } else if (type === 'rhythm') {
-    buildRhythmGame(level);
+    buildRhythmGame(diff);
   } else if (type === 'speed') {
-    buildSpeedGame(level);
+    buildSpeedGame(diff);
   } else if (type === 'melody') {
-    buildMelodyGame(level);
+    buildMelodyGame(diff);
   } else if (type === 'pitch') {
-    buildPitchGame(level);
+    buildPitchGame(diff);
   } else if (type === 'chord') {
-    buildChordGame(level);
+    buildChordGame(diff);
   } else if (type === 'battle') {
-    buildBattleGame(level);
+    buildBattleGame(diff);
   } else {
-    buildNoteGame(level);
+    buildNoteGame(diff);
   }
 
   // Scroll game area into view
   setTimeout(function() {
     var area = document.getElementById('game-area');
     var screen = document.getElementById('jeux');
-    if (area && screen) {
-      screen.scrollTop = area.offsetTop - 10;
-    }
+    if (area && screen) screen.scrollTop = area.offsetTop - 10;
   }, 50);
-
 }
 
 // ===== GAME 4: SPEED VOCAL =====
 
-function buildSpeedGame(level) {
+function buildSpeedGame(diff) {
+  var cfg = DIFF.speed[diff] || DIFF.speed.facile;
   var allNotes = ['Do','Ré','Mi','Fa','Sol','La','Si'];
-  var seqLen = level <= 50 ? 4 : level <= 100 ? 5 : level <= 200 ? 6 : 8;
+  var seqLen = cfg.len;
+  var timeBonus = cfg.timeBonus;
   var seq = [];
   for (var i = 0; i < seqLen; i++) {
     seq.push(allNotes[Math.floor(Math.random() * allNotes.length)]);
   }
-  var timeBonus = Math.max(4, 20 - Math.floor(level / 20));
 
   gameAnswered = false;
   window._speedSeq = seq;
   window._speedIdx = 0;
   window._speedStartTime = null;
   window._speedTimeBonus = timeBonus;
-  window._speedLevel = level;
 
-  function renderSeq() {
-    var html = '';
-    seq.forEach(function(n, i) {
-      var cls = 'speed-note';
-      if (i < window._speedIdx) cls += ' done';
-      else if (i === window._speedIdx) cls += ' current';
-      html += '<div class="' + cls + '" id="spn-' + i + '">' + n + (i < seq.length - 1 && i === window._speedIdx ? ' →' : '') + '</div>';
-    });
-    return html;
-  }
+  var seqHtml = seq.map(function(n, i) {
+    return '<div class="speed-note' + (i===0?' current':'') + '">' + n + '</div>';
+  }).join('');
 
   var notesBtns = allNotes.map(function(n) {
     return '<button class="game-opt" style="font-size:15px;padding:12px 6px" onclick="speedTap(\'' + n + '\')">' + n + '</button>';
@@ -4815,15 +4724,14 @@ function buildSpeedGame(level) {
 
   var area = document.getElementById('game-area');
   if (!area) return;
-  area.innerHTML = '<div class="game-type-badge">🏃 Speed Vocal — Niv. ' + level + '/300</div>'
+  area.innerHTML = '<div class="game-type-badge">🏃 Speed Vocal · ' + diffLabel(diff) + '</div>'
     + '<div class="game-question">Tapez les notes dans l\'ordre !</div>'
-    + '<div class="game-instruct">Séquence de ' + seqLen + ' notes · +bonus de vitesse · Niv.' + level + '/300</div>'
-    + '<div class="speed-seq" id="speed-seq">' + renderSeq() + '</div>'
+    + '<div class="game-instruct">Séquence de ' + seqLen + ' notes · Plus vite = plus de points</div>'
+    + '<div class="speed-seq" id="speed-seq">' + seqHtml + '</div>'
     + '<div class="speed-timer-display" id="speed-timer">⏱ 0.0s</div>'
-    + '<div class="game-feedback" id="speed-feedback">Appuyez sur START puis tapez vite !</div>'
+    + '<div class="game-feedback" id="speed-feedback">Appuyez sur ▶️ puis tapez !</div>'
     + '<button class="game-play-btn" id="speed-start-btn" onclick="speedStart()" style="margin-bottom:10px">▶️</button>'
-    + '<div class="speed-note-btns" id="speed-btns" style="pointer-events:none;opacity:.4">' + notesBtns + '</div>'
-    + '<div style="text-align:center;font-size:11px;color:var(--text2);margin-top:8px">Niv. ' + level + '/300</div>';
+    + '<div class="speed-note-btns" id="speed-btns" style="pointer-events:none;opacity:.4">' + notesBtns + '</div>';
 }
 
 window.speedStart = function() {
@@ -4894,47 +4802,39 @@ window.speedTap = function(note) {
 
 // ===== GAME 5: MELODY MEMORY =====
 
-function buildMelodyGame(level) {
-  var cfg = getMelodyGameConfig(level);
+function buildMelodyGame(diff) {
+  var cfg = DIFF.melody[diff] || DIFF.melody.facile;
   var melLen = cfg.len;
   var noteMs = cfg.ms;
-  var octShift = cfg.octShift;
 
   var allNotes = ['Do','Ré','Mi','Fa','Sol','La','Si'];
-  var allNotesExt = allNotes.concat(['Do2','Ré2','Mi2']);
-  var pool = octShift ? allNotesExt : allNotes;
-
   var melody = [];
   for (var i = 0; i < melLen; i++) {
-    melody.push(pool[Math.floor(Math.random() * pool.length)]);
+    melody.push(allNotes[Math.floor(Math.random() * allNotes.length)]);
   }
 
   gameAnswered = false;
   window._melodySeq = melody;
   window._melodyUserSeq = [];
-  window._melodyLevel = level;
   window._melodyNoteMs = noteMs;
 
   var slots = melody.map(function(n, i) {
     return '<div class="melody-slot" id="mslot-' + i + '"></div>';
   }).join('');
 
-  var btnNotes = octShift ? allNotesExt : allNotes;
-  var notesBtns = btnNotes.map(function(n) {
+  var notesBtns = allNotes.map(function(n) {
     return '<button class="game-opt" style="font-size:13px;padding:10px 4px" onclick="melodyTap(\'' + n + '\')">' + n + '</button>';
   }).join('');
-  var btnGrid = octShift ? 'grid-template-columns:repeat(5,1fr)' : '';
 
   var area = document.getElementById('game-area');
   if (!area) return;
-  area.innerHTML = '<div class="game-type-badge">🎵 Mélodie Mémoire — Niv. ' + level + '/300</div>'
+  area.innerHTML = '<div class="game-type-badge">🎶 Mélodie Mémoire · ' + diffLabel(diff) + '</div>'
     + '<div class="game-question">Reproduisez la mélodie !</div>'
-    + '<div class="game-instruct">' + melLen + ' notes · ' + noteMs + 'ms/note' + (octShift ? ' · Multi-octave' : '') + ' — Niv.' + level + '/300</div>'
+    + '<div class="game-instruct">Écoutez ' + melLen + ' notes, puis reproduisez</div>'
     + '<div class="melody-slots" id="melody-slots">' + slots + '</div>'
-    + '<div class="game-feedback" id="melody-feedback">Appuyez sur ▶️ pour écouter</div>'
+    + '<div class="game-feedback" id="melody-feedback">Appuyez sur 🎵 pour écouter</div>'
     + '<button class="game-play-btn" id="melody-play-btn" onclick="melodyPlay()" style="margin-bottom:10px">🎵</button>'
-    + '<div class="melody-note-btns" id="melody-btns" style="pointer-events:none;opacity:.4;' + btnGrid + '">' + notesBtns + '</div>'
-    + '<div style="text-align:center;font-size:11px;color:var(--text2);margin-top:8px">Niv. ' + level + '/300</div>';
+    + '<div class="melody-note-btns" id="melody-btns" style="pointer-events:none;opacity:.4">' + notesBtns + '</div>';
 }
 
 window.melodyPlay = function() {
@@ -4992,20 +4892,22 @@ window.melodyTap = function(note) {
 
 // ===== GAME 6: SING THE NOTE — PITCH MATCH =====
 
-function buildPitchGame(level) {
-  var allNotes = ['Do','Ré','Mi','Fa','Sol','La','Si'];
-  var targetNote = allNotes[Math.floor(Math.random() * allNotes.length)];
+function buildPitchGame(diff) {
+  var cfg = DIFF.pitch[diff] || DIFF.pitch.facile;
+  var pool = cfg.notes;
+  var targetNote = pool[Math.floor(Math.random() * pool.length)];
   var targetFreq = getFreqByName(targetNote);
+  var tolerance = cfg.tolerance;
 
   gameAnswered = false;
   window._pitchTargetFreq = targetFreq;
   window._pitchTargetNote = targetNote;
-  window._pitchLevel = level;
+  window._pitchTolerance = tolerance;
   window._pitchStopFn = null;
 
   var area = document.getElementById('game-area');
   if (!area) return;
-  area.innerHTML = '<div class="game-type-badge">🎤 Chantez la Note — Niv. ' + level + '/300</div>'
+  area.innerHTML = '<div class="game-type-badge">🎤 Chantez la Note · ' + diffLabel(diff) + '</div>'
     + '<div class="game-question">Chantez cette note :</div>'
     + '<div class="pitch-note-display" id="pitch-note-disp">' + targetNote + '</div>'
     + '<div class="pitch-freq-display">' + targetFreq.toFixed(1) + ' Hz</div>'
@@ -5019,7 +4921,7 @@ function buildPitchGame(level) {
     + '<div class="pitch-status" id="pitch-status">🎤 Appuyez sur le micro et chantez</div>'
     + '<button class="mic-btn" id="mic-btn" onclick="pitchListen()">🎤</button>'
     + '<div class="game-feedback" id="pitch-feedback"></div>'
-    + '<div style="text-align:center;font-size:11px;color:var(--text2);margin-top:8px">Restez dans la zone verte ±50 cents · Niv. ' + level + '/300</div>';
+    + '<div style="text-align:center;font-size:11px;color:var(--text2);margin-top:8px">Restez dans la zone verte ±' + tolerance + ' cents</div>';
 }
 
 window.pitchListen = function() {
@@ -5118,17 +5020,18 @@ var CHORD_DATA = [
     roots: [['Si','Ré','Fa'], ['Ré','Fa','La#'], ['Mi','Sol','La#']] }
 ];
 
-function buildChordGame(level) {
-  var includeTypes = level < 100 ? ['major','minor'] : ['major','minor','dim'];
+function buildChordGame(diff) {
+  var includeTypes = diff === 'facile' ? ['major','minor'] : ['major','minor','dim'];
   var pool = CHORD_DATA.filter(function(c) { return includeTypes.indexOf(c.type) !== -1; });
   var correct = pool[Math.floor(Math.random() * pool.length)];
   var rootIdx = Math.floor(Math.random() * correct.roots.length);
   var notes = correct.roots[rootIdx];
+  var chordTime = diff === 'facile' ? 10 : diff === 'moyen' ? 7 : 4;
 
   gameAnswered = false;
   window._chordCorrect = correct.type;
   window._chordNotes = notes;
-  window._chordLevel = level;
+  window._chordTime = chordTime;
 
   var opts = pool.map(function(c) {
     return '<button class="chord-opt" onclick="chordAnswer(\'' + c.type + '\')">' + c.mood + '<br><span style="font-size:11px;color:var(--text2)">' + c.name + '</span></button>';
@@ -5136,15 +5039,14 @@ function buildChordGame(level) {
 
   var area = document.getElementById('game-area');
   if (!area) return;
-  area.innerHTML = '<div class="game-type-badge">🎸 Accords — Niv. ' + level + '/300</div>'
+  area.innerHTML = '<div class="game-type-badge">🎸 Accords · ' + diffLabel(diff) + '</div>'
     + '<div class="game-question">Quel est l\'accord ?</div>'
-    + '<div class="game-instruct">Écoutez et identifiez l\'humeur de l\'accord · Niv.' + level + '/300</div>'
+    + '<div class="game-instruct">Écoutez et identifiez l\'humeur de l\'accord</div>'
     + '<div class="chord-display">🎵 ??? 🎵</div>'
     + '<button class="game-play-btn" id="chord-play-btn" onclick="chordPlay()" style="margin-bottom:14px">🎵</button>'
     + '<div class="game-timer-bar"><div class="game-timer-fill" style="width:0%"></div></div>'
     + '<div class="game-feedback" id="chord-feedback"></div>'
-    + '<div class="chord-opts" id="chord-opts">' + opts + '</div>'
-    + '<div style="text-align:center;font-size:11px;color:var(--text2);margin-top:8px">Niv. ' + level + '/300</div>';
+    + '<div class="chord-opts" id="chord-opts">' + opts + '</div>';
 }
 
 window.chordPlay = function() {
@@ -5156,7 +5058,7 @@ window.chordPlay = function() {
   setTimeout(function() {
     if (btn) { btn.disabled = false; btn.style.opacity = '1'; }
     if (!gameAnswered) {
-      var chordTl = Math.max(2, 8 - (window._chordLevel/300)*6);
+      var chordTl = window._chordTime || 7;
       startGameTimer(chordTl, function() {
         var cd = CHORD_DATA.find(function(c) { return c.type === window._chordCorrect; });
         onTimeout(cd ? cd.mood : '?');
@@ -5183,27 +5085,28 @@ window.chordAnswer = function(type) {
 
 // ===== GAME 8: BATTLE MODE =====
 
-function buildBattleGame(level) {
+function buildBattleGame(diff) {
+  var cfg = DIFF.battle[diff] || DIFF.battle.facile;
   var record = parseInt(localStorage.getItem('vp_battle_score') || '0');
   window._battleRecord = record;
   window._battleScore = 0;
   window._battleRound = 0;
-  window._battleMaxRounds = Math.min(5 + Math.floor(level/100), 7);
-  window._battleLevel = level;
+  window._battleMaxRounds = cfg.rounds;
+  window._battleTimeLimit = cfg.time;
+  window._battleDiff = diff;
 
   gameAnswered = false;
   var area = document.getElementById('game-area');
   if (!area) return;
-  area.innerHTML = '<div class="game-type-badge">⚔️ Battle Mode — Niv. ' + level + '/300</div>'
-    + '<div class="battle-record"><div class="battle-record-val">🏆 ' + record + '</div><div class="battle-record-lbl">Ton record à battre</div></div>'
-    + '<div class="game-question">5 notes à identifier</div>'
-    + '<div class="game-instruct">Battez votre record ! +20 pts par bonne réponse · Niv.' + level + '/300</div>'
+  area.innerHTML = '<div class="game-type-badge">⚔️ Battle Mode · ' + diffLabel(diff) + '</div>'
+    + '<div class="battle-record"><div class="battle-record-val">🏆 ' + record + '</div><div class="battle-record-lbl">Record à battre</div></div>'
+    + '<div class="game-question">' + cfg.rounds + ' manches · ' + cfg.time + 's/note</div>'
+    + '<div class="game-instruct">Battez votre record ! +20 pts par bonne réponse</div>'
     + '<div class="battle-score-live" id="battle-score">Score: 0 pts</div>'
     + '<div class="battle-beat-anim" id="battle-beat">🎉</div>'
-    + '<div class="game-feedback" id="battle-feedback">Appuyez sur START pour commencer !</div>'
+    + '<div class="game-feedback" id="battle-feedback">Appuyez sur ▶️ pour commencer !</div>'
     + '<button class="game-play-btn" id="battle-start-btn" onclick="battleStart()">▶️</button>'
-    + '<div id="battle-game-area"></div>'
-    + '<div style="text-align:center;font-size:11px;color:var(--text2);margin-top:8px">Niv. ' + level + '/300</div>';
+    + '<div id="battle-game-area"></div>';
 }
 
 window.battleStart = function() {
@@ -5224,14 +5127,14 @@ function battleNextRound() {
   var fb = document.getElementById('battle-feedback');
   if (fb) fb.textContent = 'Manche ' + (round + 1) + '/' + maxRounds;
 
-  var battleLv = window._battleLevel || 1;
-  var notes = getNotesForLevel(Math.min(battleLv, 50)); // use note-game pool mapping
-  var correct = notes[Math.floor(Math.random() * notes.length)];
+  var bd = window._battleDiff || 'facile';
+  var allNotes = DIFF.note[bd].notes;
+  var correct = allNotes[Math.floor(Math.random() * allNotes.length)];
   var freq = getFreqByName(correct);
-  var choiceCount = Math.min(4 + Math.floor(battleLv/100), 6);
-  var others = shuffle(notes.filter(function(n) { return n !== correct; }));
+  var choiceCount = bd === 'facile' ? 4 : bd === 'moyen' ? 5 : 6;
+  var others = shuffle(allNotes.filter(function(n) { return n !== correct; }));
   var choices = shuffle([correct].concat(others.slice(0, choiceCount - 1)));
-  var tl = Math.max(2, 6 - (battleLv/300)*4);
+  var tl = window._battleTimeLimit || 8;
 
   window._battleCorrect = correct;
   window._battleFreq = freq;
