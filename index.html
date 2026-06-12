@@ -500,6 +500,60 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);heig
 .levelup-confetti{font-size:48px;animation:levelupBounce .6s ease infinite alternate}
 @keyframes levelupBounce{0%{transform:scale(1) rotate(-5deg)}100%{transform:scale(1.2) rotate(5deg)}}
 
+/* GAME SELECTOR */
+.game-selector{display:flex;gap:6px;padding:0 16px 10px;overflow-x:auto;scrollbar-width:none;flex-shrink:0}
+.game-selector::-webkit-scrollbar{display:none}
+.gs-btn{padding:6px 11px;border-radius:16px;background:var(--card);border:1px solid var(--brd);font-size:11px;font-weight:800;color:var(--text2);cursor:pointer;white-space:nowrap;flex-shrink:0;transition:.18s}
+.gs-btn.active{background:linear-gradient(135deg,var(--p1),var(--a1));border-color:var(--a1);color:#fff}
+.gs-btn:active{transform:scale(.95)}
+
+/* SPEED VOCAL */
+.speed-seq{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:10px 0 14px}
+.speed-note{padding:10px 16px;border-radius:12px;background:var(--card2);border:1px solid var(--brd2);font-size:16px;font-weight:800;color:var(--text2);transition:.2s;min-width:52px;text-align:center}
+.speed-note.current{background:linear-gradient(135deg,var(--b1),var(--g1));border-color:var(--b1);color:#fff;transform:scale(1.12);box-shadow:0 0 14px rgba(54,215,183,.5)}
+.speed-note.done{background:linear-gradient(135deg,var(--g1),var(--g2));border-color:var(--g1);color:#fff;opacity:.6}
+.speed-note-btns{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:8px}
+.speed-timer-display{font-size:32px;font-weight:900;text-align:center;color:var(--a3);margin-bottom:8px;font-variant-numeric:tabular-nums}
+
+/* MELODY MEMORY */
+.melody-slots{display:flex;gap:8px;justify-content:center;margin:10px 0 14px;flex-wrap:wrap}
+.melody-slot{width:38px;height:38px;border-radius:10px;background:var(--card2);border:2px solid var(--brd2);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;transition:.2s}
+.melody-slot.filled-ok{background:linear-gradient(135deg,#00b894,#00cec9);border-color:#00b894;color:#fff}
+.melody-slot.filled-err{background:linear-gradient(135deg,#d63031,#e17055);border-color:#d63031;color:#fff}
+.melody-slot.playing{border-color:var(--a3);background:rgba(255,200,50,.15);animation:slotPulse .4s ease infinite alternate}
+@keyframes slotPulse{0%{transform:scale(1)}100%{transform:scale(1.1)}}
+.melody-note-btns{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:8px}
+
+/* PITCH MATCH */
+.pitch-note-display{font-size:56px;font-weight:900;text-align:center;color:var(--a3);margin:8px 0;text-shadow:0 0 24px rgba(255,200,50,.5)}
+.pitch-freq-display{font-size:13px;color:var(--text2);text-align:center;margin-bottom:12px}
+.tuner-wrap{position:relative;height:80px;margin:0 auto 14px;max-width:260px}
+.tuner-track{position:absolute;bottom:16px;left:0;right:0;height:4px;border-radius:2px;background:var(--card2)}
+.tuner-zone{position:absolute;bottom:14px;left:42%;width:16%;height:8px;border-radius:4px;background:rgba(46,204,113,.35)}
+.tuner-needle{position:absolute;bottom:0;left:50%;width:3px;height:60px;background:var(--a1);border-radius:2px;transform-origin:bottom center;transform:translateX(-50%) rotate(0deg);transition:transform .15s ease}
+.tuner-label-low{position:absolute;left:4px;bottom:0;font-size:10px;color:var(--text2)}
+.tuner-label-hi{position:absolute;right:4px;bottom:0;font-size:10px;color:var(--text2)}
+.pitch-status{font-size:24px;text-align:center;min-height:36px;margin-bottom:8px}
+.mic-btn{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--p1),var(--a1));border:none;cursor:pointer;font-size:32px;color:#fff;margin:0 auto 12px;display:block;box-shadow:0 4px 20px rgba(155,89,182,.4);transition:.15s}
+.mic-btn.listening{background:linear-gradient(135deg,#d63031,#ff6b6b);box-shadow:0 4px 20px rgba(214,48,49,.5);animation:micPulse 1s ease infinite}
+@keyframes micPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+
+/* CHORD RECOGNITION */
+.chord-display{font-size:22px;font-weight:900;text-align:center;margin:8px 0 14px;line-height:1.5}
+.chord-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px}
+.chord-opt{padding:18px 10px;background:linear-gradient(135deg,var(--card2),var(--card));border:1px solid var(--brd2);border-radius:16px;font-size:14px;font-weight:800;color:var(--text);cursor:pointer;text-align:center;transition:.15s}
+.chord-opt:active{transform:scale(.95)}
+.chord-opt.correct{background:linear-gradient(135deg,#00b894,#00cec9);border-color:#00b894}
+.chord-opt.wrong{background:linear-gradient(135deg,#d63031,#e17055);border-color:#d63031}
+
+/* BATTLE MODE */
+.battle-record{text-align:center;margin-bottom:12px}
+.battle-record-val{font-size:40px;font-weight:900;color:var(--a3);text-shadow:0 0 20px rgba(255,200,50,.4)}
+.battle-record-lbl{font-size:12px;color:var(--text2);margin-top:2px}
+.battle-score-live{font-size:28px;font-weight:900;text-align:center;color:var(--b1);margin-bottom:8px}
+.battle-beat-anim{font-size:48px;text-align:center;animation:battleBeat .5s ease infinite alternate;display:none}
+@keyframes battleBeat{0%{transform:scale(1)}100%{transform:scale(1.25)}}
+
 /* ADMIN PANEL */
 .admin-btn{position:fixed;bottom:85px;right:16px;width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#1a0535,#0f1a40);border:1px solid rgba(155,89,182,.4);display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;z-index:150;box-shadow:0 4px 15px rgba(0,0,0,.4)}
 .admin-bg{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:400;display:none;align-items:flex-end;justify-content:center}
@@ -859,6 +913,16 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
     <div class="jeux-prog-row"><span id="jeux-prog-lbl">0 / 3 bonnes réponses</span><span id="jeux-prog-xp">0 XP de jeux</span></div>
     <div class="jeux-pbar"><div class="jeux-pbar-fill" id="jeux-pbar-fill" style="width:0%"></div></div>
+  </div>
+  <div class="game-selector" id="game-selector">
+    <button class="gs-btn active" id="gs-auto" onclick="selectGameMode('auto')">🎲 Auto</button>
+    <button class="gs-btn" id="gs-note" onclick="selectGameMode('note')">🎵 Note</button>
+    <button class="gs-btn" id="gs-rhythm" onclick="selectGameMode('rhythm')">🥁 Rythme</button>
+    <button class="gs-btn" id="gs-speed" onclick="selectGameMode('speed')">🏃 Vitesse</button>
+    <button class="gs-btn" id="gs-melody" onclick="selectGameMode('melody')">🎶 Mémoire</button>
+    <button class="gs-btn" id="gs-pitch" onclick="selectGameMode('pitch')">🎤 Chant</button>
+    <button class="gs-btn" id="gs-chord" onclick="selectGameMode('chord')">🎸 Accords</button>
+    <button class="gs-btn" id="gs-battle" onclick="selectGameMode('battle')">⚔️ Record</button>
   </div>
   <div class="game-area" id="game-area">
     <div style="text-align:center;color:var(--text2);font-size:14px;padding:20px 0">Chargement du jeu...</div>
@@ -4317,23 +4381,583 @@ window.gameIntervalAnswer = function(el, chosen, correct, timeLimit) {
   }
 };
 
+// ===== GAME MODE SELECTOR =====
+var _forceGameMode = 'auto';
+
+window.selectGameMode = function(mode) {
+  _forceGameMode = mode;
+  document.querySelectorAll('.gs-btn').forEach(function(b) { b.classList.remove('active'); });
+  var btn = document.getElementById('gs-' + mode);
+  if (btn) btn.classList.add('active');
+  buildJeux();
+};
+
+function getGameTypeForced(level) {
+  if (_forceGameMode !== 'auto') return _forceGameMode;
+  // Rotate through 8 game types using (level-1) % 8
+  var idx = (level - 1) % 8;
+  // 0,1: note, 2: rhythm, 3: speed, 4: melody, 5: pitch, 6: chord, 7: battle
+  if (idx === 0 || idx === 1) return 'note';
+  if (idx === 2) return 'rhythm';
+  if (idx === 3) return 'speed';
+  if (idx === 4) return 'melody';
+  if (idx === 5) return 'pitch';
+  if (idx === 6) return 'chord';
+  return 'battle';
+}
+
 function buildJeux() {
   stopGameTimer();
   if (rhythmTimeout) { clearTimeout(rhythmTimeout); rhythmTimeout = null; }
+  // Stop any active pitch detection
+  if (window._pitchStopFn) { try { window._pitchStopFn(); } catch(e){} window._pitchStopFn = null; }
   updateJeuxUI();
 
-  var type = getGameType(gameLevel);
+  var type = getGameTypeForced(gameLevel);
   if (type === 'note') {
     buildNoteGame(gameLevel);
   } else if (type === 'rhythm') {
     buildRhythmGame(gameLevel);
+  } else if (type === 'interval') {
+    buildIntervalGame(gameLevel);
+  } else if (type === 'speed') {
+    buildSpeedGame(gameLevel);
+  } else if (type === 'melody') {
+    buildMelodyGame(gameLevel);
+  } else if (type === 'pitch') {
+    buildPitchGame(gameLevel);
+  } else if (type === 'chord') {
+    buildChordGame(gameLevel);
+  } else if (type === 'battle') {
+    buildBattleGame(gameLevel);
   } else {
-    // Level 67+ alternates between note ID and interval training
-    if (gameLevel % 2 === 0) {
-      buildIntervalGame(gameLevel);
-    } else {
-      buildNoteGame(gameLevel);
+    buildNoteGame(gameLevel);
+  }
+}
+
+// ===== GAME 4: SPEED VOCAL =====
+
+function buildSpeedGame(level) {
+  var allNotes = ['Do','Ré','Mi','Fa','Sol','La','Si'];
+  var seqLen = level <= 30 ? 4 : level <= 60 ? 5 : level <= 80 ? 6 : 8;
+  var seq = [];
+  for (var i = 0; i < seqLen; i++) {
+    seq.push(allNotes[Math.floor(Math.random() * allNotes.length)]);
+  }
+  var timeBonus = Math.max(5, 20 - Math.floor(level / 10));
+
+  gameAnswered = false;
+  window._speedSeq = seq;
+  window._speedIdx = 0;
+  window._speedStartTime = null;
+  window._speedTimeBonus = timeBonus;
+  window._speedLevel = level;
+
+  function renderSeq() {
+    var html = '';
+    seq.forEach(function(n, i) {
+      var cls = 'speed-note';
+      if (i < window._speedIdx) cls += ' done';
+      else if (i === window._speedIdx) cls += ' current';
+      html += '<div class="' + cls + '" id="spn-' + i + '">' + n + (i < seq.length - 1 && i === window._speedIdx ? ' →' : '') + '</div>';
+    });
+    return html;
+  }
+
+  var notesBtns = allNotes.map(function(n) {
+    return '<button class="game-opt" style="font-size:15px;padding:12px 6px" onclick="speedTap(\'' + n + '\')">' + n + '</button>';
+  }).join('');
+
+  var area = document.getElementById('game-area');
+  if (!area) return;
+  area.innerHTML = '<div class="game-type-badge">🏃 Speed Vocal — Niv. ' + level + '</div>'
+    + '<div class="game-question">Tapez les notes dans l\'ordre !</div>'
+    + '<div class="game-instruct">Séquence de ' + seqLen + ' notes · +bonus de vitesse</div>'
+    + '<div class="speed-seq" id="speed-seq">' + renderSeq() + '</div>'
+    + '<div class="speed-timer-display" id="speed-timer">⏱ 0.0s</div>'
+    + '<div class="game-feedback" id="speed-feedback">Appuyez sur START puis tapez vite !</div>'
+    + '<button class="game-play-btn" id="speed-start-btn" onclick="speedStart()" style="margin-bottom:10px">▶️</button>'
+    + '<div class="speed-note-btns" id="speed-btns" style="pointer-events:none;opacity:.4">' + notesBtns + '</div>'
+    + '<div style="text-align:center;font-size:11px;color:var(--text2);margin-top:8px">Niv. ' + level + '/100</div>';
+}
+
+window.speedStart = function() {
+  var btn = document.getElementById('speed-start-btn');
+  if (btn) btn.style.display = 'none';
+  var btns = document.getElementById('speed-btns');
+  if (btns) { btns.style.pointerEvents = ''; btns.style.opacity = '1'; }
+  window._speedStartTime = Date.now();
+  window._speedIdx = 0;
+  // Animate: play the sequence of notes
+  var seq = window._speedSeq;
+  seq.forEach(function(n, i) {
+    setTimeout(function() { playGameNote(getFreqByName(n), 0.25); }, i * 300);
+  });
+  // Update timer display
+  window._speedTimerInterval = setInterval(function() {
+    if (window._speedStartTime && !gameAnswered) {
+      var elapsed = ((Date.now() - window._speedStartTime) / 1000).toFixed(1);
+      var disp = document.getElementById('speed-timer');
+      if (disp) disp.textContent = '⏱ ' + elapsed + 's';
     }
+  }, 100);
+  speedUpdateSeq();
+  var fb = document.getElementById('speed-feedback');
+  if (fb) fb.textContent = '🏃 Tapez les notes !';
+};
+
+function speedUpdateSeq() {
+  var seq = window._speedSeq;
+  var idx = window._speedIdx;
+  var seqDiv = document.getElementById('speed-seq');
+  if (!seqDiv) return;
+  var html = '';
+  seq.forEach(function(n, i) {
+    var cls = 'speed-note';
+    if (i < idx) cls += ' done';
+    else if (i === idx) cls += ' current';
+    html += '<div class="' + cls + '">' + n + (i < seq.length - 1 && i === idx ? ' →' : '') + '</div>';
+  });
+  seqDiv.innerHTML = html;
+}
+
+window.speedTap = function(note) {
+  if (gameAnswered || !window._speedStartTime) return;
+  var seq = window._speedSeq;
+  var idx = window._speedIdx;
+  if (note === seq[idx]) {
+    playGameNote(getFreqByName(note), 0.2);
+    window._speedIdx++;
+    speedUpdateSeq();
+    if (window._speedIdx >= seq.length) {
+      // Completed!
+      if (window._speedTimerInterval) { clearInterval(window._speedTimerInterval); window._speedTimerInterval = null; }
+      var elapsed = (Date.now() - window._speedStartTime) / 1000;
+      var bonus = Math.max(0, Math.round((window._speedTimeBonus - elapsed) * 10));
+      var fb = document.getElementById('speed-feedback');
+      if (fb) fb.textContent = '🎉 Séquence complète en ' + elapsed.toFixed(1) + 's ! +' + (10 + bonus) + ' XP';
+      // Add bonus XP
+      gameXP += bonus;
+      onCorrectAnswer();
+    }
+  } else {
+    if (window._speedTimerInterval) { clearInterval(window._speedTimerInterval); window._speedTimerInterval = null; }
+    playGameNote(180, 0.3);
+    onWrongAnswer(seq[idx]);
+  }
+};
+
+// ===== GAME 5: MELODY MEMORY =====
+
+function buildMelodyGame(level) {
+  var allNotes = ['Do','Ré','Mi','Fa','Sol','La','Si'];
+  var melLen = level <= 33 ? 3 : level <= 66 ? 4 : level <= 85 ? 5 : (level <= 95 ? 6 : 8);
+  // Cap at 8
+  melLen = Math.min(melLen, 8);
+  var melody = [];
+  for (var i = 0; i < melLen; i++) {
+    melody.push(allNotes[Math.floor(Math.random() * allNotes.length)]);
+  }
+
+  gameAnswered = false;
+  window._melodySeq = melody;
+  window._melodyUserSeq = [];
+  window._melodyLevel = level;
+
+  var slots = melody.map(function(n, i) {
+    return '<div class="melody-slot" id="mslot-' + i + '"></div>';
+  }).join('');
+
+  var notesBtns = allNotes.map(function(n) {
+    return '<button class="game-opt" style="font-size:15px;padding:12px 6px" onclick="melodyTap(\'' + n + '\')">' + n + '</button>';
+  }).join('');
+
+  var area = document.getElementById('game-area');
+  if (!area) return;
+  area.innerHTML = '<div class="game-type-badge">🎵 Mélodie Mémoire — Niv. ' + level + '</div>'
+    + '<div class="game-question">Reproduisez la mélodie !</div>'
+    + '<div class="game-instruct">' + melLen + ' notes — Écoutez puis reproduisez</div>'
+    + '<div class="melody-slots" id="melody-slots">' + slots + '</div>'
+    + '<div class="game-feedback" id="melody-feedback">Appuyez sur ▶️ pour écouter</div>'
+    + '<button class="game-play-btn" id="melody-play-btn" onclick="melodyPlay()" style="margin-bottom:10px">🎵</button>'
+    + '<div class="melody-note-btns" id="melody-btns" style="pointer-events:none;opacity:.4">' + notesBtns + '</div>'
+    + '<div style="text-align:center;font-size:11px;color:var(--text2);margin-top:8px">Niv. ' + level + '/100</div>';
+}
+
+window.melodyPlay = function() {
+  var btn = document.getElementById('melody-play-btn');
+  if (btn) { btn.disabled = true; btn.style.opacity = '0.5'; }
+  var fb = document.getElementById('melody-feedback');
+  if (fb) fb.textContent = '🎵 Écoutez...';
+  var melody = window._melodySeq;
+  melody.forEach(function(n, i) {
+    setTimeout(function() {
+      // Highlight slot
+      var slot = document.getElementById('mslot-' + i);
+      if (slot) slot.classList.add('playing');
+      playGameNote(getFreqByName(n), 0.45);
+      setTimeout(function() {
+        if (slot) slot.classList.remove('playing');
+      }, 400);
+    }, i * 550);
+  });
+  setTimeout(function() {
+    if (btn) { btn.disabled = false; btn.style.opacity = '1'; }
+    var btns = document.getElementById('melody-btns');
+    if (btns) { btns.style.pointerEvents = ''; btns.style.opacity = '1'; }
+    if (fb) fb.textContent = '🎹 Reproduisez maintenant !';
+    window._melodyUserSeq = [];
+  }, melody.length * 550 + 300);
+};
+
+window.melodyTap = function(note) {
+  if (gameAnswered) return;
+  var melody = window._melodySeq;
+  var userSeq = window._melodyUserSeq;
+  var idx = userSeq.length;
+  if (idx >= melody.length) return;
+
+  playGameNote(getFreqByName(note), 0.3);
+  userSeq.push(note);
+
+  var slot = document.getElementById('mslot-' + idx);
+  if (note === melody[idx]) {
+    if (slot) { slot.textContent = '✅'; slot.classList.add('filled-ok'); }
+    if (userSeq.length === melody.length) {
+      var fb = document.getElementById('melody-feedback');
+      if (fb) fb.textContent = '🎉 Parfait ! Mélodie reproduite !';
+      onCorrectAnswer();
+    }
+  } else {
+    if (slot) { slot.textContent = '❌'; slot.classList.add('filled-err'); }
+    // Show the expected note
+    var remaining = melody.slice(userSeq.length - 1);
+    onWrongAnswer(melody[idx]);
+  }
+};
+
+// ===== GAME 6: SING THE NOTE — PITCH MATCH =====
+
+function buildPitchGame(level) {
+  var allNotes = ['Do','Ré','Mi','Fa','Sol','La','Si'];
+  var targetNote = allNotes[Math.floor(Math.random() * allNotes.length)];
+  var targetFreq = getFreqByName(targetNote);
+
+  gameAnswered = false;
+  window._pitchTargetFreq = targetFreq;
+  window._pitchTargetNote = targetNote;
+  window._pitchLevel = level;
+  window._pitchStopFn = null;
+
+  var area = document.getElementById('game-area');
+  if (!area) return;
+  area.innerHTML = '<div class="game-type-badge">🎤 Chantez la Note — Niv. ' + level + '</div>'
+    + '<div class="game-question">Chantez cette note :</div>'
+    + '<div class="pitch-note-display" id="pitch-note-disp">' + targetNote + '</div>'
+    + '<div class="pitch-freq-display">' + targetFreq.toFixed(1) + ' Hz</div>'
+    + '<div class="tuner-wrap">'
+    + '  <div class="tuner-track"></div>'
+    + '  <div class="tuner-zone"></div>'
+    + '  <div class="tuner-needle" id="tuner-needle"></div>'
+    + '  <div class="tuner-label-low">♭ Trop bas</div>'
+    + '  <div class="tuner-label-hi">Trop haut ♯</div>'
+    + '</div>'
+    + '<div class="pitch-status" id="pitch-status">🎤 Appuyez sur le micro et chantez</div>'
+    + '<button class="mic-btn" id="mic-btn" onclick="pitchListen()">🎤</button>'
+    + '<div class="game-feedback" id="pitch-feedback"></div>'
+    + '<div style="text-align:center;font-size:11px;color:var(--text2);margin-top:8px">Restez dans la zone verte ±50 cents · Niv. ' + level + '/100</div>';
+}
+
+window.pitchListen = function() {
+  var btn = document.getElementById('mic-btn');
+  if (!btn) return;
+  if (btn.classList.contains('listening')) return;
+  btn.classList.add('listening');
+
+  // Request microphone
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    var fb = document.getElementById('pitch-feedback');
+    if (fb) fb.textContent = '❌ Microphone non disponible';
+    btn.classList.remove('listening');
+    return;
+  }
+
+  navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream) {
+    var ctx = new (window.AudioContext || window.webkitAudioContext)();
+    var analyser = ctx.createAnalyser();
+    analyser.fftSize = 2048;
+    var src = ctx.createMediaStreamSource(stream);
+    src.connect(analyser);
+
+    var targetFreq = window._pitchTargetFreq;
+    var correctMs = 0;
+    var startTime = Date.now();
+    var maxTime = 4000; // 4 seconds max
+    var succeeded = false;
+
+    function stopAll() {
+      stream.getTracks().forEach(function(t) { t.stop(); });
+      try { ctx.close(); } catch(e) {}
+      clearInterval(pitchInterval);
+      var mbtn = document.getElementById('mic-btn');
+      if (mbtn) mbtn.classList.remove('listening');
+    }
+
+    var pitchInterval = setInterval(function() {
+      if (gameAnswered) { stopAll(); return; }
+      var elapsed = Date.now() - startTime;
+      if (elapsed > maxTime) {
+        stopAll();
+        if (!gameAnswered) {
+          var fb = document.getElementById('pitch-feedback');
+          if (fb) fb.textContent = '⏰ Temps dépassé !';
+          onWrongAnswer(window._pitchTargetNote + ' (' + targetFreq.toFixed(0) + 'Hz)');
+        }
+        return;
+      }
+
+      var detected = detectPitch(analyser, ctx.sampleRate);
+      if (!detected || detected < 60 || detected > 2000) return;
+
+      // Calculate cents difference
+      var cents = 1200 * Math.log2(detected / targetFreq);
+      var centsClamped = Math.max(-60, Math.min(60, cents));
+      var angle = centsClamped; // 1 cent = 1 degree
+
+      var needle = document.getElementById('tuner-needle');
+      if (needle) needle.style.transform = 'translateX(-50%) rotate(' + angle + 'deg)';
+
+      var status = document.getElementById('pitch-status');
+      if (Math.abs(cents) <= 50) {
+        if (status) status.textContent = '🟢 Dans la zone !';
+        correctMs += 100;
+        if (correctMs >= 1000 && !succeeded) {
+          succeeded = true;
+          stopAll();
+          var fb = document.getElementById('pitch-feedback');
+          if (fb) fb.textContent = '✅ Excellent ! Note tenue avec précision !';
+          onCorrectAnswer();
+        }
+      } else {
+        correctMs = 0;
+        if (status) status.textContent = cents < 0 ? '🔵 Montez un peu ↑' : '🔴 Descendez un peu ↓';
+      }
+    }, 100);
+
+    window._pitchStopFn = stopAll;
+  }).catch(function(err) {
+    var fb = document.getElementById('pitch-feedback');
+    if (fb) fb.textContent = '❌ Accès micro refusé. Autorisez le microphone.';
+    var mbtn = document.getElementById('mic-btn');
+    if (mbtn) mbtn.classList.remove('listening');
+  });
+};
+
+// ===== GAME 7: CHORD RECOGNITION =====
+
+var CHORD_DATA = [
+  { name: 'Majeur', mood: '😊 Joyeux', type: 'major',
+    roots: [['Do','Mi','Sol'], ['Fa','La','Do2'], ['Sol','Si','Ré2']] },
+  { name: 'Mineur', mood: '😢 Triste', type: 'minor',
+    roots: [['La','Do2','Mi2'], ['Ré','Fa','La'], ['Mi','Sol','Si']] },
+  { name: 'Diminué', mood: '😨 Tendu', type: 'dim',
+    roots: [['Si','Ré','Fa'], ['Ré','Fa','La#'], ['Mi','Sol','La#']] }
+];
+
+function buildChordGame(level) {
+  var includeTypes = level < 50 ? ['major','minor'] : ['major','minor','dim'];
+  var pool = CHORD_DATA.filter(function(c) { return includeTypes.indexOf(c.type) !== -1; });
+  var correct = pool[Math.floor(Math.random() * pool.length)];
+  var rootIdx = Math.floor(Math.random() * correct.roots.length);
+  var notes = correct.roots[rootIdx];
+
+  gameAnswered = false;
+  window._chordCorrect = correct.type;
+  window._chordNotes = notes;
+  window._chordLevel = level;
+
+  var opts = pool.map(function(c) {
+    return '<button class="chord-opt" onclick="chordAnswer(\'' + c.type + '\')">' + c.mood + '<br><span style="font-size:11px;color:var(--text2)">' + c.name + '</span></button>';
+  }).join('');
+
+  var area = document.getElementById('game-area');
+  if (!area) return;
+  area.innerHTML = '<div class="game-type-badge">🎸 Accords — Niv. ' + level + '</div>'
+    + '<div class="game-question">Quel est l\'accord ?</div>'
+    + '<div class="game-instruct">Écoutez et identifiez l\'humeur de l\'accord</div>'
+    + '<div class="chord-display">🎵 ??? 🎵</div>'
+    + '<button class="game-play-btn" id="chord-play-btn" onclick="chordPlay()" style="margin-bottom:14px">🎵</button>'
+    + '<div class="game-timer-bar"><div class="game-timer-fill" style="width:0%"></div></div>'
+    + '<div class="game-feedback" id="chord-feedback"></div>'
+    + '<div class="chord-opts" id="chord-opts">' + opts + '</div>'
+    + '<div style="text-align:center;font-size:11px;color:var(--text2);margin-top:8px">Niv. ' + level + '/100</div>';
+}
+
+window.chordPlay = function() {
+  var btn = document.getElementById('chord-play-btn');
+  if (btn) { btn.disabled = true; btn.style.opacity = '0.5'; }
+  var notes = window._chordNotes;
+  // Play all 3 notes simultaneously
+  notes.forEach(function(n) { playGameNote(getFreqByName(n), 1.2); });
+  setTimeout(function() {
+    if (btn) { btn.disabled = false; btn.style.opacity = '1'; }
+    if (!gameAnswered) {
+      startGameTimer(getTimeLimitForLevel(window._chordLevel), function() {
+        onTimeout(CHORD_DATA.find(function(c) { return c.type === window._chordCorrect; }).mood);
+      });
+    }
+  }, 1300);
+};
+
+window.chordAnswer = function(type) {
+  if (gameAnswered) return;
+  document.querySelectorAll('.chord-opt').forEach(function(b) { b.classList.add('disabled'); });
+  var correct = window._chordCorrect;
+  var correctData = CHORD_DATA.find(function(c) { return c.type === correct; });
+  var els = document.querySelectorAll('.chord-opt');
+  els.forEach(function(b) {
+    if (b.textContent.indexOf(correctData.name) !== -1) b.classList.add('correct');
+  });
+  if (type === correct) {
+    onCorrectAnswer();
+  } else {
+    onWrongAnswer(correctData.mood + ' (' + correctData.name + ')');
+  }
+};
+
+// ===== GAME 8: BATTLE MODE =====
+
+function buildBattleGame(level) {
+  var record = parseInt(localStorage.getItem('vp_battle_score') || '0');
+  window._battleRecord = record;
+  window._battleScore = 0;
+  window._battleRound = 0;
+  window._battleMaxRounds = 5;
+  window._battleLevel = level;
+
+  gameAnswered = false;
+  var area = document.getElementById('game-area');
+  if (!area) return;
+  area.innerHTML = '<div class="game-type-badge">⚔️ Battle Mode — Niv. ' + level + '</div>'
+    + '<div class="battle-record"><div class="battle-record-val">🏆 ' + record + '</div><div class="battle-record-lbl">Ton record à battre</div></div>'
+    + '<div class="game-question">5 notes à identifier</div>'
+    + '<div class="game-instruct">Battez votre record ! +20 pts par bonne réponse</div>'
+    + '<div class="battle-score-live" id="battle-score">Score: 0 pts</div>'
+    + '<div class="battle-beat-anim" id="battle-beat">🎉</div>'
+    + '<div class="game-feedback" id="battle-feedback">Appuyez sur START pour commencer !</div>'
+    + '<button class="game-play-btn" id="battle-start-btn" onclick="battleStart()">▶️</button>'
+    + '<div id="battle-game-area"></div>'
+    + '<div style="text-align:center;font-size:11px;color:var(--text2);margin-top:8px">Niv. ' + level + '/100</div>';
+}
+
+window.battleStart = function() {
+  var btn = document.getElementById('battle-start-btn');
+  if (btn) btn.style.display = 'none';
+  window._battleRound = 0;
+  window._battleScore = 0;
+  battleNextRound();
+};
+
+function battleNextRound() {
+  var round = window._battleRound;
+  var maxRounds = window._battleMaxRounds;
+  if (round >= maxRounds) {
+    battleFinish();
+    return;
+  }
+  var fb = document.getElementById('battle-feedback');
+  if (fb) fb.textContent = 'Manche ' + (round + 1) + '/' + maxRounds;
+
+  var notes = getNotesForLevel(window._battleLevel);
+  var correct = notes[Math.floor(Math.random() * notes.length)];
+  var freq = getFreqByName(correct);
+  var choiceCount = Math.min(getChoiceCount(window._battleLevel), 4);
+  var others = shuffle(notes.filter(function(n) { return n !== correct; }));
+  var choices = shuffle([correct].concat(others.slice(0, choiceCount - 1)));
+  var tl = Math.max(3, getTimeLimitForLevel(window._battleLevel));
+
+  window._battleCorrect = correct;
+  window._battleFreq = freq;
+  window._battleTimeLimit = tl;
+  window._battleRoundAnswered = false;
+
+  var battleArea = document.getElementById('battle-game-area');
+  if (!battleArea) return;
+  battleArea.innerHTML = '<button class="game-play-btn" id="battle-play-btn" onclick="battlePlayNote()" style="width:70px;height:70px;font-size:26px;margin-bottom:8px">🎵</button>'
+    + '<div class="game-timer-bar" style="margin-bottom:8px"><div class="game-timer-fill" style="width:0%"></div></div>'
+    + '<div class="game-opts" id="battle-opts">'
+    + choices.map(function(c) {
+        return '<button class="game-opt" onclick="battleAnswer(\'' + c + '\',\'' + correct + '\')">' + c + '</button>';
+      }).join('')
+    + '</div>';
+}
+
+window.battlePlayNote = function() {
+  var btn = document.getElementById('battle-play-btn');
+  if (btn) { btn.style.opacity = '0.5'; btn.disabled = true; }
+  playGameNote(window._battleFreq, 0.8);
+  setTimeout(function() {
+    if (btn) { btn.style.opacity = '1'; btn.disabled = false; }
+    if (!window._battleRoundAnswered) {
+      startGameTimer(window._battleTimeLimit, function() {
+        if (!window._battleRoundAnswered) {
+          window._battleRoundAnswered = true;
+          document.querySelectorAll('#battle-opts .game-opt').forEach(function(b) { b.classList.add('disabled'); });
+          var fb = document.getElementById('battle-feedback');
+          if (fb) fb.textContent = '⏰ Raté ! Réponse : ' + window._battleCorrect;
+          window._battleRound++;
+          setTimeout(battleNextRound, 1200);
+        }
+      });
+    }
+  }, 900);
+};
+
+window.battleAnswer = function(chosen, correct) {
+  if (window._battleRoundAnswered) return;
+  window._battleRoundAnswered = true;
+  stopGameTimer();
+  document.querySelectorAll('#battle-opts .game-opt').forEach(function(b) {
+    b.classList.add('disabled');
+    if (b.textContent === correct) b.classList.add('correct');
+  });
+  var fb = document.getElementById('battle-feedback');
+  if (chosen === correct) {
+    window._battleScore += 20;
+    var scoreEl = document.getElementById('battle-score');
+    if (scoreEl) scoreEl.textContent = 'Score: ' + window._battleScore + ' pts';
+    if (fb) fb.textContent = '✅ +20 pts ! Manche ' + (window._battleRound + 1) + '/' + window._battleMaxRounds;
+  } else {
+    if (fb) fb.textContent = '❌ Réponse : ' + correct;
+  }
+  window._battleRound++;
+  setTimeout(battleNextRound, 1000);
+};
+
+function battleFinish() {
+  stopGameTimer();
+  var score = window._battleScore;
+  var record = window._battleRecord;
+  var beaten = score > record;
+  if (beaten) {
+    localStorage.setItem('vp_battle_score', score);
+    window._battleRecord = score;
+  }
+  var beatAnim = document.getElementById('battle-beat');
+  if (beaten && beatAnim) { beatAnim.style.display = 'block'; }
+  var battleArea = document.getElementById('battle-game-area');
+  if (battleArea) battleArea.innerHTML = '';
+  var fb = document.getElementById('battle-feedback');
+  if (fb) {
+    fb.textContent = beaten
+      ? '🎉 NOUVEAU RECORD ! ' + score + ' pts (était ' + record + ')'
+      : 'Score final : ' + score + ' pts. Record : ' + record + ' pts';
+    fb.className = 'game-feedback ' + (beaten ? 'correct' : '');
+  }
+  if (score >= window._battleMaxRounds * 10) {
+    onCorrectAnswer();
+  } else {
+    onWrongAnswer('Score: ' + score + '/' + (window._battleMaxRounds * 20));
   }
 }
 
