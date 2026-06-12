@@ -20,16 +20,20 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{
-  --bg:#07080f;--bg2:#0d0f1e;--bg3:#131525;--card:#181a2e;--card2:#1e2040;
-  --a1:#ff5e62;--a2:#ff9966;--a3:#ffc832;
-  --b1:#36d7b7;--b2:#2ecc71;
-  --p1:#9b59b6;--p2:#c39bd3;
-  --g1:#2ecc71;--g2:#82e0aa;
-  --text:#f4f1ff;--text2:#8f8bb0;--text3:#3d3a60;
-  --brd:rgba(255,255,255,0.07);--brd2:rgba(255,255,255,0.16);
-  --r:16px;--r2:12px;--r3:8px;
+  --bg:#05060e;--bg2:#080a18;--bg3:#0e1020;--card:#11132a;--card2:#171934;
+  --a1:#ff4f6d;--a2:#ff8c55;--a3:#ffd700;
+  --b1:#00d4b4;--b2:#26c96b;
+  --p1:#a855f7;--p2:#d8b4fe;
+  --g1:#22d773;--g2:#6ee7a2;
+  --gold:#ffd700;--gold2:#ffb800;--gold3:#ff9500;
+  --text:#f0ecff;--text2:#7a778f;--text3:#2e2b50;
+  --brd:rgba(255,255,255,0.06);--brd2:rgba(255,255,255,0.14);
+  --brd-gold:rgba(255,215,0,0.25);
+  --gls:rgba(255,255,255,0.04);--gls2:rgba(255,255,255,0.08);
+  --r:18px;--r2:13px;--r3:9px;
+  --sh:0 8px 32px rgba(0,0,0,0.5);--sh2:0 4px 16px rgba(0,0,0,0.35);
 }
-body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);height:100vh;overflow:hidden}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);height:100vh;overflow:hidden;background-image:radial-gradient(ellipse at 20% 0%,rgba(168,85,247,0.06) 0%,transparent 50%),radial-gradient(ellipse at 80% 100%,rgba(255,79,109,0.05) 0%,transparent 50%)}
 .app{max-width:480px;margin:0 auto;height:100vh;overflow:hidden;position:relative;display:flex;flex-direction:column}
 
 /* SCREENS */
@@ -37,7 +41,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);heig
 .screen.active{display:flex}#login.screen.active{flex-direction:column}
 
 /* SPLASH */
-#splash{align-items:center;justify-content:center;text-align:center;background:radial-gradient(ellipse at center,#1a0a2e 0%,var(--bg) 70%);padding-bottom:0}
+#splash{align-items:center;justify-content:center;text-align:center;background:radial-gradient(ellipse at 50% 40%,#1e082e 0%,#08050f 60%,var(--bg) 100%);padding-bottom:0}
 .splash-rings{position:relative;width:150px;height:150px;margin:0 auto 28px}
 .sr{position:absolute;border-radius:50%;border:2.5px solid transparent;animation:spin linear infinite}
 .sr1{inset:0;border-top-color:var(--a1);border-right-color:var(--a1);animation-duration:2.5s}
@@ -53,7 +57,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);heig
 
 /* TOPBAR */
 .topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 8px;flex-shrink:0}
-.brand{font-family:'Playfair Display',serif;font-size:21px;font-weight:800;background:linear-gradient(135deg,var(--a1),var(--a2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.brand{font-family:'Playfair Display',serif;font-size:21px;font-weight:800;background:linear-gradient(135deg,var(--a1),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .topbar-r{display:flex;gap:7px;align-items:center}
 .pill{padding:5px 12px;border-radius:20px;font-size:11px;font-weight:800;cursor:pointer}
 .xp-pill{background:rgba(255,200,50,.12);border:1px solid rgba(255,200,50,.3);color:var(--a3)}
@@ -66,12 +70,13 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);heig
 
 /* STATS */
 .stats{display:flex;gap:8px;padding:0 16px 14px}
-.stat{flex:1;background:var(--card);border:1px solid var(--brd);border-radius:var(--r2);padding:12px 8px;text-align:center}
-.stat-n{font-size:20px;font-weight:900}
+.stat{flex:1;background:linear-gradient(135deg,var(--card),var(--card2));border:1px solid var(--brd2);border-radius:var(--r2);padding:12px 8px;text-align:center;box-shadow:var(--sh2);position:relative;overflow:hidden}
+.stat::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.1),transparent)}
+.stat-n{font-size:20px;font-weight:900;background:linear-gradient(135deg,var(--text),var(--p2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .stat-l{font-size:10px;color:var(--text2);margin-top:2px;font-weight:700;text-transform:uppercase;letter-spacing:.3px}
 
 /* DAILY */
-.daily{margin:0 16px 14px;background:linear-gradient(135deg,rgba(255,94,98,.1),rgba(255,153,102,.05));border:1px solid rgba(255,94,98,.2);border-radius:var(--r);padding:14px}
+.daily{margin:0 16px 14px;background:linear-gradient(135deg,rgba(255,79,109,.12),rgba(255,140,85,.06));border:1px solid rgba(255,79,109,.25);border-radius:var(--r);padding:14px;box-shadow:0 4px 24px rgba(255,79,109,.08),inset 0 1px 0 rgba(255,255,255,.06)}
 .daily-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
 .daily-txt h3{font-size:14px;font-weight:800}
 .daily-txt p{font-size:11px;color:var(--text2)}
@@ -91,9 +96,10 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);heig
 .sec-line{flex:1;height:1px;background:var(--brd)}
 
 /* GRID */
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 16px 16px}
-.mod{background:var(--card);border:1px solid var(--brd);border-radius:var(--r);padding:14px;cursor:pointer;transition:.18s;position:relative;overflow:hidden}
-.mod:active{transform:scale(.97)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;padding:0 16px 16px}
+.mod{background:linear-gradient(145deg,var(--card),var(--card2));border:1px solid var(--brd2);border-radius:var(--r);padding:14px;cursor:pointer;transition:transform .18s,box-shadow .18s,border-color .18s;position:relative;overflow:hidden;box-shadow:var(--sh2)}
+.mod::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.1),transparent)}
+.mod:active{transform:scale(.96);box-shadow:0 2px 8px rgba(0,0,0,.4)}
 .mod-em{font-size:26px;margin-bottom:7px}
 .mod-nm{font-size:12px;font-weight:800;line-height:1.4;color:var(--text)}
 .mod-mt{font-size:10px;color:var(--text2);margin-top:3px}
@@ -119,7 +125,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);heig
 .ex-body{padding:0 16px;flex:1;overflow-y:auto}
 
 /* CARD */
-.card{background:var(--card);border:1px solid var(--brd);border-radius:var(--r);padding:16px;margin-bottom:12px}
+.card{background:linear-gradient(145deg,var(--card),var(--card2));border:1px solid var(--brd2);border-radius:var(--r);padding:16px;margin-bottom:12px;box-shadow:var(--sh2)}
 .card-hd{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--text2);margin-bottom:12px;display:flex;align-items:center;gap:6px}
 .card-hd i{font-size:16px}
 .card-desc{font-size:13px;color:var(--text2);line-height:1.75;margin-bottom:12px}
@@ -254,14 +260,14 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);heig
 .btn-sec{width:100%;padding:10px;background:transparent;color:var(--text2);border:1px solid var(--brd);border-radius:var(--r2);font-family:'Outfit',sans-serif;font-size:13px;cursor:pointer;margin-bottom:14px}
 
 /* BOTTOM NAV */
-.bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:var(--bg2);border-top:1px solid var(--brd);display:flex;z-index:100}
+.bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:rgba(8,10,24,.96);border-top:1px solid rgba(255,255,255,.08);display:flex;z-index:100;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
 .bni{flex:1;padding:10px 0;text-align:center;cursor:pointer;color:var(--text3);font-size:10px;font-weight:800;transition:.18s}
 .bni-ic{font-size:22px;display:block;margin-bottom:2px}
 .bni.on{color:var(--a1)}
 
 /* SETTINGS */
 #settings{padding-bottom:80px}
-.sett-sec{margin:0 16px 16px;background:var(--card);border:1px solid var(--brd);border-radius:var(--r);overflow:hidden}
+.sett-sec{margin:0 16px 16px;background:linear-gradient(145deg,var(--card),var(--card2));border:1px solid var(--brd2);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh2)}
 .sett-hd{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--text2);padding:12px 15px;border-bottom:1px solid var(--brd)}
 .sett-item{display:flex;align-items:center;gap:11px;padding:13px 15px;border-bottom:1px solid var(--brd)}
 .sett-item:last-child{border-bottom:none}
@@ -374,7 +380,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);heig
 
 /* CHALLENGES */
 .challenges-wrap{padding:0 16px 16px}
-.challenge-card{background:var(--card);border:1px solid var(--brd);border-radius:var(--r);padding:14px;margin-bottom:10px;position:relative;overflow:hidden;cursor:pointer;transition:.2s}
+.challenge-card{background:linear-gradient(145deg,var(--card),var(--card2));border:1px solid var(--brd2);border-radius:var(--r);padding:14px;margin-bottom:10px;position:relative;overflow:hidden;cursor:pointer;transition:.2s;box-shadow:var(--sh2)}
 .challenge-card:active{transform:scale(.98)}
 .challenge-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;border-radius:4px 0 0 4px}
 .cc-row{display:flex;align-items:center;gap:12px}
@@ -474,40 +480,49 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);heig
 .diff-stars{font-size:10px;letter-spacing:3px;opacity:.8}
 
 /* SCORE BAR */
-.jeux-score-bar{margin:0 16px 14px;background:linear-gradient(135deg,rgba(24,26,46,.95),rgba(18,20,38,.95));border:1px solid var(--brd);border-radius:16px;padding:12px 8px;display:flex;justify-content:space-around;align-items:center;backdrop-filter:blur(8px)}
+.jeux-score-bar{margin:0 16px 14px;background:linear-gradient(135deg,rgba(17,19,42,.97),rgba(11,13,28,.97));border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:14px 8px;display:flex;justify-content:space-around;align-items:center;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 8px 32px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.07)}
 .jeux-score-num{font-size:22px;font-weight:900;text-align:center;line-height:1}
 .jeux-score-lbl{font-size:10px;color:var(--text2);font-weight:700;text-align:center;margin-top:3px}
 .jeux-pbar-fill{height:100%;border-radius:4px;transition:width .5s}
 
 /* GAME SELECTOR CARDS */
 .game-selector-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 16px 14px}
-.gs-card{border-radius:16px;padding:14px 12px;cursor:pointer;position:relative;overflow:hidden;transition:transform .15s,box-shadow .15s;border:1px solid rgba(255,255,255,.08)}
-.gs-card:active{transform:scale(.96)}
-.gs-card.active{border-width:2px;transform:scale(1.02)}
-.gs-card-icon{font-size:28px;margin-bottom:6px}
-.gs-card-name{font-size:13px;font-weight:900;color:#fff}
-.gs-card-desc{font-size:10px;color:rgba(255,255,255,.6);margin-top:2px}
-.gs-card-level{position:absolute;top:8px;right:8px;background:rgba(0,0,0,.4);border-radius:10px;padding:2px 7px;font-size:10px;font-weight:900;color:#fff}
-.gs-card-best{font-size:10px;color:rgba(255,255,255,.5);margin-top:4px}
-.gs-card.note{background:linear-gradient(135deg,#1a3a5c,#0f2240)}
-.gs-card.note.active{border-color:#74b9ff;box-shadow:0 0 20px rgba(116,185,255,.3)}
-.gs-card.rhythm{background:linear-gradient(135deg,#3d1a0f,#2a0e08)}
-.gs-card.rhythm.active{border-color:#e17055;box-shadow:0 0 20px rgba(225,112,85,.3)}
-.gs-card.speed{background:linear-gradient(135deg,#0f3d20,#072a15)}
-.gs-card.speed.active{border-color:#2ecc71;box-shadow:0 0 20px rgba(46,204,113,.3)}
-.gs-card.melody{background:linear-gradient(135deg,#1f0a3d,#120525)}
-.gs-card.melody.active{border-color:#a29bfe;box-shadow:0 0 20px rgba(162,155,254,.3)}
-.gs-card.pitch{background:linear-gradient(135deg,#3d1a30,#2a0e20)}
-.gs-card.pitch.active{border-color:#fd79a8;box-shadow:0 0 20px rgba(253,121,168,.3)}
-.gs-card.chord{background:linear-gradient(135deg,#3d2a0a,#2a1c05)}
-.gs-card.chord.active{border-color:#fdcb6e;box-shadow:0 0 20px rgba(253,203,110,.3)}
-.gs-card.battle{background:linear-gradient(135deg,#3d0a0a,#2a0505)}
-.gs-card.battle.active{border-color:#ff6b6b;box-shadow:0 0 20px rgba(255,107,107,.3)}
-.gs-card.auto{background:linear-gradient(135deg,#1a1a3d,#0f0f2a);grid-column:1/-1}
-.gs-card.auto.active{border-color:var(--a1);box-shadow:0 0 20px rgba(255,94,98,.3)}
+.gs-card{border-radius:18px;padding:15px 13px;cursor:pointer;position:relative;overflow:hidden;transition:transform .2s cubic-bezier(.34,1.56,.64,1),box-shadow .2s;border:1px solid rgba(255,255,255,.1)}
+.gs-card::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.18),transparent)}
+.gs-card:active{transform:scale(.94)!important}
+.gs-card.active{border-width:2px;transform:scale(1.03)}
+.gs-card-icon{font-size:30px;margin-bottom:7px;display:block}
+.gs-card-name{font-size:13px;font-weight:900;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.4)}
+.gs-card-desc{font-size:10px;color:rgba(255,255,255,.55);margin-top:3px;line-height:1.4}
+.gs-card-level{position:absolute;top:9px;right:9px;background:rgba(0,0,0,.45);border-radius:10px;padding:2px 7px;font-size:10px;font-weight:900;color:#fff;backdrop-filter:blur(4px)}
+.gs-card-best{font-size:10px;color:rgba(255,255,255,.45);margin-top:5px}
+.gs-card.note{background:linear-gradient(145deg,#1e3f6e,#0a1f3d)}
+.gs-card.note.active{border-color:#60b4ff;box-shadow:0 0 28px rgba(96,180,255,.35),0 8px 24px rgba(0,0,0,.4)}
+.gs-card.rhythm{background:linear-gradient(145deg,#4a1e0e,#280a04)}
+.gs-card.rhythm.active{border-color:#ff7043;box-shadow:0 0 28px rgba(255,112,67,.35),0 8px 24px rgba(0,0,0,.4)}
+.gs-card.speed{background:linear-gradient(145deg,#0e4025,#051a10)}
+.gs-card.speed.active{border-color:#26d773;box-shadow:0 0 28px rgba(38,215,115,.35),0 8px 24px rgba(0,0,0,.4)}
+.gs-card.melody{background:linear-gradient(145deg,#28094a,#120224)}
+.gs-card.melody.active{border-color:#b39dff;box-shadow:0 0 28px rgba(179,157,255,.35),0 8px 24px rgba(0,0,0,.4)}
+.gs-card.pitch{background:linear-gradient(145deg,#4a1535,#250719)}
+.gs-card.pitch.active{border-color:#ff77b3;box-shadow:0 0 28px rgba(255,119,179,.35),0 8px 24px rgba(0,0,0,.4)}
+.gs-card.chord{background:linear-gradient(145deg,#4a300a,#241604)}
+.gs-card.chord.active{border-color:#ffd060;box-shadow:0 0 28px rgba(255,208,96,.35),0 8px 24px rgba(0,0,0,.4)}
+.gs-card.battle{background:linear-gradient(145deg,#4a0a0a,#220404)}
+.gs-card.battle.active{border-color:#ff5555;box-shadow:0 0 28px rgba(255,85,85,.35),0 8px 24px rgba(0,0,0,.4)}
+.gs-card.intervalle{background:linear-gradient(145deg,#0e3545,#041520)}
+.gs-card.intervalle.active{border-color:#00d4e0;box-shadow:0 0 28px rgba(0,212,224,.35),0 8px 24px rgba(0,0,0,.4)}
+.gs-card.simon{background:linear-gradient(145deg,#1a4030,#0a2018)}
+.gs-card.simon.active{border-color:#00e896;box-shadow:0 0 28px rgba(0,232,150,.35),0 8px 24px rgba(0,0,0,.4)}
+.gs-card.rapidfire{background:linear-gradient(145deg,#45150a,#200803)}
+.gs-card.rapidfire.active{border-color:#ff6e00;box-shadow:0 0 28px rgba(255,110,0,.35),0 8px 24px rgba(0,0,0,.4)}
+.gs-card.gamme{background:linear-gradient(145deg,#350a45,#180022)}
+.gs-card.gamme.active{border-color:#d060ff;box-shadow:0 0 28px rgba(208,96,255,.35),0 8px 24px rgba(0,0,0,.4)}
+.gs-card.auto{background:linear-gradient(145deg,#1e1e45,#0a0a22);grid-column:1/-1}
+.gs-card.auto.active{border-color:var(--a1);box-shadow:0 0 28px rgba(255,79,109,.35),0 8px 24px rgba(0,0,0,.4)}
 
 /* GAME AREA */
-.game-area{margin:0 16px 14px;background:linear-gradient(135deg,rgba(20,22,45,0.95),rgba(13,15,30,0.95));border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:20px;backdrop-filter:blur(10px);box-shadow:0 8px 32px rgba(0,0,0,.4)}
+.game-area{margin:0 16px 14px;background:linear-gradient(145deg,rgba(17,19,42,0.97),rgba(8,10,24,0.97));border:1px solid rgba(255,255,255,.1);border-radius:22px;padding:22px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 12px 48px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.08)}
 .game-type-badge{display:inline-block;background:rgba(54,215,183,.12);border:1px solid rgba(54,215,183,.3);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:800;color:var(--b1);margin-bottom:12px}
 .game-question{font-size:16px;font-weight:800;text-align:center;margin-bottom:8px;line-height:1.4;min-height:44px}
 .game-instruct{font-size:12px;color:var(--text2);text-align:center;margin-bottom:14px;line-height:1.6}
@@ -519,11 +534,11 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);heig
 .game-timer-bar{height:6px;background:rgba(255,255,255,.1);border-radius:3px;margin-bottom:14px}
 .game-timer-fill{height:100%;border-radius:3px;transition:width .1s linear,background-color .5s;background:#00b894}
 .game-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px}
-.game-opt{padding:16px 8px;background:linear-gradient(135deg,#1e2040,#252847);border:1px solid rgba(255,255,255,.12);border-radius:16px;font-family:'Outfit',sans-serif;font-size:18px;font-weight:800;color:#fff;cursor:pointer;text-align:center;transition:all .15s}
-.game-opt:active{transform:scale(.95);background:linear-gradient(135deg,#2a2d5a,#343870)}
-.game-opt.correct{background:linear-gradient(135deg,#00b894,#00cec9);border-color:#00b894;color:#fff}
-.game-opt.wrong{background:linear-gradient(135deg,#d63031,#e17055);border-color:#d63031;color:#fff}
-.game-opt.disabled{pointer-events:none;opacity:.5}
+.game-opt{padding:18px 8px;background:linear-gradient(135deg,rgba(30,32,64,.9),rgba(37,40,71,.9));border:1px solid rgba(255,255,255,.12);border-radius:18px;font-family:'Outfit',sans-serif;font-size:18px;font-weight:800;color:#fff;cursor:pointer;text-align:center;transition:all .18s cubic-bezier(.34,1.56,.64,1);box-shadow:0 4px 16px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.08)}
+.game-opt:active{transform:scale(.93)!important}
+.game-opt.correct{background:linear-gradient(135deg,#00c9a7,#00e2cc);border-color:#00c9a7;color:#fff;box-shadow:0 0 24px rgba(0,201,167,.4)}
+.game-opt.wrong{background:linear-gradient(135deg,#e63946,#ff6b6b);border-color:#e63946;color:#fff;box-shadow:0 0 24px rgba(230,57,70,.4)}
+.game-opt.disabled{pointer-events:none;opacity:.45}
 .game-feedback{text-align:center;font-size:15px;font-weight:800;min-height:24px;margin-bottom:10px;transition:all .2s}
 .game-feedback.correct{color:#00b894}
 .game-feedback.wrong{color:#ff6b6b}
@@ -998,6 +1013,26 @@ document.addEventListener('DOMContentLoaded', function() {
       <div class="gs-card-icon">⚔️</div>
       <div class="gs-card-name">Battle</div>
       <div class="gs-card-desc">Battez votre record</div>
+    </div>
+    <div class="gs-card intervalle" id="gs-intervalle" onclick="selectGameMode('intervalle')">
+      <div class="gs-card-icon">🔀</div>
+      <div class="gs-card-name">Intervalle</div>
+      <div class="gs-card-desc">Nommez l'espace entre deux notes</div>
+    </div>
+    <div class="gs-card simon" id="gs-simon" onclick="selectGameMode('simon')">
+      <div class="gs-card-icon">🔮</div>
+      <div class="gs-card-name">Simon Musical</div>
+      <div class="gs-card-desc">Répétez la séquence croissante</div>
+    </div>
+    <div class="gs-card rapidfire" id="gs-rapidfire" onclick="selectGameMode('rapidfire')">
+      <div class="gs-card-icon">⚡</div>
+      <div class="gs-card-name">Rapid Fire</div>
+      <div class="gs-card-desc">10 notes le plus vite possible</div>
+    </div>
+    <div class="gs-card gamme" id="gs-gamme" onclick="selectGameMode('gamme')">
+      <div class="gs-card-icon">🎼</div>
+      <div class="gs-card-name">Gamme</div>
+      <div class="gs-card-desc">Identifiez la gamme jouée</div>
     </div>
   </div>
   <!-- Game area -->
@@ -4628,10 +4663,32 @@ window.gameIntervalAnswer = function(el, chosen, correct, timeLimit) {
   }
 };
 
+// ===== NEW GAMES DIFF CONFIG =====
+DIFF.intervalle = {
+  facile:    { intervals:['Unisson','Octave','Quinte','Quarte'], notePool:['Do','Mi','Sol','La','Si'] },
+  moyen:     { intervals:['Seconde','Tierce','Quarte','Quinte','Sixte','Octave'], notePool:['Do','Ré','Mi','Fa','Sol','La','Si'] },
+  difficile: { intervals:['Seconde min','Seconde Maj','Tierce min','Tierce Maj','Quarte','Triton','Quinte','Sixte min','Sixte Maj','Septième','Octave'], notePool:['Do','Ré','Mi','Fa','Sol','La','Si','Do#','Ré#','Fa#'] }
+};
+DIFF.simon = {
+  facile:    { startLen:2, maxLen:6, noteMs:600, notes:['Do','Mi','Sol','La'] },
+  moyen:     { startLen:3, maxLen:9, noteMs:500, notes:['Do','Ré','Mi','Sol','La','Si'] },
+  difficile: { startLen:4, maxLen:12, noteMs:380, notes:['Do','Ré','Mi','Fa','Sol','La','Si'] }
+};
+DIFF.rapidfire = {
+  facile:    { count:10, notes:['Do','Ré','Mi','Fa','Sol','La','Si'], choices:4 },
+  moyen:     { count:10, notes:['Do','Ré','Mi','Fa','Sol','La','Si','Do#','Fa#'], choices:5 },
+  difficile: { count:10, notes:['Do','Ré','Mi','Fa','Sol','La','Si','Do#','Ré#','Fa#','Sol#','La#'], choices:6 }
+};
+DIFF.gamme = {
+  facile:    { gammes:['Majeure','Mineure'] },
+  moyen:     { gammes:['Majeure','Mineure','Pentatonique'] },
+  difficile: { gammes:['Majeure','Mineure','Pentatonique','Blues','Dorien'] }
+};
+
 // ===== GAME MODE SELECTOR =====
 var _forceGameMode = 'auto';
 var _autoGameType = 'note';
-var _autoGameTypes = ['note','rhythm','speed','melody','pitch','chord','battle'];
+var _autoGameTypes = ['note','rhythm','speed','melody','pitch','chord','battle','intervalle','simon','rapidfire','gamme'];
 var _autoGameIdx = 0;
 
 window.selectGameMode = function(mode) {
@@ -4684,6 +4741,14 @@ function buildJeux() {
     buildChordGame(diff);
   } else if (type === 'battle') {
     buildBattleGame(diff);
+  } else if (type === 'intervalle') {
+    buildIntervalleGame(diff);
+  } else if (type === 'simon') {
+    buildSimonGame(diff);
+  } else if (type === 'rapidfire') {
+    buildRapidFireGame(diff);
+  } else if (type === 'gamme') {
+    buildGammeGame(diff);
   } else {
     buildNoteGame(diff);
   }
@@ -5217,6 +5282,7 @@ function battleFinish() {
       ? '🎉 NOUVEAU RECORD ! ' + score + ' pts (était ' + record + ')'
       : 'Score final : ' + score + ' pts. Record : ' + record + ' pts';
     fb.className = 'game-feedback ' + (beaten ? 'correct' : '');
+
   }
   if (score >= window._battleMaxRounds * 10) {
     onCorrectAnswer();
@@ -5225,9 +5291,283 @@ function battleFinish() {
   }
 }
 
+// ===== GAME 9: INTERVALLE =====
+var INTERVAL_DATA = [
+  {name:'Unisson',semis:0},{name:'Seconde min',semis:1},{name:'Seconde Maj',semis:2},
+  {name:'Tierce min',semis:3},{name:'Tierce Maj',semis:4},{name:'Quarte',semis:5},
+  {name:'Triton',semis:6},{name:'Quinte',semis:7},{name:'Sixte min',semis:8},
+  {name:'Sixte Maj',semis:9},{name:'Septième',semis:10},{name:'Octave',semis:12}
+];
+var NOTE_FREQS_INT = {Do:261.63,'Do#':277.18,Ré:293.66,'Ré#':311.13,Mi:329.63,Fa:349.23,'Fa#':369.99,Sol:392.00,'Sol#':415.30,La:440.00,'La#':466.16,Si:493.88};
+function buildIntervalleGame(diff) {
+  var cfg = DIFF.intervalle[diff] || DIFF.intervalle.facile;
+  var pool = cfg.intervals;
+  var notePool = cfg.notePool;
+  var correctName = pool[Math.floor(Math.random() * pool.length)];
+  var correctData = INTERVAL_DATA.find(function(x){return x.name===correctName;}) || INTERVAL_DATA[4];
+  var rootNote = notePool[Math.floor(Math.random() * notePool.length)];
+  var rootFreq = NOTE_FREQS_INT[rootNote] || 261.63;
+  var topFreq = rootFreq * Math.pow(2, correctData.semis / 12);
+
+  gameAnswered = false;
+  window._intCorrect = correctName;
+  window._intRootFreq = rootFreq;
+  window._intTopFreq = topFreq;
+
+  var choices = shuffle(pool.filter(function(x){return x!==correctName;})).slice(0,3).concat([correctName]);
+  choices = shuffle(choices);
+
+  var opts = choices.map(function(c){
+    return '<button class="game-opt" style="font-size:13px;padding:14px 6px" onclick="intervalleAnswer(\''+c+'\')">'+c+'</button>';
+  }).join('');
+
+  var area = document.getElementById('game-area');
+  if(!area) return;
+  area.innerHTML = '<div class="game-type-badge">🔀 Intervalle · '+diffLabel(diff)+'</div>'
+    +'<div class="game-question">Quel intervalle entendez-vous ?</div>'
+    +'<div class="game-instruct">Deux notes jouées en séquence · Note de départ : <b>'+rootNote+'</b></div>'
+    +'<button class="game-play-btn" id="int-play-btn" onclick="intervallePlay()" style="margin-bottom:14px">🎵</button>'
+    +'<div class="game-feedback" id="int-feedback">Appuyez pour écouter l\'intervalle</div>'
+    +'<div class="game-opts" id="int-opts">'+opts+'</div>';
+}
+window.intervallePlay = function(){
+  var btn = document.getElementById('int-play-btn');
+  if(btn){btn.disabled=true;btn.style.opacity='0.5';}
+  playGameNote(window._intRootFreq, 0.6);
+  setTimeout(function(){
+    playGameNote(window._intTopFreq, 0.6);
+    setTimeout(function(){if(btn){btn.disabled=false;btn.style.opacity='1';}}, 700);
+  }, 700);
+};
+window.intervalleAnswer = function(chosen){
+  if(gameAnswered) return;
+  var correct = window._intCorrect;
+  document.querySelectorAll('#int-opts .game-opt').forEach(function(b){
+    b.classList.add('disabled');
+    if(b.textContent===correct) b.classList.add('correct');
+  });
+  if(chosen===correct){ onCorrectAnswer(); }
+  else { onWrongAnswer(correct); }
+};
+
+// ===== GAME 10: SIMON MUSICAL =====
+function buildSimonGame(diff) {
+  var cfg = DIFF.simon[diff] || DIFF.simon.facile;
+  gameAnswered = false;
+  window._simonSeq = [];
+  window._simonUserIdx = 0;
+  window._simonCfg = cfg;
+  window._simonLevel = cfg.startLen;
+  window._simonListening = false;
+
+  var notesBtns = cfg.notes.map(function(n,i){
+    var colors = ['#ff6b6b','#ffd93d','#6bcb77','#4d96ff','#c77dff','#ff9f43','#00d4b4'];
+    var c = colors[i % colors.length];
+    return '<button class="game-opt" style="background:linear-gradient(135deg,'+c+'22,'+c+'11);border-color:'+c+'44;font-size:16px;padding:18px 6px" id="simon-btn-'+n+'" onclick="simonTap(\''+n+'\')">'+n+'</button>';
+  }).join('');
+
+  var area = document.getElementById('game-area');
+  if(!area) return;
+  area.innerHTML = '<div class="game-type-badge">🔮 Simon Musical · '+diffLabel(diff)+'</div>'
+    +'<div class="game-question">Répétez la séquence !</div>'
+    +'<div class="game-instruct" id="simon-instruct">Appuyez sur ▶️ pour commencer · Séquence de '+cfg.startLen+' notes</div>'
+    +'<div class="game-feedback" id="simon-feedback"></div>'
+    +'<button class="game-play-btn" id="simon-start-btn" onclick="simonNextRound()" style="margin-bottom:10px">▶️</button>'
+    +'<div class="game-opts" id="simon-btns" style="pointer-events:none;opacity:.4">'+notesBtns+'</div>';
+}
+window.simonNextRound = function(){
+  var btn = document.getElementById('simon-start-btn');
+  if(btn) btn.style.display='none';
+  var btns = document.getElementById('simon-btns');
+  if(btns){btns.style.pointerEvents='none';btns.style.opacity='0.4';}
+  var cfg = window._simonCfg;
+  var allNotes = cfg.notes;
+  // Add one more note to sequence
+  window._simonSeq.push(allNotes[Math.floor(Math.random()*allNotes.length)]);
+  window._simonUserIdx = 0;
+  window._simonListening = false;
+  var instr = document.getElementById('simon-instruct');
+  if(instr) instr.textContent = 'Séquence de '+window._simonSeq.length+' notes — écoutez !';
+  var fb = document.getElementById('simon-feedback');
+  if(fb) fb.textContent = '';
+  // Play the sequence
+  var seq = window._simonSeq;
+  seq.forEach(function(n,i){
+    setTimeout(function(){
+      var sBtn = document.getElementById('simon-btn-'+n);
+      if(sBtn){
+        sBtn.style.transform='scale(1.15)';
+        sBtn.style.opacity='1';
+        setTimeout(function(){sBtn.style.transform='';sBtn.style.opacity='';},300);
+      }
+      playGameNote(getFreqByName(n), cfg.noteMs/1000*0.7);
+    }, i*cfg.noteMs);
+  });
+  setTimeout(function(){
+    window._simonListening = true;
+    var btns2 = document.getElementById('simon-btns');
+    if(btns2){btns2.style.pointerEvents='';btns2.style.opacity='1';}
+    var instr2 = document.getElementById('simon-instruct');
+    if(instr2) instr2.textContent = 'À vous ! Répétez les '+seq.length+' notes';
+  }, seq.length*cfg.noteMs+400);
+};
+window.simonTap = function(note){
+  if(!window._simonListening || gameAnswered) return;
+  var seq = window._simonSeq;
+  var idx = window._simonUserIdx;
+  playGameNote(getFreqByName(note), 0.3);
+  if(note===seq[idx]){
+    window._simonUserIdx++;
+    if(window._simonUserIdx>=seq.length){
+      var cfg = window._simonCfg;
+      var fb = document.getElementById('simon-feedback');
+      if(seq.length>=cfg.maxLen){
+        if(fb) fb.textContent = '🏆 Parfait ! Séquence de '+seq.length+' notes réussie !';
+        onCorrectAnswer();
+      } else {
+        if(fb) fb.textContent = '✅ Bravo ! Niveau '+(seq.length-cfg.startLen+1)+' réussi !';
+        window._simonListening = false;
+        setTimeout(function(){window.simonNextRound();}, 1000);
+      }
+    }
+  } else {
+    var fb2 = document.getElementById('simon-feedback');
+    if(fb2) fb2.textContent = '❌ Séquence brisée à la note '+(idx+1)+' sur '+seq.length;
+    onWrongAnswer(seq[idx]);
+  }
+};
+
+// ===== GAME 11: RAPID FIRE =====
+function buildRapidFireGame(diff) {
+  var cfg = DIFF.rapidfire[diff] || DIFF.rapidfire.facile;
+  gameAnswered = false;
+  window._rfCfg = cfg;
+  window._rfCount = 0;
+  window._rfCorrects = 0;
+  window._rfTotal = cfg.count;
+  window._rfStartTime = null;
+
+  var area = document.getElementById('game-area');
+  if(!area) return;
+  area.innerHTML = '<div class="game-type-badge">⚡ Rapid Fire · '+diffLabel(diff)+'</div>'
+    +'<div class="game-question">'+cfg.count+' notes aussi vite que possible !</div>'
+    +'<div class="game-instruct">Pas de minuterie — juste de la vitesse ! Bonne chance.</div>'
+    +'<div class="game-feedback" id="rf-feedback">Appuyez ▶️ pour démarrer</div>'
+    +'<button class="game-play-btn" id="rf-start-btn" onclick="rfStart()" style="margin-bottom:10px">▶️</button>'
+    +'<div id="rf-question-area"></div>';
+}
+window.rfStart = function(){
+  var btn = document.getElementById('rf-start-btn');
+  if(btn) btn.style.display='none';
+  window._rfStartTime = Date.now();
+  rfNextQuestion();
+};
+function rfNextQuestion(){
+  var cfg = window._rfCfg;
+  var count = window._rfCount;
+  if(count>=cfg.count){ rfFinish(); return; }
+  var allNotes = cfg.notes;
+  var correct = allNotes[Math.floor(Math.random()*allNotes.length)];
+  var freq = getFreqByName(correct);
+  var others = shuffle(allNotes.filter(function(n){return n!==correct;})).slice(0,cfg.choices-1);
+  var choices = shuffle([correct].concat(others));
+  window._rfCorrect = correct;
+  window._rfFreq = freq;
+
+  playGameNote(freq, 0.5);
+  var fb = document.getElementById('rf-feedback');
+  if(fb) fb.textContent = 'Note '+(count+1)+'/'+cfg.count+' · ✅ '+window._rfCorrects;
+  var area = document.getElementById('rf-question-area');
+  if(!area) return;
+  area.innerHTML = '<div class="game-opts">'
+    +choices.map(function(c){return '<button class="game-opt" onclick="rfAnswer(\''+c+'\')">'+c+'</button>';}).join('')
+    +'</div>';
+}
+window.rfAnswer = function(chosen){
+  if(gameAnswered) return;
+  var correct = window._rfCorrect;
+  var qArea = document.getElementById('rf-question-area');
+  if(qArea){
+    var btns = qArea.querySelectorAll('.game-opt');
+    btns.forEach(function(b){b.classList.add('disabled');if(b.textContent===correct)b.classList.add('correct');});
+    if(chosen!==correct){ var wrongBtn = Array.from(btns).find(function(b){return b.textContent===chosen;}); if(wrongBtn) wrongBtn.classList.add('wrong'); }
+  }
+  if(chosen===correct) window._rfCorrects++;
+  window._rfCount++;
+  setTimeout(rfNextQuestion, 300);
+};
+function rfFinish(){
+  var elapsed = ((Date.now()-window._rfStartTime)/1000).toFixed(1);
+  var corrects = window._rfCorrects;
+  var total = window._rfTotal;
+  var area = document.getElementById('rf-question-area');
+  if(area) area.innerHTML = '';
+  var fb = document.getElementById('rf-feedback');
+  if(fb) fb.textContent = '🏁 Terminé ! '+corrects+'/'+total+' en '+elapsed+'s';
+  if(corrects>=Math.floor(total*0.7)){ onCorrectAnswer(); }
+  else { onWrongAnswer(corrects+'/'+total+' correct'); }
+}
+
+// ===== GAME 12: GAMME =====
+var GAMME_DATA = {
+  'Majeure': [0,2,4,5,7,9,11,12],
+  'Mineure': [0,2,3,5,7,8,10,12],
+  'Pentatonique': [0,2,4,7,9,12],
+  'Blues': [0,3,5,6,7,10,12],
+  'Dorien': [0,2,3,5,7,9,10,12]
+};
+function buildGammeGame(diff) {
+  var cfg = DIFF.gamme[diff] || DIFF.gamme.facile;
+  var availableGammes = cfg.gammes;
+  var correctName = availableGammes[Math.floor(Math.random()*availableGammes.length)];
+  var intervals = GAMME_DATA[correctName];
+  var rootNote = ['Do','Ré','Mi','Fa','Sol'][Math.floor(Math.random()*5)];
+  var rootFreq = getFreqByName(rootNote) || 261.63;
+
+  gameAnswered = false;
+  window._gammeCorrect = correctName;
+  window._gammeFreqs = intervals.map(function(s){return rootFreq*Math.pow(2,s/12);});
+
+  var choices = shuffle(availableGammes.filter(function(g){return g!==correctName;})).slice(0,Math.min(3,availableGammes.length-1)).concat([correctName]);
+  choices = shuffle(choices);
+
+  var opts = choices.map(function(c){
+    return '<button class="game-opt" style="font-size:13px;padding:14px 6px" onclick="gammeAnswer(\''+c+'\')">'+c+'</button>';
+  }).join('');
+
+  var area = document.getElementById('game-area');
+  if(!area) return;
+  area.innerHTML = '<div class="game-type-badge">🎼 Gamme · '+diffLabel(diff)+'</div>'
+    +'<div class="game-question">Quelle gamme entendez-vous ?</div>'
+    +'<div class="game-instruct">Gamme jouée depuis <b>'+rootNote+'</b> — '+intervals.length+' notes</div>'
+    +'<button class="game-play-btn" id="gamme-play-btn" onclick="gammePlay()" style="margin-bottom:14px">🎵</button>'
+    +'<div class="game-feedback" id="gamme-feedback">Appuyez pour écouter la gamme</div>'
+    +'<div class="game-opts" id="gamme-opts">'+opts+'</div>';
+}
+window.gammePlay = function(){
+  var btn = document.getElementById('gamme-play-btn');
+  if(btn){btn.disabled=true;btn.style.opacity='0.5';}
+  var freqs = window._gammeFreqs;
+  freqs.forEach(function(f,i){
+    setTimeout(function(){playGameNote(f,0.4);}, i*280);
+  });
+  setTimeout(function(){if(btn){btn.disabled=false;btn.style.opacity='1';}}, freqs.length*280+300);
+};
+window.gammeAnswer = function(chosen){
+  if(gameAnswered) return;
+  var correct = window._gammeCorrect;
+  document.querySelectorAll('#gamme-opts .game-opt').forEach(function(b){
+    b.classList.add('disabled');
+    if(b.textContent===correct) b.classList.add('correct');
+    else if(b.textContent===chosen) b.classList.add('wrong');
+  });
+  if(chosen===correct){ onCorrectAnswer(); }
+  else { onWrongAnswer(correct); }
+};
+
 </script>
 <!-- BOTTOM NAV -->
-<div id="bnav" style="position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:rgba(10,12,26,.95);border-top:1px solid rgba(255,255,255,.06);display:none;z-index:100;backdrop-filter:blur(10px)">
+<div id="bnav" style="position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:rgba(5,6,14,.97);border-top:1px solid rgba(255,255,255,.09);display:none;z-index:100;backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px)">
   <div style="flex:1;padding:10px 0;text-align:center;cursor:pointer;color:#3a3760;font-size:10px;font-weight:800;display:flex;flex-direction:column;align-items:center" id="bn0" onclick="navTo('home',0)">
     <span style="font-size:23px;margin-bottom:2px">🏠</span><span id="bn0-label">Accueil</span>
   </div>
