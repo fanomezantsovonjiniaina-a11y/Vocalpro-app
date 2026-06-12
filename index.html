@@ -488,17 +488,32 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);heig
 .jeux-pbar{height:8px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden}
 .jeux-pbar-fill{height:100%;border-radius:4px;transition:width .5s}
 
-/* GAME SELECTOR TABS */
-.gstab{display:inline-flex;align-items:center;gap:5px;padding:8px 14px;border-radius:20px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:rgba(255,255,255,.7);font-family:'Outfit',sans-serif;font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap;transition:all .15s;flex-shrink:0}
-.gstab:active{transform:scale(.95)}
-.gstab.active{background:linear-gradient(135deg,var(--a1),var(--a2));border-color:transparent;color:#fff;box-shadow:0 4px 14px rgba(255,94,98,.4)}
-.gstab.note.active{background:linear-gradient(135deg,#1a3a5c,#74b9ff);box-shadow:0 4px 14px rgba(116,185,255,.4)}
-.gstab.rhythm.active{background:linear-gradient(135deg,#3d1a0f,#e17055);box-shadow:0 4px 14px rgba(225,112,85,.4)}
-.gstab.speed.active{background:linear-gradient(135deg,#0f3d20,#2ecc71);box-shadow:0 4px 14px rgba(46,204,113,.4)}
-.gstab.melody.active{background:linear-gradient(135deg,#1f0a3d,#a29bfe);box-shadow:0 4px 14px rgba(162,155,254,.4)}
-.gstab.pitch.active{background:linear-gradient(135deg,#3d1a30,#fd79a8);box-shadow:0 4px 14px rgba(253,121,168,.4)}
-.gstab.chord.active{background:linear-gradient(135deg,#3d2a0a,#fdcb6e);box-shadow:0 4px 14px rgba(253,203,110,.4)}
-.gstab.battle.active{background:linear-gradient(135deg,#3d0a0a,#ff6b6b);box-shadow:0 4px 14px rgba(255,107,107,.4)}
+/* GAME SELECTOR CARDS */
+.game-selector-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 16px 14px}
+.gs-card{border-radius:16px;padding:14px 12px;cursor:pointer;position:relative;overflow:hidden;transition:transform .15s,box-shadow .15s;border:1px solid rgba(255,255,255,.08)}
+.gs-card:active{transform:scale(.96)}
+.gs-card.active{border-width:2px;transform:scale(1.02)}
+.gs-card-icon{font-size:28px;margin-bottom:6px}
+.gs-card-name{font-size:13px;font-weight:900;color:#fff}
+.gs-card-desc{font-size:10px;color:rgba(255,255,255,.6);margin-top:2px}
+.gs-card-level{position:absolute;top:8px;right:8px;background:rgba(0,0,0,.4);border-radius:10px;padding:2px 7px;font-size:10px;font-weight:900;color:#fff}
+.gs-card-best{font-size:10px;color:rgba(255,255,255,.5);margin-top:4px}
+.gs-card.note{background:linear-gradient(135deg,#1a3a5c,#0f2240)}
+.gs-card.note.active{border-color:#74b9ff;box-shadow:0 0 20px rgba(116,185,255,.3)}
+.gs-card.rhythm{background:linear-gradient(135deg,#3d1a0f,#2a0e08)}
+.gs-card.rhythm.active{border-color:#e17055;box-shadow:0 0 20px rgba(225,112,85,.3)}
+.gs-card.speed{background:linear-gradient(135deg,#0f3d20,#072a15)}
+.gs-card.speed.active{border-color:#2ecc71;box-shadow:0 0 20px rgba(46,204,113,.3)}
+.gs-card.melody{background:linear-gradient(135deg,#1f0a3d,#120525)}
+.gs-card.melody.active{border-color:#a29bfe;box-shadow:0 0 20px rgba(162,155,254,.3)}
+.gs-card.pitch{background:linear-gradient(135deg,#3d1a30,#2a0e20)}
+.gs-card.pitch.active{border-color:#fd79a8;box-shadow:0 0 20px rgba(253,121,168,.3)}
+.gs-card.chord{background:linear-gradient(135deg,#3d2a0a,#2a1c05)}
+.gs-card.chord.active{border-color:#fdcb6e;box-shadow:0 0 20px rgba(253,203,110,.3)}
+.gs-card.battle{background:linear-gradient(135deg,#3d0a0a,#2a0505)}
+.gs-card.battle.active{border-color:#ff6b6b;box-shadow:0 0 20px rgba(255,107,107,.3)}
+.gs-card.auto{background:linear-gradient(135deg,#1a1a3d,#0f0f2a);grid-column:1/-1}
+.gs-card.auto.active{border-color:var(--a1);box-shadow:0 0 20px rgba(255,94,98,.3)}
 
 /* GAME AREA */
 .game-area{margin:0 16px 14px;background:linear-gradient(135deg,rgba(20,22,45,0.95),rgba(13,15,30,0.95));border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:20px;backdrop-filter:blur(10px);box-shadow:0 8px 32px rgba(0,0,0,.4)}
@@ -933,25 +948,8 @@ document.addEventListener('DOMContentLoaded', function() {
     <div class="jeux-title">🎮 Jeux Vocaux</div>
     <div class="jeux-xp-chip" id="jeux-xp-chip">⚡ 0 XP</div>
   </div>
-  <!-- Compact horizontal game selector tabs -->
-  <div id="game-selector-grid" style="overflow-x:auto;-webkit-overflow-scrolling:touch;padding:0 16px 12px;scrollbar-width:none">
-    <div style="display:inline-flex;gap:8px;min-width:max-content">
-      <button class="gstab active" id="gs-auto" onclick="selectGameMode('auto')">🎲 Auto</button>
-      <button class="gstab note" id="gs-note" onclick="selectGameMode('note')">🎵 Note <span id="gs-note-lv" style="font-size:9px;opacity:.7">Niv.1</span></button>
-      <button class="gstab rhythm" id="gs-rhythm" onclick="selectGameMode('rhythm')">🥁 Rythme <span id="gs-rhythm-lv" style="font-size:9px;opacity:.7">Niv.1</span></button>
-      <button class="gstab speed" id="gs-speed" onclick="selectGameMode('speed')">🏃 Vitesse <span id="gs-speed-lv" style="font-size:9px;opacity:.7">Niv.1</span></button>
-      <button class="gstab melody" id="gs-melody" onclick="selectGameMode('melody')">🎶 Mélodie <span id="gs-melody-lv" style="font-size:9px;opacity:.7">Niv.1</span></button>
-      <button class="gstab pitch" id="gs-pitch" onclick="selectGameMode('pitch')">🎤 Chant <span id="gs-pitch-lv" style="font-size:9px;opacity:.7">Niv.1</span></button>
-      <button class="gstab chord" id="gs-chord" onclick="selectGameMode('chord')">🎸 Accords <span id="gs-chord-lv" style="font-size:9px;opacity:.7">Niv.1</span></button>
-      <button class="gstab battle" id="gs-battle" onclick="selectGameMode('battle')">⚔️ Battle <span id="gs-battle-lv" style="font-size:9px;opacity:.7">Niv.1</span></button>
-    </div>
-  </div>
-  <!-- GAME AREA — shown immediately -->
-  <div class="game-area" id="game-area">
-    <div style="text-align:center;color:var(--text2);font-size:14px;padding:20px 0">Chargement du jeu...</div>
-  </div>
-  <!-- Per-game level card (compact, below game) -->
-  <div class="jeux-level-card tier-0" id="jeux-level-card" style="margin-top:4px">
+  <!-- Per-game level card -->
+  <div class="jeux-level-card tier-0" id="jeux-level-card">
     <div class="jeux-lv-row">
       <div class="jeux-lv-badge tier-0" id="jeux-lv-badge">1</div>
       <div class="jeux-lv-info">
@@ -964,6 +962,67 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
     <div class="jeux-prog-row"><span id="jeux-prog-lbl">0 / 3 bonnes réponses</span><span id="jeux-prog-xp">0 XP de jeux</span></div>
     <div class="jeux-pbar"><div class="jeux-pbar-fill" id="jeux-pbar-fill" style="width:0%;background:linear-gradient(90deg,#2ecc71,#82e0aa)"></div></div>
+  </div>
+  <!-- Game selector grid -->
+  <div class="game-selector-grid" id="game-selector-grid">
+    <div class="gs-card auto active" id="gs-auto" onclick="selectGameMode('auto')">
+      <div class="gs-card-icon">🎲</div>
+      <div class="gs-card-name">Mode Auto</div>
+      <div class="gs-card-desc">Rotation automatique des jeux</div>
+    </div>
+    <div class="gs-card note" id="gs-note" onclick="selectGameMode('note')">
+      <div class="gs-card-level" id="gs-note-lv">Niv.1</div>
+      <div class="gs-card-icon">🎵</div>
+      <div class="gs-card-name">Note</div>
+      <div class="gs-card-desc">Identifiez les notes</div>
+      <div class="gs-card-best" id="gs-note-best">MEILLEUR: Niv.1</div>
+    </div>
+    <div class="gs-card rhythm" id="gs-rhythm" onclick="selectGameMode('rhythm')">
+      <div class="gs-card-level" id="gs-rhythm-lv">Niv.1</div>
+      <div class="gs-card-icon">🥁</div>
+      <div class="gs-card-name">Rythme</div>
+      <div class="gs-card-desc">Reproduisez le rythme</div>
+      <div class="gs-card-best" id="gs-rhythm-best">MEILLEUR: Niv.1</div>
+    </div>
+    <div class="gs-card speed" id="gs-speed" onclick="selectGameMode('speed')">
+      <div class="gs-card-level" id="gs-speed-lv">Niv.1</div>
+      <div class="gs-card-icon">🏃</div>
+      <div class="gs-card-name">Vitesse</div>
+      <div class="gs-card-desc">Tapez vite les notes</div>
+      <div class="gs-card-best" id="gs-speed-best">MEILLEUR: Niv.1</div>
+    </div>
+    <div class="gs-card melody" id="gs-melody" onclick="selectGameMode('melody')">
+      <div class="gs-card-level" id="gs-melody-lv">Niv.1</div>
+      <div class="gs-card-icon">🎶</div>
+      <div class="gs-card-name">Mélodie</div>
+      <div class="gs-card-desc">Mémorisez la séquence</div>
+      <div class="gs-card-best" id="gs-melody-best">MEILLEUR: Niv.1</div>
+    </div>
+    <div class="gs-card pitch" id="gs-pitch" onclick="selectGameMode('pitch')">
+      <div class="gs-card-level" id="gs-pitch-lv">Niv.1</div>
+      <div class="gs-card-icon">🎤</div>
+      <div class="gs-card-name">Chant</div>
+      <div class="gs-card-desc">Chantez la note juste</div>
+      <div class="gs-card-best" id="gs-pitch-best">MEILLEUR: Niv.1</div>
+    </div>
+    <div class="gs-card chord" id="gs-chord" onclick="selectGameMode('chord')">
+      <div class="gs-card-level" id="gs-chord-lv">Niv.1</div>
+      <div class="gs-card-icon">🎸</div>
+      <div class="gs-card-name">Accords</div>
+      <div class="gs-card-desc">Identifiez l'accord</div>
+      <div class="gs-card-best" id="gs-chord-best">MEILLEUR: Niv.1</div>
+    </div>
+    <div class="gs-card battle" id="gs-battle" onclick="selectGameMode('battle')">
+      <div class="gs-card-level" id="gs-battle-lv">Niv.1</div>
+      <div class="gs-card-icon">⚔️</div>
+      <div class="gs-card-name">Battle</div>
+      <div class="gs-card-desc">Battez votre record</div>
+      <div class="gs-card-best" id="gs-battle-best">MEILLEUR: Niv.1</div>
+    </div>
+  </div>
+  <!-- Game area -->
+  <div class="game-area" id="game-area">
+    <div style="text-align:center;color:var(--text2);font-size:14px;padding:20px 0">Choisissez un jeu ci-dessus !</div>
   </div>
   <div style="margin:0 16px 14px;display:flex;gap:8px">
     <div style="flex:1;background:var(--card);border:1px solid var(--brd);border-radius:var(--r2);padding:12px 8px;text-align:center">
@@ -4664,7 +4723,7 @@ var _autoGameIdx = 0;
 
 window.selectGameMode = function(mode) {
   _forceGameMode = mode;
-  document.querySelectorAll('.gstab').forEach(function(b) { b.classList.remove('active'); });
+  document.querySelectorAll('.gs-card').forEach(function(b) { b.classList.remove('active'); });
   var btn = document.getElementById('gs-' + mode);
   if (btn) btn.classList.add('active');
   if (mode === 'auto') {
