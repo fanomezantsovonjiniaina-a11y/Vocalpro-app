@@ -410,6 +410,52 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);heig
 .conf{position:absolute;width:8px;height:8px;border-radius:2px;animation:confFall linear forwards}
 @keyframes confFall{0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}
 
+/* JEUX VOCAUX */
+#jeux{padding-bottom:20px;overflow-y:auto}
+.jeux-header{padding:14px 16px 8px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.jeux-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:800;background:linear-gradient(135deg,var(--a1),var(--a2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.jeux-xp-chip{background:rgba(255,211,42,.1);border:1px solid rgba(255,211,42,.25);border-radius:20px;padding:5px 12px;font-size:12px;font-weight:800;color:var(--a3)}
+.jeux-level-card{margin:0 16px 14px;background:linear-gradient(135deg,rgba(255,94,98,.1),rgba(255,153,102,.05));border:1px solid rgba(255,94,98,.2);border-radius:var(--r);padding:16px}
+.jeux-lv-row{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.jeux-lv-badge{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--a1),var(--a2));display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;color:#fff;flex-shrink:0;box-shadow:0 4px 16px rgba(255,71,87,.35)}
+.jeux-lv-info{flex:1}
+.jeux-lv-name{font-size:17px;font-weight:900}
+.jeux-lv-sub{font-size:11px;color:var(--text2);margin-top:2px}
+.jeux-stars{font-size:16px;letter-spacing:2px;margin-top:3px}
+.jeux-prog-row{display:flex;justify-content:space-between;font-size:11px;color:var(--text2);margin-bottom:4px}
+.jeux-pbar{height:8px;background:var(--bg3);border-radius:4px;overflow:hidden}
+.jeux-pbar-fill{height:100%;background:linear-gradient(90deg,var(--a1),var(--a3));border-radius:4px;transition:width .5s}
+.game-area{margin:0 16px 14px;background:var(--card);border:1px solid var(--brd);border-radius:var(--r);padding:16px}
+.game-type-badge{display:inline-block;background:rgba(54,215,183,.12);border:1px solid rgba(54,215,183,.3);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:800;color:var(--b1);margin-bottom:12px}
+.game-question{font-size:16px;font-weight:800;text-align:center;margin-bottom:8px;line-height:1.4;min-height:44px}
+.game-instruct{font-size:12px;color:var(--text2);text-align:center;margin-bottom:14px;line-height:1.6}
+.game-play-btn{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--a1),var(--a2));border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:30px;color:#fff;margin:0 auto 14px;transition:.15s;box-shadow:0 4px 20px rgba(255,71,87,.35)}
+.game-play-btn:active{transform:scale(.93)}
+.game-timer-bar{height:5px;background:var(--bg3);border-radius:3px;overflow:hidden;margin-bottom:14px}
+.game-timer-fill{height:100%;background:linear-gradient(90deg,var(--g1),var(--a3));border-radius:3px;transition:width .1s linear}
+.game-opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.game-opt{padding:12px 8px;background:var(--bg3);border:1px solid var(--brd2);border-radius:var(--r2);font-family:'Outfit',sans-serif;font-size:14px;font-weight:800;color:var(--text);cursor:pointer;text-align:center;transition:.18s}
+.game-opt:active{transform:scale(.95)}
+.game-opt.correct{background:rgba(46,204,113,.2);border-color:var(--g1);color:var(--g2)}
+.game-opt.wrong{background:rgba(255,94,98,.2);border-color:var(--a1);color:#ff9999}
+.game-opt.disabled{pointer-events:none;opacity:.5}
+.game-feedback{text-align:center;font-size:15px;font-weight:800;min-height:24px;margin-bottom:10px;transition:all .2s}
+.game-feedback.correct{color:var(--g1)}
+.game-feedback.wrong{color:var(--a1)}
+.rhythm-dots{display:flex;justify-content:center;gap:8px;margin:10px 0 14px;flex-wrap:wrap}
+.rdot{width:18px;height:18px;border-radius:50%;background:var(--a1);border:2px solid var(--a1);transition:.15s}
+.rdot.empty{background:transparent;border-color:var(--text3)}
+.rdot.hit{background:var(--g1);border-color:var(--g1);transform:scale(1.3)}
+.rdot.miss{background:var(--a1);border-color:var(--a1)}
+.tap-btn{width:120px;height:120px;border-radius:50%;background:linear-gradient(135deg,var(--b1),var(--g1));border:none;cursor:pointer;font-size:32px;color:#fff;margin:10px auto;display:block;transition:.12s;box-shadow:0 6px 24px rgba(46,213,183,.35)}
+.tap-btn:active{transform:scale(.9)}
+.jeux-levelup{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:700;display:none;align-items:center;justify-content:center;flex-direction:column;gap:10px;text-align:center;padding:20px}
+.jeux-levelup.open{display:flex}
+.jeux-levelup h2{font-family:'Playfair Display',serif;font-size:32px;font-weight:800;color:var(--a3)}
+.jeux-levelup p{font-size:14px;color:var(--text2);line-height:1.6}
+.levelup-confetti{font-size:48px;animation:levelupBounce .6s ease infinite alternate}
+@keyframes levelupBounce{0%{transform:scale(1) rotate(-5deg)}100%{transform:scale(1.2) rotate(5deg)}}
+
 /* ADMIN PANEL */
 .admin-btn{position:fixed;bottom:85px;right:16px;width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#1a0535,#0f1a40);border:1px solid rgba(155,89,182,.4);display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;z-index:150;box-shadow:0 4px 15px rgba(0,0,0,.4)}
 .admin-bg{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:400;display:none;align-items:flex-end;justify-content:center}
@@ -740,8 +786,54 @@ document.addEventListener('DOMContentLoaded', function() {
   </div>
   <div style="padding:0 16px">
     <div style="margin-bottom:8px"></div>
-    <button style="width:100%;padding:11px;background:transparent;color:var(--text2);border:1px solid var(--brd);border-radius:var(--r2);font-family:'Outfit',sans-serif;font-size:13px;cursor:pointer;margin-bottom:14px" onclick="navTo('settings',4)">⚙️ Paramètres</button>
+    <button style="width:100%;padding:11px;background:transparent;color:var(--text2);border:1px solid var(--brd);border-radius:var(--r2);font-family:'Outfit',sans-serif;font-size:13px;cursor:pointer;margin-bottom:14px" onclick="navTo('settings',5)">⚙️ Paramètres</button>
   </div>
+</div>
+
+<!-- JEUX VOCAUX -->
+<div id="jeux" class="screen">
+  <div class="jeux-header">
+    <div class="jeux-title">🎮 Jeux Vocaux</div>
+    <div class="jeux-xp-chip" id="jeux-xp-chip">⚡ 0 XP</div>
+  </div>
+  <div class="jeux-level-card">
+    <div class="jeux-lv-row">
+      <div class="jeux-lv-badge" id="jeux-lv-badge">1</div>
+      <div class="jeux-lv-info">
+        <div class="jeux-lv-name" id="jeux-lv-name">Niveau 1 — Novice</div>
+        <div class="jeux-lv-sub" id="jeux-lv-sub">3 bonnes réponses pour monter !</div>
+        <div class="jeux-stars" id="jeux-stars"></div>
+      </div>
+    </div>
+    <div class="jeux-prog-row"><span id="jeux-prog-lbl">0 / 3 bonnes réponses</span><span id="jeux-prog-xp">0 XP de jeux</span></div>
+    <div class="jeux-pbar"><div class="jeux-pbar-fill" id="jeux-pbar-fill" style="width:0%"></div></div>
+  </div>
+  <div class="game-area" id="game-area">
+    <div style="text-align:center;color:var(--text2);font-size:14px;padding:20px 0">Chargement du jeu...</div>
+  </div>
+  <div style="margin:0 16px 14px;display:flex;gap:8px">
+    <div style="flex:1;background:var(--card);border:1px solid var(--brd);border-radius:var(--r2);padding:12px 8px;text-align:center">
+      <div style="font-size:20px;font-weight:900;color:var(--g1)" id="jeux-stat-correct">0</div>
+      <div class="stat-l">Correctes</div>
+    </div>
+    <div style="flex:1;background:var(--card);border:1px solid var(--brd);border-radius:var(--r2);padding:12px 8px;text-align:center">
+      <div style="font-size:20px;font-weight:900;color:var(--a1)" id="jeux-stat-wrong">0</div>
+      <div class="stat-l">Erreurs</div>
+    </div>
+    <div style="flex:1;background:var(--card);border:1px solid var(--brd);border-radius:var(--r2);padding:12px 8px;text-align:center">
+      <div style="font-size:20px;font-weight:900;color:var(--a3)" id="jeux-stat-streak">0</div>
+      <div class="stat-l">Série</div>
+    </div>
+  </div>
+</div>
+
+<!-- LEVEL UP OVERLAY -->
+<div id="jeux-levelup" class="jeux-levelup">
+  <div class="levelup-confetti">🎉</div>
+  <h2 id="levelup-title">Niveau 2 !</h2>
+  <p id="levelup-sub">Bravo ! Tu montes en puissance vocale !</p>
+  <div style="font-size:32px" id="levelup-stars"></div>
+  <button class="btn-upgrade" style="margin-top:10px" onclick="closeLevelUp()">Continuer 🚀</button>
 </div>
 
 <!-- PREMIUM -->
@@ -2805,7 +2897,7 @@ function navTo(id, idx) {
   const nav = document.getElementById('bnav');
   if (nav) { nav.style.display = 'flex'; nav.style.flexDirection = 'row'; }
   // Update nav active state
-  ['bn0','bn1','bn2','bn3','bn4'].forEach((bid, i) => {
+  ['bn0','bn1','bn2','bn3','bn4','bn5'].forEach((bid, i) => {
     const b = document.getElementById(bid);
     if (b) b.style.color = i === idx ? 'var(--a1)' : '#3a3760';
   });
@@ -2813,6 +2905,7 @@ function navTo(id, idx) {
   if (id === 'home') buildAll();
   else if (id === 'settings') buildSettings();
   else if (id === 'prem') { buildFeatures(); buildPremiumScreen(); }
+  else if (id === 'jeux') { buildJeux(); }
   else if (id === 'challenges-screen') { 
     setTimeout(function() {
     // Populate challenges stats
@@ -3359,6 +3452,658 @@ function sendWhatsApp() {
   toast("📲 WhatsApp ouvert — envoyez votre transaction !");
 }
 
+// ===== JEUX VOCAUX =====
+var gameLevel = parseInt(localStorage.getItem('vp_game_level') || '1');
+var gameXP = parseInt(localStorage.getItem('vp_game_xp') || '0');
+var gameCorrectStreak = parseInt(localStorage.getItem('vp_game_streak') || '0');
+var gameTotalCorrect = parseInt(localStorage.getItem('vp_game_correct') || '0');
+var gameTotalWrong = parseInt(localStorage.getItem('vp_game_wrong') || '0');
+var gameSessionStreak = 0;
+var gameTimerInterval = null;
+var gameTimerLeft = 0;
+var gameAnswered = false;
+var rhythmPattern = [];
+var rhythmTaps = [];
+var rhythmExpected = [];
+var rhythmStartTime = 0;
+var rhythmTimeout = null;
+var rhythmBeatIdx = 0;
+
+var GAME_NOTE_FREQ = {
+  'Do': 261.63, 'Ré': 293.66, 'Mi': 329.63, 'Fa': 349.23,
+  'Sol': 392.00, 'La': 440.00, 'Si': 493.88,
+  'Do#': 277.18, 'Ré#': 311.13, 'Fa#': 369.99,
+  'Sol#': 415.30, 'La#': 466.16,
+  'Do2': 523.25, 'Ré2': 587.33, 'Mi2': 659.25
+};
+
+var INTERVALS = [
+  {name:'2nde', semitones:2, label:'2nde (2 demi-tons)'},
+  {name:'3ce', semitones:4, label:'3ce (4 demi-tons)'},
+  {name:'4te', semitones:5, label:'4te (5 demi-tons)'},
+  {name:'5te', semitones:7, label:'5te (7 demi-tons)'},
+  {name:'6te', semitones:9, label:'6te (9 demi-tons)'},
+  {name:'Octave', semitones:12, label:'Octave (12 demi-tons)'}
+];
+
+var LEVEL_NAMES = [
+  '', 'Novice','Novice','Novice','Novice','Novice',
+  'Apprenti','Apprenti','Apprenti','Apprenti','Apprenti',
+  'Élève','Élève','Élève','Élève','Élève',
+  'Étudiant','Étudiant','Étudiant','Étudiant','Étudiant',
+  'Initié','Initié','Initié','Initié','Initié',
+  'Pratiquant','Pratiquant','Pratiquant','Pratiquant','Pratiquant',
+  'Musicien','Musicien','Musicien','Musicien','Musicien',
+  'Harmoniste','Harmoniste','Harmoniste','Harmoniste','Harmoniste',
+  'Oreille d\'Or','Oreille d\'Or','Oreille d\'Or','Oreille d\'Or','Oreille d\'Or',
+  'Virtuose','Virtuose','Virtuose','Virtuose','Virtuose',
+  'Maître','Maître','Maître','Maître','Maître',
+  'Grand Maître','Grand Maître','Grand Maître','Grand Maître','Grand Maître',
+  'Expert','Expert','Expert','Expert','Expert',
+  'Légende','Légende','Légende','Légende','Légende',
+  'Champion','Champion','Champion','Champion','Champion',
+  'Prodige','Prodige','Prodige','Prodige','Prodige',
+  'Maestro','Maestro','Maestro','Maestro','Maestro',
+  'Virtuose+','Virtuose+','Virtuose+','Virtuose+','Virtuose+',
+  'Absolu','Absolu','Absolu','Absolu','Absolu',
+  'Légendaire','Légendaire','Légendaire','Légendaire','Légendaire',
+  'ULTIME'
+];
+
+function saveGameProgress() {
+  localStorage.setItem('vp_game_level', gameLevel);
+  localStorage.setItem('vp_game_xp', gameXP);
+  localStorage.setItem('vp_game_streak', gameCorrectStreak);
+  localStorage.setItem('vp_game_correct', gameTotalCorrect);
+  localStorage.setItem('vp_game_wrong', gameTotalWrong);
+}
+
+function getGameType(level) {
+  // Levels 1-33: Note ID, 34-66: Rhythm, 67-100: Note ID + Intervals
+  if (level <= 33) return 'note';
+  if (level <= 66) return 'rhythm';
+  return 'interval';
+}
+
+function getTimeLimitForLevel(level) {
+  // Level 1: 8s, Level 50: 3s, Level 100: 1.5s
+  var t = 8 - (level - 1) * (6.5 / 99);
+  return Math.max(1.5, t);
+}
+
+function getNotesForLevel(level) {
+  var basic = ['Do','Ré','Mi','Fa','Sol','La','Si'];
+  var chromatic = ['Do','Do#','Ré','Ré#','Mi','Fa','Fa#','Sol','Sol#','La','La#','Si'];
+  if (level <= 10) return basic;
+  if (level <= 20) return ['Do','Ré','Mi','Fa','Sol','La','Si','Do2'];
+  if (level <= 33) return chromatic;
+  if (level <= 80) return chromatic;
+  return chromatic.concat(['Do2','Ré2','Mi2']);
+}
+
+function getChoiceCount(level) {
+  if (level <= 5) return 4;
+  if (level <= 15) return 5;
+  if (level <= 25) return 6;
+  return 7;
+}
+
+function getIntervalsForLevel(level) {
+  if (level <= 75) return INTERVALS.slice(0,3);
+  if (level <= 85) return INTERVALS.slice(0,5);
+  return INTERVALS;
+}
+
+function playGameNote(freq, duration) {
+  duration = duration || 0.8;
+  try {
+    var ctx = new (window.AudioContext || window.webkitAudioContext)();
+    var osc = ctx.createOscillator();
+    var gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.frequency.value = freq;
+    osc.type = 'sine';
+    gain.gain.setValueAtTime(0.5, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+    osc.start();
+    osc.stop(ctx.currentTime + duration);
+    setTimeout(function() { try { ctx.close(); } catch(e){} }, (duration + 0.2) * 1000);
+  } catch(e) { console.log('Audio error:', e); }
+}
+
+function playGameChord(freq1, freq2, duration) {
+  duration = duration || 1.0;
+  try {
+    var ctx = new (window.AudioContext || window.webkitAudioContext)();
+    [freq1, freq2].forEach(function(f) {
+      var osc = ctx.createOscillator();
+      var gain = ctx.createGain();
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.frequency.value = f; osc.type = 'sine';
+      gain.gain.setValueAtTime(0.35, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+      osc.start(); osc.stop(ctx.currentTime + duration);
+    });
+    setTimeout(function() { try { ctx.close(); } catch(e){} }, (duration + 0.2) * 1000);
+  } catch(e) {}
+}
+
+function playIntervalNotes(freq1, freq2, gap) {
+  gap = gap || 600;
+  playGameNote(freq1, 0.7);
+  setTimeout(function() { playGameNote(freq2, 0.7); }, gap);
+}
+
+function getFreqByName(name) {
+  return GAME_NOTE_FREQ[name] || 261.63;
+}
+
+function shuffle(arr) {
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = a[i]; a[i] = a[j]; a[j] = t;
+  }
+  return a;
+}
+
+function updateJeuxUI() {
+  var lv = document.getElementById('jeux-lv-badge');
+  var lvName = document.getElementById('jeux-lv-name');
+  var lvSub = document.getElementById('jeux-lv-sub');
+  var stars = document.getElementById('jeux-stars');
+  var progLbl = document.getElementById('jeux-prog-lbl');
+  var progXP = document.getElementById('jeux-prog-xp');
+  var pbar = document.getElementById('jeux-pbar-fill');
+  var xpChip = document.getElementById('jeux-xp-chip');
+  var statCorrect = document.getElementById('jeux-stat-correct');
+  var statWrong = document.getElementById('jeux-stat-wrong');
+  var statStreak = document.getElementById('jeux-stat-streak');
+
+  if (lv) lv.textContent = gameLevel;
+  var lvName100 = LEVEL_NAMES[Math.min(gameLevel, 100)] || 'Champion';
+  if (lvName) lvName.textContent = 'Niveau ' + gameLevel + ' — ' + lvName100;
+  if (lvSub) {
+    var need = 3 - (gameCorrectStreak % 3);
+    lvSub.textContent = need + ' bonne(s) réponse(s) pour monter !';
+  }
+  if (stars) {
+    var starCount = Math.floor(gameLevel / 10);
+    var s = '';
+    for (var i = 0; i < starCount; i++) s += '⭐';
+    stars.textContent = s;
+  }
+  var prog = (gameCorrectStreak % 3);
+  if (progLbl) progLbl.textContent = prog + ' / 3 bonnes réponses';
+  if (progXP) progXP.textContent = gameXP + ' XP de jeux';
+  if (pbar) pbar.style.width = ((prog / 3) * 100) + '%';
+  if (xpChip) xpChip.textContent = '⚡ ' + gameXP + ' XP';
+  if (statCorrect) statCorrect.textContent = gameTotalCorrect;
+  if (statWrong) statWrong.textContent = gameTotalWrong;
+  if (statStreak) statStreak.textContent = gameSessionStreak;
+}
+
+function stopGameTimer() {
+  if (gameTimerInterval) { clearInterval(gameTimerInterval); gameTimerInterval = null; }
+}
+
+function startGameTimer(seconds, onTimeout) {
+  stopGameTimer();
+  gameTimerLeft = seconds;
+  var fill = document.querySelector('.game-timer-fill');
+  if (fill) fill.style.width = '100%';
+  var startTime = Date.now();
+  gameTimerInterval = setInterval(function() {
+    var elapsed = (Date.now() - startTime) / 1000;
+    var pct = Math.max(0, 100 - (elapsed / seconds * 100));
+    if (fill) {
+      fill.style.width = pct + '%';
+      fill.style.background = pct > 50 ? 'linear-gradient(90deg,var(--g1),var(--a3))' :
+                               pct > 25 ? 'linear-gradient(90deg,var(--a3),var(--a2))' :
+                               'linear-gradient(90deg,var(--a1),#ff0000)';
+    }
+    if (elapsed >= seconds) {
+      stopGameTimer();
+      if (!gameAnswered && onTimeout) onTimeout();
+    }
+  }, 100);
+}
+
+function onCorrectAnswer() {
+  stopGameTimer();
+  gameAnswered = true;
+  gameTotalCorrect++;
+  gameCorrectStreak++;
+  gameSessionStreak++;
+  gameXP += 10;
+  saveGameProgress();
+  updateJeuxUI();
+  var fb = document.querySelector('.game-feedback');
+  if (fb) { fb.textContent = '✅ Correct ! +10 XP'; fb.className = 'game-feedback correct'; }
+  // Check level up
+  if (gameCorrectStreak > 0 && gameCorrectStreak % 3 === 0 && gameLevel < 100) {
+    gameLevel++;
+    saveGameProgress();
+    setTimeout(function() { showLevelUp(); }, 800);
+  } else {
+    setTimeout(function() { buildJeux(); }, 1400);
+  }
+}
+
+function onWrongAnswer(correctAnswer) {
+  stopGameTimer();
+  gameAnswered = true;
+  gameTotalWrong++;
+  gameSessionStreak = 0;
+  gameXP = Math.max(0, gameXP - 5);
+  saveGameProgress();
+  updateJeuxUI();
+  var fb = document.querySelector('.game-feedback');
+  if (fb) { fb.textContent = '❌ Raté ! Réponse : ' + correctAnswer; fb.className = 'game-feedback wrong'; }
+  setTimeout(function() { buildJeux(); }, 1800);
+}
+
+function onTimeout(correctAnswer) {
+  if (gameAnswered) return;
+  gameAnswered = true;
+  gameTotalWrong++;
+  gameSessionStreak = 0;
+  gameXP = Math.max(0, gameXP - 5);
+  saveGameProgress();
+  updateJeuxUI();
+  var fb = document.querySelector('.game-feedback');
+  if (fb) { fb.textContent = '⏰ Temps écoulé ! Réponse : ' + correctAnswer; fb.className = 'game-feedback wrong'; }
+  // Disable all opts
+  document.querySelectorAll('.game-opt').forEach(function(b) { b.classList.add('disabled'); });
+  setTimeout(function() { buildJeux(); }, 2000);
+}
+
+function showLevelUp() {
+  stopGameTimer();
+  var overlay = document.getElementById('jeux-levelup');
+  var title = document.getElementById('levelup-title');
+  var sub = document.getElementById('levelup-sub');
+  var starsEl = document.getElementById('levelup-stars');
+  if (title) title.textContent = '🎉 Niveau ' + gameLevel + ' !';
+  var lvName100 = LEVEL_NAMES[Math.min(gameLevel, 100)] || 'Champion';
+  if (sub) sub.textContent = 'Tu es maintenant : ' + lvName100 + ' !' + (gameLevel % 10 === 0 ? ' ⭐ Nouvelle étoile !' : '');
+  var sc = Math.floor(gameLevel / 10);
+  var ss = '';
+  for (var i = 0; i < sc; i++) ss += '⭐';
+  if (starsEl) starsEl.textContent = ss;
+  if (overlay) overlay.classList.add('open');
+  // Confetti
+  spawnGameConfetti();
+}
+
+function closeLevelUp() {
+  var overlay = document.getElementById('jeux-levelup');
+  if (overlay) overlay.classList.remove('open');
+  buildJeux();
+}
+
+function spawnGameConfetti() {
+  var emojis = ['🎉','⭐','🎵','🎶','🎤','🎸','🎹','🏆','💫','✨'];
+  for (var i = 0; i < 18; i++) {
+    (function(idx) {
+      setTimeout(function() {
+        var el = document.createElement('div');
+        el.style.cssText = 'position:fixed;z-index:9999;pointer-events:none;font-size:' + (16 + Math.random()*20) + 'px;left:' + (10 + Math.random()*80) + 'vw;top:-30px;animation:confFall ' + (1.5 + Math.random()*2) + 's linear forwards';
+        el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        document.body.appendChild(el);
+        setTimeout(function() { if (el.parentNode) el.parentNode.removeChild(el); }, 4000);
+      }, idx * 120);
+    })(i);
+  }
+}
+
+// ===== GAME BUILDERS =====
+
+function buildNoteGame(level) {
+  var notes = getNotesForLevel(level);
+  var correct = notes[Math.floor(Math.random() * notes.length)];
+  var freq = getFreqByName(correct);
+  var choiceCount = getChoiceCount(level);
+  var timeLimit = getTimeLimitForLevel(level);
+
+  // Build choices: correct + random others
+  var others = shuffle(notes.filter(function(n) { return n !== correct; }));
+  var choices = shuffle([correct].concat(others.slice(0, choiceCount - 1)));
+
+  var twoNotes = (level >= 90);
+  var correct2 = null;
+  var freq2 = null;
+  if (twoNotes) {
+    var others2 = notes.filter(function(n) { return n !== correct; });
+    correct2 = others2[Math.floor(Math.random() * others2.length)];
+    freq2 = getFreqByName(correct2);
+  }
+
+  var questionText = twoNotes ? 'Quelle est la première note ?' : 'Quelle note entendez-vous ?';
+  var instrText = twoNotes
+    ? 'Deux notes jouées ensemble — identifiez la première !'
+    : (level <= 5 ? 'Appuyez sur 🎵 pour écouter, puis choisissez.' :
+       level <= 30 ? 'Écoutez attentivement et sélectionnez la bonne note.' :
+       'Oreille affûtée requise — cliquez vite !');
+
+  gameAnswered = false;
+
+  var html = '<div class="game-type-badge">🎵 Identification de Note — Niv. ' + level + '</div>'
+    + '<div class="game-question">' + questionText + '</div>'
+    + '<div class="game-instruct">' + instrText + '</div>'
+    + '<button class="game-play-btn" id="game-play-btn" onclick="gamePlayNote()">🎵</button>'
+    + '<div class="game-timer-bar"><div class="game-timer-fill" style="width:0%"></div></div>'
+    + '<div class="game-feedback"></div>'
+    + '<div class="game-opts" id="game-opts">'
+    + choices.map(function(c) {
+        return '<button class="game-opt" onclick="gameNoteAnswer(this,\'' + c + '\',\'' + correct + '\',' + timeLimit + ')">' + c + '</button>';
+      }).join('')
+    + '</div>'
+    + '<div style="text-align:center;font-size:11px;color:var(--text2);margin-top:8px">⏱ ' + Math.round(timeLimit) + 's · Niveau ' + level + '/100</div>';
+
+  var area = document.getElementById('game-area');
+  if (area) area.innerHTML = html;
+
+  // Store correct answer for timeout
+  window._gameCorrect = correct;
+  window._gameFreq = freq;
+  window._gameFreq2 = freq2;
+  window._gameTwoNotes = twoNotes;
+  window._gameTimeLimit = timeLimit;
+}
+
+window.gamePlayNote = function() {
+  var btn = document.getElementById('game-play-btn');
+  if (btn) { btn.style.opacity = '0.5'; btn.disabled = true; }
+  playGameNote(window._gameFreq || 261.63, 0.8);
+  if (window._gameTwoNotes && window._gameFreq2) {
+    setTimeout(function() { playGameNote(window._gameFreq2, 0.8); }, 500);
+  }
+  // Start timer after playing
+  setTimeout(function() {
+    if (btn) { btn.style.opacity = '1'; btn.disabled = false; }
+    if (!gameAnswered) {
+      startGameTimer(window._gameTimeLimit || 5, function() {
+        onTimeout(window._gameCorrect || '?');
+      });
+    }
+  }, window._gameTwoNotes ? 1200 : 900);
+};
+
+window.gameNoteAnswer = function(el, chosen, correct, timeLimit) {
+  if (gameAnswered) return;
+  document.querySelectorAll('.game-opt').forEach(function(b) {
+    b.classList.add('disabled');
+    if (b.textContent === correct) b.classList.add('correct');
+  });
+  if (chosen === correct) {
+    el.classList.add('correct');
+    onCorrectAnswer();
+  } else {
+    el.classList.add('wrong');
+    onWrongAnswer(correct);
+  }
+};
+
+function buildRhythmGame(level) {
+  // Level 34-66: Rhythm tapping game
+  // Difficulty increases with level
+  var subLevel = level - 33; // 1-33
+  var totalBeats = subLevel <= 11 ? 4 : subLevel <= 22 ? 6 : 8;
+  var bpm = 60 + (subLevel - 1) * 3; // 60 to ~156 bpm
+  var beatMs = Math.round(60000 / bpm);
+
+  // Generate pattern: array of true/false (active beat or rest)
+  var pattern = [];
+  if (subLevel <= 11) {
+    // Simple 4/4
+    var patterns4 = [
+      [1,0,1,0],[1,1,0,0],[0,1,0,1],[1,0,0,1],[1,1,1,0]
+    ];
+    pattern = patterns4[Math.floor(Math.random() * patterns4.length)];
+  } else if (subLevel <= 22) {
+    // Syncopated
+    var patterns6 = [
+      [1,0,1,0,1,0],[1,1,0,1,0,0],[0,1,1,0,1,1],[1,0,0,1,1,0]
+    ];
+    pattern = patterns6[Math.floor(Math.random() * patterns6.length)];
+  } else {
+    // Complex 8 beats
+    var patterns8 = [
+      [1,0,1,1,0,1,0,1],[1,1,0,0,1,0,1,1],[0,1,0,1,1,0,1,0]
+    ];
+    pattern = patterns8[Math.floor(Math.random() * patterns8.length)];
+  }
+
+  gameAnswered = false;
+  rhythmPattern = pattern;
+  rhythmTaps = [];
+  rhythmBeatIdx = 0;
+  window._rhythmBPM = bpm;
+  window._rhythmBeatMs = beatMs;
+  window._rhythmPattern = pattern;
+  window._rhythmTotalBeats = totalBeats;
+  window._rhythmPlaying = false;
+  window._rhythmLevel = level;
+
+  var dots = pattern.map(function(b) {
+    return '<div class="rdot' + (b ? '' : ' empty') + '" id="rdot-' + pattern.indexOf(b) + '"></div>';
+  }).join('');
+  // Fix: use index
+  dots = pattern.map(function(b, i) {
+    return '<div class="rdot' + (b ? '' : ' empty') + '" id="rdot-' + i + '"></div>';
+  }).join('');
+
+  var html = '<div class="game-type-badge">🥁 Jeu de Rythme — Niv. ' + level + '</div>'
+    + '<div class="game-question">Reproduisez ce rythme !</div>'
+    + '<div class="game-instruct">' + bpm + ' BPM · ' + totalBeats + ' temps — Appuyez sur les ●</div>'
+    + '<div class="rhythm-dots" id="rhythm-dots">' + dots + '</div>'
+    + '<div style="text-align:center;margin-bottom:8px">'
+    + '<button class="game-play-btn" id="rhythm-preview-btn" onclick="rhythmPreview()" style="width:60px;height:60px;font-size:22px">▶️</button>'
+    + '</div>'
+    + '<button class="tap-btn" id="tap-btn" onclick="rhythmTap()" disabled style="opacity:.4">🥁 TAP</button>'
+    + '<div class="game-feedback" id="rhythm-feedback">Écoutez d\'abord, puis tapez !</div>'
+    + '<div style="text-align:center;font-size:11px;color:var(--text2);margin-top:8px">Niveau ' + level + '/100 · ' + bpm + ' BPM</div>';
+
+  var area = document.getElementById('game-area');
+  if (area) area.innerHTML = html;
+}
+
+window.rhythmPreview = function() {
+  var btn = document.getElementById('rhythm-preview-btn');
+  var tapBtn = document.getElementById('tap-btn');
+  var fb = document.getElementById('rhythm-feedback');
+  if (btn) { btn.disabled = true; btn.style.opacity='0.5'; }
+  if (fb) fb.textContent = '🎵 Écoutez...';
+
+  var pattern = window._rhythmPattern;
+  var beatMs = window._rhythmBeatMs;
+  var idx = 0;
+
+  // Play metronome clicks for each beat
+  function playBeat() {
+    if (idx >= pattern.length) {
+      // Enable tapping
+      setTimeout(function() {
+        if (tapBtn) { tapBtn.disabled = false; tapBtn.style.opacity='1'; }
+        if (fb) fb.textContent = '🥁 Tapez maintenant !';
+        rhythmTaps = [];
+        rhythmExpected = pattern.slice();
+        rhythmStartTime = Date.now();
+        window._rhythmCurrentBeat = 0;
+        // Auto-end after pattern duration * 2
+        if (rhythmTimeout) clearTimeout(rhythmTimeout);
+        rhythmTimeout = setTimeout(function() {
+          if (!gameAnswered) rhythmEvaluate();
+        }, beatMs * pattern.length * 2 + 500);
+      }, 300);
+      return;
+    }
+    // Flash dot
+    var dot = document.getElementById('rdot-' + idx);
+    if (dot) {
+      dot.classList.add('hit');
+      setTimeout(function() { if(dot) dot.classList.remove('hit'); }, beatMs * 0.4);
+    }
+    // Play click sound if beat is active
+    if (pattern[idx]) {
+      playGameNote(880, 0.1);
+    } else {
+      // Soft rest tick
+      playGameNote(220, 0.05);
+    }
+    idx++;
+    setTimeout(playBeat, beatMs);
+  }
+  playBeat();
+};
+
+window.rhythmTap = function() {
+  if (gameAnswered) return;
+  var pattern = window._rhythmPattern;
+  var beatMs = window._rhythmBeatMs;
+  var elapsed = Date.now() - rhythmStartTime;
+  var beatIdx = Math.round(elapsed / beatMs);
+
+  // Flash feedback
+  var tapBtn = document.getElementById('tap-btn');
+  if (tapBtn) {
+    tapBtn.style.transform = 'scale(0.9)';
+    setTimeout(function() { if(tapBtn) tapBtn.style.transform = ''; }, 100);
+  }
+  playGameNote(660, 0.08);
+
+  rhythmTaps.push(beatIdx);
+
+  // If collected enough taps
+  if (rhythmTaps.length >= pattern.filter(function(b){ return b; }).length) {
+    if (rhythmTimeout) clearTimeout(rhythmTimeout);
+    setTimeout(function() { rhythmEvaluate(); }, 300);
+  }
+};
+
+function rhythmEvaluate() {
+  if (gameAnswered) return;
+  var pattern = window._rhythmPattern;
+  var beatMs = window._rhythmBeatMs;
+  var activeBeatIndices = [];
+  pattern.forEach(function(b, i) { if (b) activeBeatIndices.push(i); });
+
+  // Check if taps roughly match active beats
+  var correct = 0;
+  var tolerance = 1; // ±1 beat index tolerance
+  activeBeatIndices.forEach(function(expected) {
+    var matched = rhythmTaps.some(function(tap) {
+      return Math.abs(tap - expected) <= tolerance;
+    });
+    if (matched) correct++;
+  });
+
+  var accuracy = activeBeatIndices.length > 0 ? correct / activeBeatIndices.length : 0;
+  var tapBtn = document.getElementById('tap-btn');
+  if (tapBtn) { tapBtn.disabled = true; tapBtn.style.opacity = '0.4'; }
+
+  if (accuracy >= 0.7) {
+    onCorrectAnswer();
+  } else {
+    onWrongAnswer('Rythme correct (' + Math.round(accuracy * 100) + '% de précision)');
+  }
+}
+
+function buildIntervalGame(level) {
+  var allNotes = Object.keys(GAME_NOTE_FREQ);
+  var rootNote = allNotes[Math.floor(Math.random() * (allNotes.length - 2))];
+  var rootFreq = GAME_NOTE_FREQ[rootNote];
+
+  var intervals = getIntervalsForLevel(level);
+  var correct = intervals[Math.floor(Math.random() * intervals.length)];
+
+  // Calculate target frequency
+  var targetFreq = rootFreq * Math.pow(2, correct.semitones / 12);
+  var descending = (level >= 80 && Math.random() > 0.5);
+
+  var timeLimit = getTimeLimitForLevel(level);
+  gameAnswered = false;
+  window._gameCorrect = correct.name;
+  window._gameIntervalFreq1 = descending ? targetFreq : rootFreq;
+  window._gameIntervalFreq2 = descending ? rootFreq : targetFreq;
+  window._gameTimeLimit = timeLimit;
+  window._gameIntervalDescending = descending;
+
+  // Build choices
+  var choicesPool = shuffle(intervals);
+  var choices = choicesPool.slice(0, Math.min(intervals.length, 4));
+  if (!choices.find(function(c) { return c.name === correct.name; })) {
+    choices[0] = correct;
+  }
+  choices = shuffle(choices);
+
+  var html = '<div class="game-type-badge">🎼 Intervalles — Niv. ' + level + '</div>'
+    + '<div class="game-question">' + (descending ? 'Quel intervalle descend ?' : 'Quel intervalle monte ?') + '</div>'
+    + '<div class="game-instruct">Écoutez les deux notes' + (descending ? ' (descendant)' : ' (montant)') + ' et identifiez l\'intervalle.</div>'
+    + '<button class="game-play-btn" id="game-play-btn" onclick="gamePlayInterval()">🎵</button>'
+    + '<div class="game-timer-bar"><div class="game-timer-fill" style="width:0%"></div></div>'
+    + '<div class="game-feedback"></div>'
+    + '<div class="game-opts" style="grid-template-columns:1fr 1fr" id="game-opts">'
+    + choices.map(function(c) {
+        return '<button class="game-opt" onclick="gameIntervalAnswer(this,\'' + c.name + '\',\'' + correct.name + '\',' + timeLimit + ')">' + c.name + '</button>';
+      }).join('')
+    + '</div>'
+    + '<div style="text-align:center;font-size:11px;color:var(--text2);margin-top:8px">⏱ ' + Math.round(timeLimit) + 's · Niv. ' + level + '/100</div>';
+
+  var area = document.getElementById('game-area');
+  if (area) area.innerHTML = html;
+}
+
+window.gamePlayInterval = function() {
+  var btn = document.getElementById('game-play-btn');
+  if (btn) { btn.style.opacity = '0.5'; btn.disabled = true; }
+  playIntervalNotes(window._gameIntervalFreq1, window._gameIntervalFreq2, 700);
+  setTimeout(function() {
+    if (btn) { btn.style.opacity = '1'; btn.disabled = false; }
+    if (!gameAnswered) {
+      startGameTimer(window._gameTimeLimit || 5, function() {
+        onTimeout(window._gameCorrect || '?');
+      });
+    }
+  }, 1600);
+};
+
+window.gameIntervalAnswer = function(el, chosen, correct, timeLimit) {
+  if (gameAnswered) return;
+  document.querySelectorAll('.game-opt').forEach(function(b) {
+    b.classList.add('disabled');
+    if (b.textContent === correct) b.classList.add('correct');
+  });
+  if (chosen === correct) {
+    el.classList.add('correct');
+    onCorrectAnswer();
+  } else {
+    el.classList.add('wrong');
+    onWrongAnswer(correct);
+  }
+};
+
+function buildJeux() {
+  stopGameTimer();
+  if (rhythmTimeout) { clearTimeout(rhythmTimeout); rhythmTimeout = null; }
+  updateJeuxUI();
+
+  var type = getGameType(gameLevel);
+  if (type === 'note') {
+    buildNoteGame(gameLevel);
+  } else if (type === 'rhythm') {
+    buildRhythmGame(gameLevel);
+  } else {
+    // Level 67+ alternates between note ID and interval training
+    if (gameLevel % 2 === 0) {
+      buildIntervalGame(gameLevel);
+    } else {
+      buildNoteGame(gameLevel);
+    }
+  }
+}
 
 </script>
 <!-- BOTTOM NAV -->
@@ -3373,11 +4118,14 @@ function sendWhatsApp() {
     <span style="font-size:23px;margin-bottom:2px">🔥</span><span id="bn2-label">Challenges</span>
     <div id="notif-ch" style="position:absolute;top:6px;right:calc(50% - 16px);width:7px;height:7px;border-radius:50%;background:var(--a1);display:none"></div>
   </div>
-  <div style="flex:1;padding:10px 0;text-align:center;cursor:pointer;color:#3a3760;font-size:10px;font-weight:800;display:flex;flex-direction:column;align-items:center" id="bn3" onclick="navTo('profile',3)">
-    <span style="font-size:23px;margin-bottom:2px">👤</span><span id="bn3-label">Profil</span>
+  <div style="flex:1;padding:10px 0;text-align:center;cursor:pointer;color:#3a3760;font-size:10px;font-weight:800;display:flex;flex-direction:column;align-items:center" id="bn3" onclick="navTo('jeux',3)">
+    <span style="font-size:23px;margin-bottom:2px">🎮</span><span id="bn3-label">Jeux</span>
   </div>
-  <div style="flex:1;padding:10px 0;text-align:center;cursor:pointer;color:#3a3760;font-size:10px;font-weight:800;display:flex;flex-direction:column;align-items:center" id="bn4" onclick="navTo('settings',4)">
-    <span style="font-size:23px;margin-bottom:2px">⚙️</span><span id="bn4-label">Réglages</span>
+  <div style="flex:1;padding:10px 0;text-align:center;cursor:pointer;color:#3a3760;font-size:10px;font-weight:800;display:flex;flex-direction:column;align-items:center" id="bn4" onclick="navTo('profile',4)">
+    <span style="font-size:23px;margin-bottom:2px">👤</span><span id="bn4-label">Profil</span>
+  </div>
+  <div style="flex:1;padding:10px 0;text-align:center;cursor:pointer;color:#3a3760;font-size:10px;font-weight:800;display:flex;flex-direction:column;align-items:center" id="bn5" onclick="navTo('settings',5)">
+    <span style="font-size:23px;margin-bottom:2px">⚙️</span><span id="bn5-label">Réglages</span>
   </div>
 </div>
 
