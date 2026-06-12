@@ -198,6 +198,27 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);heig
 .rw:nth-child(2){animation-delay:.1s;height:55%}.rw:nth-child(3){animation-delay:.2s;height:90%}.rw:nth-child(4){animation-delay:.3s;height:45%}.rw:nth-child(5){animation-delay:.4s;height:75%}
 @keyframes rwAnim{0%,100%{transform:scaleY(.35)}50%{transform:scaleY(1)}}
 
+/* TUNER / PITCH */
+.tuner-wrap{display:flex;flex-direction:column;align-items:center;gap:14px;padding:8px 0}
+.tuner-target{font-size:22px;font-weight:900;text-align:center}
+.tuner-target span{font-size:13px;color:var(--text2);font-weight:400;display:block;margin-top:2px}
+.tuner-zone{width:200px;height:100px;border-radius:8px;background:var(--card2);position:relative;overflow:hidden;display:flex;align-items:flex-end;justify-content:center}
+.tuner-zone-inner{position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:center;padding-bottom:4px}
+.tuner-needle{width:4px;height:80px;background:#ff4757;border-radius:4px;transform-origin:bottom center;transition:transform 0.1s;margin:0 auto}
+.tuner-zones-bg{position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:center}
+.tz-red-l{position:absolute;left:0;bottom:0;width:30%;height:100%;background:rgba(255,71,87,.15);border-radius:8px 0 0 8px}
+.tz-yellow-l{position:absolute;left:30%;bottom:0;width:15%;height:100%;background:rgba(255,200,50,.15)}
+.tz-green{position:absolute;left:45%;bottom:0;width:10%;height:100%;background:rgba(46,204,113,.25)}
+.tz-yellow-r{position:absolute;left:55%;bottom:0;width:15%;height:100%;background:rgba(255,200,50,.15)}
+.tz-red-r{position:absolute;right:0;bottom:0;width:30%;height:100%;background:rgba(255,71,87,.15);border-radius:0 8px 8px 0}
+.tuner-labels{display:flex;justify-content:space-between;width:200px;font-size:9px;color:var(--text2);font-weight:700}
+.tuner-feedback{font-size:13px;font-weight:700;min-height:20px;text-align:center;transition:.2s}
+.tuner-mic-btn{padding:14px 28px;border-radius:30px;background:linear-gradient(135deg,var(--a1),var(--a2));border:none;color:#fff;font-size:15px;font-weight:800;cursor:pointer;font-family:'Outfit',sans-serif}
+.tuner-mic-btn.on{animation:recPulse 1s ease infinite}
+.tuner-result{text-align:center;font-size:15px;font-weight:800;padding:10px;border-radius:12px;margin-top:4px}
+.tuner-result.ok{background:rgba(46,204,113,.15);color:var(--g1)}
+.tuner-result.fail{background:rgba(255,71,87,.12);color:var(--a1)}
+
 /* VIDEO */
 .vid-wrap{background:var(--bg3);border-radius:var(--r2);aspect-ratio:16/9;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;margin-bottom:12px}
 .vid-play{width:58px;height:58px;border-radius:50%;background:linear-gradient(135deg,var(--a1),var(--a2));display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff;margin-bottom:8px}
@@ -389,6 +410,22 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);heig
 .badge-item.locked{opacity:.4;filter:grayscale(1)}
 .bi-em{font-size:26px;margin-bottom:4px}
 .bi-nm{font-size:9px;font-weight:800;color:var(--text2);line-height:1.3}
+
+/* TUNER */
+.tuner-needle { width: 4px; height: 80px; background: #ff4757; border-radius: 4px;
+  transform-origin: bottom center; transition: transform 0.1s; margin: 0 auto; }
+.tuner-zone { width: 200px; height: 100px; border-radius: 8px; background: var(--card2);
+  position: relative; overflow: hidden; display: flex; align-items: flex-end; justify-content: center; }
+.tuner-wrap { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 10px 0; }
+.tuner-target { font-size: 22px; font-weight: 900; color: var(--a3); text-align: center; }
+.tuner-hz { font-size: 12px; color: var(--text2); margin-top: -6px; }
+.tuner-result { font-size: 14px; font-weight: 800; min-height: 22px; text-align: center; transition: .3s; }
+.tuner-zones { position: absolute; inset: 0; display: flex; }
+.tuner-zone-red { flex: 1; background: rgba(255,71,87,.18); }
+.tuner-zone-yellow { width: 40px; background: rgba(255,200,50,.22); }
+.tuner-zone-green { width: 60px; background: rgba(46,213,113,.22); }
+.tuner-zone-yellow2 { width: 40px; background: rgba(255,200,50,.22); }
+.tuner-zone-red2 { flex: 1; background: rgba(255,71,87,.18); }
 
 /* ADS */
 .ad-banner{margin:0 16px 14px;border-radius:var(--r2);overflow:hidden;background:var(--card);border:1px solid var(--brd);min-height:60px;display:flex;align-items:center;justify-content:center;position:relative}
@@ -923,6 +960,7 @@ const MODS = [
     {t:"piano_ex", nm:"Piano suit — DO MI SOL", desc:"Le piano joue la mélodie — chantez chaque note immédiatement !", sequence:["DO","MI","SOL","MI","DO"], tempo:900},
     {t:"scales"},
     {t:"humming"},
+    {t:"pitch", note:"La", nm:"Chante le La (440Hz)"},
     {t:"quiz", q:"Pourquoi échauffer la voix avant de chanter ?", opts:["Pour fatiguer les cordes vocales","Pour préparer et assouplir les cordes vocales","Pour chanter plus fort"], ok:1},
     {t:"done"}
   ]},
@@ -933,6 +971,7 @@ const MODS = [
       list:["Posez une main sur le ventre","Inspirez lentement — sentez le ventre gonfler","Expirez sur 8 temps en faisant 'Ssss'","Ne levez jamais les épaules","Répétez 5 fois en augmentant la durée"],
       syls:["Ssss","Ffff","Hhhh","Vvvv"], cols:["#74b9ff","#81ecec","#a29bfe","#55efc4"]},
     {t:"piano_ex", nm:"Piano — Gamme montante", desc:"Suivez le piano note par note en chantant sur AH !", sequence:["DO","RÉ","MI","FA","SOL"], tempo:1000},
+    {t:"pitch", note:"La", nm:"Chante le La (440Hz)"},
     {t:"metronome"},
     {t:"quiz", q:"Quelle partie du corps actionne la respiration diaphragmatique ?", opts:["Les épaules","Le diaphragme","La gorge"], ok:1},
     {t:"done"}
@@ -1853,7 +1892,22 @@ function getNextLevel() {
 }
 
 function isModUnlocked(modIndex) {
-  return true;
+  try {
+    const unlocked = JSON.parse(localStorage.getItem('vp_unlocked') || '[0]');
+    return unlocked.includes(modIndex);
+  } catch(e) { return modIndex === 0; }
+}
+
+function unlockNextModule(currentModuleIndex) {
+  try {
+    const unlocked = JSON.parse(localStorage.getItem('vp_unlocked') || '[0]');
+    const nextIdx = currentModuleIndex + 1;
+    if (nextIdx < MODS.length && !unlocked.includes(nextIdx)) {
+      unlocked.push(nextIdx);
+      localStorage.setItem('vp_unlocked', JSON.stringify(unlocked));
+      setTimeout(() => toast('🔓 Module suivant débloqué !'), 400);
+    }
+  } catch(e) {}
 }
 
 function checkChallenges() {
@@ -2145,27 +2199,23 @@ function buildGrid() {
     const globalIdx = MODS.indexOf(m);
     const d = document.createElement('div'); d.className = 'mod';
 
-    // Determine lock state
-    const isPremLocked = !m.free && !isPremium;
-    const isLevelLocked = m.free ? false : isPremium && globalIdx >= cur.unlock;
-    const xpNeeded = isLevelLocked ? (LEVELS.find(l => l.unlock > globalIdx)?.minXP || 999) : 0;
+    // Progressive unlock system
+    const unlocked = isModUnlocked(globalIdx);
+    const isLocked = !unlocked;
 
     let overlay = '';
-    if (isPremLocked) {
-      overlay = `<div class="mod-lock"><div class="mod-lock-ic">👑</div><div class="mod-lock-lbl">PREMIUM</div></div>`;
-    } else if (isLevelLocked) {
-      overlay = `<div class="mod-level-lock"><div class="mll-ic">🔒</div><div class="mll-lbl" style="color:${cur.col}">Niveau requis</div><div class="mll-xp" style="color:var(--text2)">${xpNeeded} XP pour débloquer</div></div>`;
+    if (isLocked) {
+      overlay = `<div class="mod-lock"><div class="mod-lock-ic">🔒</div><div class="mod-lock-lbl">VERROUILLÉ</div></div>`;
+      d.style.opacity = '0.4';
+      d.style.cursor = 'default';
     }
 
     const done = m.done ? `<div class="mod-done">✓ Fait</div>` : '';
-    const lockedStyle = isLevelLocked ? 'filter:grayscale(.6);opacity:.7' : '';
 
-    d.innerHTML = `<div class="mod-xp">+${m.xp}XP</div>${done}<div class="mod-em" style="${lockedStyle}">${m.em}</div><div class="mod-nm">${m.nm}</div><div class="mod-mt">${m.steps.length} étapes</div><div class="mod-bar"><div class="mod-bf" style="width:${m.done?100:0}%;background:${m.done?'var(--g1)':m.col}"></div></div>${overlay}`;
+    d.innerHTML = `<div class="mod-xp">+${m.xp}XP</div>${done}<div class="mod-em">${m.em}</div><div class="mod-nm">${m.nm}</div><div class="mod-mt">${m.steps.length} étapes</div><div class="mod-bar"><div class="mod-bf" style="width:${m.done?100:0}%;background:${m.done?'var(--g1)':m.col}"></div></div>${overlay}`;
 
-    if (m.free) d.onclick = () => openMod(m);
-    else if (isPremLocked) d.onclick = () => { const _pm2=document.getElementById('prem-modal');if(_pm2)_pm2.style.display='flex'; };
-    else if (isLevelLocked) d.onclick = () => toast('🔒 Gagnez ' + xpNeeded + ' XP pour débloquer ce module !');
-    else d.onclick = () => openMod(m);
+    if (!isLocked) d.onclick = () => openMod(m);
+    else d.onclick = () => toast('🔒 Terminez le module précédent pour débloquer !');
 
     g.appendChild(d);
   });
@@ -2306,6 +2356,8 @@ function goHome() {
   [bTimer, mTimer, recTimer].forEach(t => t && clearInterval(t));
   bTimer = mTimer = recTimer = null;
   mRunning = false; recRunning = false;
+  stopPitchDetection(); _pitchRecording = false;
+  if(_pitchTimeout){ clearTimeout(_pitchTimeout); _pitchTimeout=null; }
   (function(){const _e=document.getElementById('exercise');if(_e)_e.classList.remove('active');})();
   (function(){const _e=document.getElementById('home');if(_e)_e.classList.add('active');})();
   (function(){const _e=document.getElementById('bnav');if(_e)_e.style.display='flex';})();
@@ -2337,7 +2389,7 @@ function renderStep() {
   else if (s.t === 'scales') renderScales(body);
   else if (s.t === 'humming') renderHumming(body);
   else if (s.t === 'tech') renderTech(body, s);
-  else if (s.t === 'pitch') renderPitch(body);
+  else if (s.t === 'pitch') renderPitch(body, s);
   else if (s.t === 'piano_ex') renderPianoExercise(body, s);
   else if (s.t === 'metronome') renderMetronome(body);
   else if (s.t === 'recorder') renderRecorder(body);
@@ -2607,15 +2659,153 @@ function stopPianoEx(){stopPianoSeq();}
 function changePianoTempo(){}
 
 
-function renderPitch(b) {
-  const keys = [{n:'DO',b:false},{n:'',b:true},{n:'RÉ',b:false},{n:'',b:true},{n:'MI',b:false},{n:'FA',b:false},{n:'',b:true},{n:'SOL',b:false},{n:'',b:true},{n:'LA',b:false},{n:'',b:true},{n:'SI',b:false},{n:'DO',b:false}];
+function detectPitch(analyser, sampleRate) {
+  const buf = new Float32Array(analyser.fftSize);
+  analyser.getFloatTimeDomainData(buf);
+  const SIZE = buf.length;
+  let rms = 0;
+  for(let i=0;i<SIZE;i++) rms += buf[i]*buf[i];
+  rms = Math.sqrt(rms/SIZE);
+  if(rms < 0.01) return -1;
+
+  let r1=0, r2=SIZE-1, thres=0.2;
+  for(let i=0;i<SIZE/2;i++) if(Math.abs(buf[i])<thres){r1=i;break;}
+  for(let i=1;i<SIZE/2;i++) if(Math.abs(buf[SIZE-i])<thres){r2=SIZE-i;break;}
+  let sliced = buf.slice(r1,r2);
+  const newSize = sliced.length;
+  if(newSize < 2) return -1;
+
+  const c = new Float32Array(newSize);
+  for(let i=0;i<newSize;i++)
+    for(let j=0;j<newSize-i;j++) c[i] += sliced[j]*sliced[j+i];
+
+  let d=0; while(d < newSize-1 && c[d]>c[d+1]) d++;
+  let maxval=-1, maxpos=-1;
+  for(let i=d;i<newSize;i++) if(c[i]>maxval){maxval=c[i];maxpos=i;}
+  if(maxpos < 1 || maxpos >= newSize-1) return -1;
+
+  let T0=maxpos;
+  const x1=c[T0-1],x2=c[T0],x3=c[T0+1];
+  const a=(x1+x3-2*x2)/2, b=(x3-x1)/2;
+  if(a) T0 = T0 - b/(2*a);
+  return sampleRate/T0;
+}
+
+function freqToCents(detectedFreq, targetFreq) {
+  return 1200 * Math.log2(detectedFreq / targetFreq);
+}
+
+var _pitchStream = null, _pitchAF = null, _pitchCtx = null;
+
+function stopPitchDetection() {
+  if(_pitchAF){ cancelAnimationFrame(_pitchAF); _pitchAF=null; }
+  if(_pitchStream){ _pitchStream.getTracks().forEach(t=>t.stop()); _pitchStream=null; }
+  if(_pitchCtx){ try{_pitchCtx.close();}catch(e){} _pitchCtx=null; }
+}
+
+function renderPitch(b, s) {
+  const targetNote = (s && s.note) || 'La';
+  const targetFreq = NOTE_FREQ[targetNote] || 440;
+
   b.innerHTML = `<div class="card">
-    <div class="card-hd">🎹 Piano vocal interactif</div>
-    <div class="card-desc">Appuyez sur une touche et chantez immédiatement la note correspondante. Exercice fondamental pour développer l'oreille et l'intonation.</div>
-    <div class="piano-note" id="piano-note">🎹 Appuyez sur une touche</div>
-    <div class="piano-wrap"><div class="piano">${keys.map(k=>k.n?`<button class="key ${k.b?'b':'w'}" onclick="pressKey('${k.n}',this)">${k.n}</button>`:``).join('')}</div></div>
-    <div class="tip-box">🎯 Appuyez → chantez immédiatement. L'objectif est de <b>chanter juste du premier coup</b>. Recommencez si vous ratez.</div>
+    <div class="card-hd">🎙️ Détection de justesse</div>
+    <div class="card-desc">Chantez la note indiquée et maintenez-la pendant 3 secondes. L'aiguille doit rester dans la zone verte.</div>
+    <div class="tuner-wrap">
+      <div class="tuner-target">${targetNote} <span>${targetFreq} Hz</span></div>
+      <div class="tuner-zone">
+        <div class="tz-red-l"></div><div class="tz-yellow-l"></div><div class="tz-green"></div><div class="tz-yellow-r"></div><div class="tz-red-r"></div>
+        <div class="tuner-zone-inner"><div class="tuner-needle" id="tuner-needle" style="transform:rotate(0deg)"></div></div>
+      </div>
+      <div class="tuner-labels"><span>♭♭</span><span>♭</span><span>✓</span><span>♯</span><span>♯♯</span></div>
+      <div class="tuner-feedback" id="tuner-feedback" style="color:var(--text2)">Appuyez pour chanter</div>
+      <button class="tuner-mic-btn" id="tuner-mic-btn" onclick="togglePitchRec(${targetFreq})">🎙️ Chanter</button>
+      <div id="tuner-result"></div>
+    </div>
+    <div class="tip-box">🎯 Gardez l'aiguille dans la <b>zone verte</b> pendant 3 secondes pour valider. ±20 cents = parfait !</div>
   </div>`;
+}
+
+var _pitchRecording = false;
+var _pitchSamples = [];
+var _pitchTargetFreq = 440;
+var _pitchTimeout = null;
+
+function togglePitchRec(targetFreq) {
+  if(_pitchRecording) {
+    stopPitchDetection();
+    _pitchRecording = false;
+    const btn = document.getElementById('tuner-mic-btn');
+    if(btn){ btn.textContent = '🎙️ Chanter'; btn.classList.remove('on'); }
+    if(_pitchTimeout){ clearTimeout(_pitchTimeout); _pitchTimeout=null; }
+    return;
+  }
+  _pitchTargetFreq = targetFreq;
+  _pitchSamples = [];
+  _pitchRecording = true;
+  const btn = document.getElementById('tuner-mic-btn');
+  if(btn){ btn.textContent = '⏹ Arrêter'; btn.classList.add('on'); }
+  const fb = document.getElementById('tuner-feedback');
+  if(fb) fb.textContent = 'En écoute…';
+
+  navigator.mediaDevices.getUserMedia({audio:true, video:false}).then(function(stream){
+    _pitchStream = stream;
+    _pitchCtx = new (window.AudioContext||window.webkitAudioContext)();
+    const source = _pitchCtx.createMediaStreamSource(stream);
+    const analyser = _pitchCtx.createAnalyser();
+    analyser.fftSize = 2048;
+    source.connect(analyser);
+
+    function loop() {
+      if(!_pitchRecording) return;
+      const freq = detectPitch(analyser, _pitchCtx.sampleRate);
+      const needle = document.getElementById('tuner-needle');
+      const fb2 = document.getElementById('tuner-feedback');
+      if(freq > 0) {
+        const cents = freqToCents(freq, _pitchTargetFreq);
+        _pitchSamples.push(cents);
+        const clampedCents = Math.max(-100, Math.min(100, cents));
+        const deg = clampedCents * 0.7; // max ~70deg rotation
+        if(needle) needle.style.transform = 'rotate('+deg+'deg)';
+        const absCents = Math.abs(cents);
+        if(absCents <= 20){ if(needle) needle.style.background='#2ecc71'; if(fb2) fb2.style.color='var(--g1)'; if(fb2) fb2.textContent='✓ Juste !'; }
+        else if(absCents <= 50){ if(needle) needle.style.background='#ffc832'; if(fb2) fb2.style.color='var(--a3)'; if(fb2) fb2.textContent=(cents>0?'↓ Un peu trop haut':'↑ Un peu trop bas'); }
+        else { if(needle) needle.style.background='#ff4757'; if(fb2) fb2.style.color='var(--a1)'; if(fb2) fb2.textContent=(cents>0?'↓↓ Trop haut':'↑↑ Trop bas'); }
+      } else {
+        if(needle){ needle.style.transform='rotate(0deg)'; needle.style.background='#ff4757'; }
+        if(fb2){ fb2.textContent='Chantez !'; fb2.style.color='var(--text2)'; }
+      }
+      _pitchAF = requestAnimationFrame(loop);
+    }
+    loop();
+
+    _pitchTimeout = setTimeout(function(){
+      stopPitchDetection();
+      _pitchRecording = false;
+      const btn2 = document.getElementById('tuner-mic-btn');
+      if(btn2){ btn2.textContent = '🔁 Réessayer'; btn2.classList.remove('on'); btn2.onclick = function(){ togglePitchRec(_pitchTargetFreq); }; }
+      const fb3 = document.getElementById('tuner-feedback');
+      const res = document.getElementById('tuner-result');
+      if(_pitchSamples.length > 0) {
+        const avg = _pitchSamples.reduce((a,b)=>a+b,0)/_pitchSamples.length;
+        const absAvg = Math.abs(avg);
+        if(absAvg <= 30) {
+          if(fb3) fb3.textContent='';
+          if(res) { res.className='tuner-result ok'; res.textContent='✅ Justesse parfaite !'; }
+        } else {
+          if(fb3) fb3.textContent='';
+          const dir = avg > 0 ? 'haut' : 'bas';
+          if(res) { res.className='tuner-result fail'; res.textContent='⚠️ Un peu trop '+dir+' — réessayez'; }
+        }
+      }
+    }, 3000);
+  }).catch(function(err){
+    _pitchRecording = false;
+    const btn2 = document.getElementById('tuner-mic-btn');
+    if(btn2){ btn2.textContent='🎙️ Chanter'; btn2.classList.remove('on'); }
+    const fb2 = document.getElementById('tuner-feedback');
+    if(fb2) fb2.textContent='⚠️ Microphone non autorisé';
+    toast('Microphone refusé — vérifiez les permissions');
+  });
 }
 // Note frequencies
 var NOTE_FREQ = {
@@ -2867,6 +3057,8 @@ function nextStep() {
     const leveledUp = newLvl.id > prevLvl;
     checkChallenges();
     saveProgress();
+    const completedModIdx = MODS.indexOf(curMod);
+    unlockNextModule(completedModIdx);
     goHome();
     if (leveledUp) {
       showConfetti();
