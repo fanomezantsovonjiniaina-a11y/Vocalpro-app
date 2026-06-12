@@ -832,7 +832,6 @@ const MODS = [
     {t:"scales"},
     {t:"humming"},
     {t:"quiz", q:"Pourquoi échauffer la voix avant de chanter ?", opts:["Pour fatiguer les cordes vocales","Pour préparer et assouplir les cordes vocales","Pour chanter plus fort"], ok:1},
-    {t:"video", nm:"Échauffement vocal pro", url:"https://youtu.be/Xxedcl77oK4"},
     {t:"done"}
   ]},
   {id:1, nm:"Respiration & Souffle", em:"💨", col:"#74b9ff", xp:25, free:true, done:false, cat:"warmup", steps:[
@@ -854,7 +853,6 @@ const MODS = [
       syls:["HA !","HO !","HE !","HI !","HU !"], cols:["#ff5e62","#ff9966","#ffc832","#ff9ff3","#74b9ff"]},
     {t:"pitch"},
     {t:"quiz", q:"D'où doit venir la projection vocale ?", opts:["De la gorge","Du diaphragme","Du nez"], ok:1},
-    {t:"video", nm:"Projection vocale", url:"https://youtu.be/CT8x2bdOtD8"},
     {t:"done"}
   ]},
 
@@ -894,7 +892,6 @@ const MODS = [
 
   // ---- PREMIUM TECHNIQUE ----
   {id:6, nm:"Voyelles pures", em:"🔤", col:"#ffc832", xp:35, free:false, done:false, cat:"technique", steps:[
-    {t:"video", nm:"Voyelles pures — Masterclass", dur:"10:30", em:"🔤", url:"https://youtu.be/Xxedcl77oK4"},
     {t:"tech", nm:"Les 5 voyelles chantées", em:"🔤",
       desc:"Des voyelles pures sont la base d'une belle voix chantée. Chaque voyelle a une forme de bouche et une position de langue précise.",
       list:["A — bouche grande ouverte, langue basse et plate","E — bouche demi-ouverte, langue au milieu","I — lèvres étirées en sourire léger, langue en haut","O — lèvres arrondies et projetées vers l'avant","U — lèvres très projetées, langue basse"],
@@ -905,18 +902,15 @@ const MODS = [
     {t:"done"}
   ]},
   {id:7, nm:"Résonance & Timbre", em:"🎭", col:"#9b59b6", xp:45, free:false, done:false, cat:"technique", steps:[
-    {t:"video", nm:"Résonance vocale — Technique pro", dur:"12:15", em:"🎭", url:"https://youtu.be/3eT2NoTYwNA"},
     {t:"tech", nm:"Les 3 résonateurs", em:"🎭",
       desc:"Une voix riche utilise trois résonateurs : la poitrine (grave), le pharynx (medium) et la tête (aigu). Maîtriser les trois donne un son plein et coloré.",
       list:["Résonance poitrine : chantez 'OH' grave — sentez la vibration au sternum","Résonance pharynx : chantez 'AH' medium — vibration dans la gorge","Résonance tête : chantez 'EE' aigu — vibration dans le crâne","Enchaînez les trois sans interruption","Trouvez votre placement naturel en douceur"],
       syls:["OH","AH","EE","AY"], cols:["#9b59b6","#c39bd3","#e8d5f5","#a29bfe"]},
     {t:"recorder"},
     {t:"quiz", q:"Quelle résonance donne une voix grave et profonde ?", opts:["Tête","Pharynx","Poitrine"], ok:2},
-    {t:"video", nm:"Résonance et timbre", url:"https://youtu.be/3eT2NoTYwNA"},
     {t:"done"}
   ]},
   {id:8, nm:"Registres vocaux", em:"🎚️", col:"#fdcb6e", xp:50, free:false, done:false, cat:"technique", steps:[
-    {t:"video", nm:"Voix de tête & poitrine — Pro", dur:"14:20", em:"🎚️", url:"https://youtu.be/EETRU_O0_pY"},
     {t:"tech", nm:"Voix de poitrine, tête & Mix", em:"🎚️",
       desc:"La voix de poitrine est grave et puissante, la voix de tête est légère et aiguë. Le Mix voice combine les deux pour un son homogène.",
       list:["Voix de poitrine : chantez 'HEY' grave — vibration en poitrine","Voix de tête : chantez 'EEE' aigu — vibration dans le crâne","Le passaggio est la zone de transition entre les deux","Entraînez-vous à passer d'un registre à l'autre sans break","Mix voice = équilibre entre les deux — objectif final"],
@@ -938,7 +932,6 @@ const MODS = [
     {t:"done"}
   ]},
   {id:10, nm:"Gammes avancées", em:"🎵", col:"#fd79a8", xp:50, free:false, done:false, cat:"solfege", steps:[
-    {t:"video", nm:"Gammes majeures & mineures", dur:"18:30", em:"🎵", url:"https://youtube.com/playlist?list=PLTwZJolHuy3yzunwTrt1dGzBhv17YdfWA"},
     {t:"scales"},
     {t:"tech", nm:"Gamme majeure & mineure", em:"🎵",
       desc:"Maîtriser les gammes majeure et mineure est essentiel pour chanter juste dans toutes les tonalités et tous les styles musicaux.",
@@ -1001,18 +994,15 @@ const MODS = [
     {t:"done"}
   ]},
   {id:13, nm:"Vibrato & Ornements", em:"✨", col:"#a29bfe", xp:55, free:false, done:false, cat:"advanced", steps:[
-    {t:"video", nm:"Vibrato — Technique professionnelle", dur:"15:00", em:"✨", url:"https://youtu.be/aD76NgfuXPk"},
     {t:"tech", nm:"Maîtriser le vibrato naturel", em:"✨",
       desc:"Le vibrato est une légère oscillation de la hauteur qui donne chaleur et expression à la voix. Il ne se force jamais — il vient de la relaxation.",
       list:["Chantez une note tenue longue sur AH","Relâchez totalement la gorge, la mâchoire, les épaules","Laissez la voix osciller naturellement","Ne pincez JAMAIS la gorge pour créer un vibrato artificiel","Avec la pratique, le vibrato vient tout seul","Pratiquez 5 min/jour — résultats en 3-4 semaines"],
       syls:["AH~","OH~","EE~","AY~"], cols:["#a29bfe","#6c5ce7","#5f4fcf","#4a3bb8"]},
     {t:"metronome"}, {t:"recorder"},
     {t:"quiz", q:"Comment obtenir un vibrato naturel ?", opts:["En contractant la gorge","En relâchant totalement la gorge","En respirant très rapidement"], ok:1},
-    {t:"video", nm:"Vibrato et ornements", url:"https://youtu.be/aD76NgfuXPk"},
     {t:"done"}
   ]},
   {id:14, nm:"Articulation & Diction", em:"👅", col:"#e67e22", xp:45, free:false, done:false, cat:"advanced", steps:[
-    {t:"video", nm:"Articulation & Diction — Masterclass", dur:"11:45", em:"👅", url:"https://youtube.com/playlist?list=PLTwZJolHuy3z925i_rTU7UhTMR3pJktff"},
     {t:"tech", nm:"Exercices d'articulation", em:"👅",
       desc:"Une bonne articulation rend la voix intelligible et puissante. Elle s'obtient par des exercices réguliers des lèvres, de la langue et de la mâchoire.",
       list:["Virelangue : 'Les chaussettes de l'archiduchesse' x3 lentement","Exercice labial : exagérez les mouvements des lèvres","Exercice lingual : faites claquer la langue au palais","Mâchoire : bâillez exagérément puis chantez","Phrase de diction : 'Papa Panda Papote Paresseusement'","Augmentez progressivement la vitesse en restant clair"],
@@ -1022,14 +1012,12 @@ const MODS = [
     {t:"done"}
   ]},
   {id:15, nm:"Performance scénique", em:"🌟", col:"#f39c12", xp:60, free:false, done:false, cat:"advanced", steps:[
-    {t:"video", nm:"Performance & présence scénique", dur:"20:00", em:"🌟", url:"https://youtu.be/YYKAAxgqH8k"},
     {t:"tech", nm:"La présence sur scène", em:"🌟",
       desc:"La voix technique ne suffit pas — la performance scénique est l'art de connecter avec le public. Posture, expression, émotion et contact visuel font la différence.",
       list:["Posture : dos droit, épaules relâchées, pieds stables","Regard : maintenez un contact visuel avec le public","Expression : laissez les émotions de la chanson vous traverser","Gestuelle : les gestes doivent être naturels et amplifier le texte","Entrée et sortie de scène : pratiquez-les autant que la chanson","Répétition : enregistrez-vous en vidéo et analysez"],
       syls:["HAA !","OH !","AYE !","WOW !"], cols:["#f39c12","#e67e22","#d35400","#c0392b"]},
     {t:"metronome"}, {t:"recorder"},
     {t:"quiz", q:"Qu'est-ce qui fait la différence entre un bon chanteur et un grand performer ?", opts:["Le volume de la voix","La connexion avec le public — posture, expression, émotions","La vitesse des gammes"], ok:1},
-    {t:"video", nm:"Performance scénique", url:"https://youtu.be/YYKAAxgqH8k"},
     {t:"done"}
   ]},
 
@@ -1321,18 +1309,6 @@ const MODS = [
 
 ,
   {id:51, nm:"Masterclass vidéo — Toutes les leçons", em:"🎬", col:"#ff4757", xp:100, free:false, done:false, cat:"advanced", steps:[
-    {t:"video", nm:"Échauffement vocal — Chest to Head Voice", url:"https://youtu.be/Xxedcl77oK4", desc:"Masterclass complète sur l'échauffement vocal."},
-    {t:"video", nm:"Projection et résonance vocale", url:"https://youtu.be/CT8x2bdOtD8", desc:"Apprenez à projeter votre voix sans effort."},
-    {t:"video", nm:"Résonance et timbre vocal", url:"https://youtu.be/3eT2NoTYwNA", desc:"Développez la richesse de votre voix."},
-    {t:"video", nm:"Registres vocaux et Mix Voice", url:"https://youtu.be/EETRU_O0_pY", desc:"Maîtrisez la transition entre les registres."},
-    {t:"video", nm:"Vibrato et ornements vocaux", url:"https://youtu.be/aD76NgfuXPk", desc:"Développez un vibrato naturel."},
-    {t:"video", nm:"Performance scénique", url:"https://youtu.be/YYKAAxgqH8k", desc:"Présence scénique et expression."},
-    {t:"video", nm:"Solfège complet — Playlist", url:"https://youtube.com/playlist?list=PLTwZJolHuy3yzunwTrt1dGzBhv17YdfWA", desc:"Série complète de leçons de solfège."},
-    {t:"video", nm:"Gammes vocales avancées — Playlist", url:"https://youtube.com/playlist?list=PLTwZJolHuy3wMeQq-V-oYcifEtsXlxTrM", desc:"Gammes pour développer votre tessiture."},
-    {t:"video", nm:"Articulation et diction — Playlist", url:"https://youtube.com/playlist?list=PLTwZJolHuy3z925i_rTU7UhTMR3pJktff", desc:"Maîtrisez la diction claire."},
-    {t:"video", nm:"Belting technique — Playlist", url:"https://youtube.com/playlist?list=PLTwZJolHuy3zhKYFk7Tz_QGugDMBoM_VF", desc:"Apprenez le belting en toute sécurité."},
-    {t:"video", nm:"Intonation parfaite — Playlist", url:"https://youtube.com/playlist?list=PLPPNjeXeX48jDKRw9SdT_4bopSTIorz7L", desc:"Chantez parfaitement juste."},
-    {t:"video", nm:"Masterclass complète — Playlist", url:"https://youtube.com/playlist?list=PLTwZJolHuy3wA-EawTBRpmO1Fb2j03u1U", desc:"La collection complète des masterclasses."},
     {t:"done"}
   ]}
 ,
