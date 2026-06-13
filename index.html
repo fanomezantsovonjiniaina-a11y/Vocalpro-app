@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="monetag" content="a4ea81054d03a1c130181d1c04e4c547">
-<!-- Monetag In-Page Push only — no popunder/vignette -->
-<script async="async" data-cfasync="false" src="//thubanoa.com/1?z=11133588"></script>
+<script src="https://quge5.com/88/tag.min.js" data-zone="11133588" data-cfasync="false" async></script>
 <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
 <title>VocalPro — Coach vocal complet</title>
 <meta name="description" content="VocalPro — Coach vocal professionnel gratuit. Exercices d'échauffement, technique vocale, solfège et plus. Améliorez votre voix dès aujourd'hui !">
@@ -4760,12 +4759,8 @@ function buildJeux() {
   setTimeout(function() {
     var area = document.getElementById('game-area');
     var screen = document.getElementById('jeux');
-    if (area && screen) {
-      var aRect = area.getBoundingClientRect();
-      var sRect = screen.getBoundingClientRect();
-      screen.scrollTop += (aRect.top - sRect.top) - 12;
-    }
-  }, 100);
+    if (area && screen) screen.scrollTop = area.offsetTop - 10;
+  }, 50);
 }
 
 // ===== GAME 4: SPEED VOCAL =====
