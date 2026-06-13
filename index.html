@@ -570,6 +570,21 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);heig
 .levelup-confetti{font-size:48px;animation:levelupBounce .6s ease infinite alternate}
 @keyframes levelupBounce{0%{transform:scale(1) rotate(-5deg)}100%{transform:scale(1.2) rotate(5deg)}}
 
+/* GAME INTRO CARD */
+.game-intro{display:flex;flex-direction:column;align-items:center;gap:0;text-align:center;padding:8px 0}
+.game-intro-icon{font-size:64px;margin-bottom:12px;filter:drop-shadow(0 0 20px rgba(255,79,109,.4));animation:floatIcon 2s ease-in-out infinite alternate}
+@keyframes floatIcon{0%{transform:translateY(0)}100%{transform:translateY(-8px)}}
+.game-intro-title{font-family:'Playfair Display',serif;font-size:24px;font-weight:800;margin-bottom:6px;background:linear-gradient(135deg,var(--text),var(--p2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.game-intro-sub{font-size:12px;color:var(--b1);font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:16px}
+.game-intro-rules{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:14px 16px;width:100%;margin-bottom:18px}
+.game-intro-rule{display:flex;align-items:flex-start;gap:10px;text-align:left;margin-bottom:10px;font-size:13px;line-height:1.5;color:var(--text)}
+.game-intro-rule:last-child{margin-bottom:0}
+.game-intro-rule-icon{font-size:18px;flex-shrink:0;margin-top:1px}
+.game-intro-level{display:flex;align-items:center;justify-content:center;gap:8px;font-size:12px;color:var(--text2);margin-bottom:18px}
+.game-intro-level span{background:rgba(255,215,0,.12);border:1px solid rgba(255,215,0,.25);border-radius:20px;padding:4px 12px;color:var(--gold);font-weight:700}
+.game-intro-start{width:100%;padding:16px;border-radius:18px;background:linear-gradient(135deg,var(--a1),var(--a2));border:none;color:#fff;font-family:'Outfit',sans-serif;font-size:17px;font-weight:900;cursor:pointer;letter-spacing:.3px;box-shadow:0 8px 28px rgba(255,79,109,.45);transition:transform .15s,box-shadow .15s}
+.game-intro-start:active{transform:scale(.96);box-shadow:0 4px 14px rgba(255,79,109,.3)}
+
 /* SPEED VOCAL */
 .speed-seq{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:12px 0 16px}
 .speed-note{padding:11px 16px;border-radius:14px;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.09);font-size:16px;font-weight:900;color:var(--text2);transition:.2s;min-width:52px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.3)}
@@ -4352,7 +4367,7 @@ function onCorrectAnswer() {
   }
 
   if (_forceGameMode === 'auto') getNextAutoType();
-  setTimeout(function() { buildJeux(); }, 1400);
+  setTimeout(function() { window._skipIntro = true; buildJeux(); window._skipIntro = false; }, 1400);
 }
 
 function onWrongAnswer(correctAnswer) {
@@ -4371,7 +4386,7 @@ function onWrongAnswer(correctAnswer) {
   shakeGameArea();
   playFeedbackSound('wrong');
   if (_forceGameMode === 'auto') getNextAutoType();
-  setTimeout(function() { buildJeux(); }, 1800);
+  setTimeout(function() { window._skipIntro = true; buildJeux(); window._skipIntro = false; }, 1800);
 }
 
 function onTimeout(correctAnswer) {
@@ -4388,7 +4403,7 @@ function onTimeout(correctAnswer) {
   document.querySelectorAll('.game-opt').forEach(function(b) { b.classList.add('disabled'); });
   shakeGameArea();
   playFeedbackSound('wrong');
-  setTimeout(function() { buildJeux(); }, 2000);
+  setTimeout(function() { window._skipIntro = true; buildJeux(); window._skipIntro = false; }, 2000);
 }
 
 function showLevelUp(mode) {
@@ -4794,6 +4809,43 @@ function getNextAutoType() {
   return _autoGameType;
 }
 
+var _GAME_INFO = {
+  note:        { icon:'🎵', title:'Identification de Note', sub:'Oreille musicale', rules:[['👂','Écoutez attentivement la note jouée'],['🎯','Choisissez la bonne note parmi les réponses'],['⚡','Plus vite vous répondez, mieux c\'est']] },
+  rhythm:      { icon:'🥁', title:'Jeu de Rythme', sub:'Sens du rythme', rules:[['▶️','Écoutez le rythme une fois'],['🥁','Reproduisez-le en tapant le bouton TAP'],['🎯','Soyez précis dans le timing']] },
+  speed:       { icon:'⚡', title:'Speed Vocal', sub:'Vitesse & réflexes', rules:[['👁️','Mémorisez la séquence de notes affichée'],['⚡','Tapez les notes dans le bon ordre le plus vite possible'],['🏆','Votre vitesse est mesurée en secondes']] },
+  melody:      { icon:'🎶', title:'Mémoire Mélodique', sub:'Mémoire musicale', rules:[['🎵','Écoutez la mélodie jouée automatiquement'],['🧠','Mémorisez l\'ordre des notes'],['✅','Retrouvez les notes dans le bon ordre']] },
+  pitch:       { icon:'🎤', title:'Chantez la Note', sub:'Justesse vocale', rules:[['👀','Regardez la note à chanter'],['🎤','Appuyez sur le micro et chantez'],['🟢','Restez dans la zone verte pour valider']] },
+  chord:       { icon:'🎸', title:'Identification d\'Accord', sub:'Harmonie musicale', rules:[['👂','Écoutez l\'accord joué (plusieurs notes ensemble)'],['🎯','Identifiez le type d\'accord : Majeur, Mineur...'],['🧠','Chaque accord a une couleur émotionnelle différente']] },
+  battle:      { icon:'⚔️', title:'Battle Mode', sub:'Défi personnel', rules:[['🏁','Répondez le plus vite possible'],['🔥','Enchaînez les bonnes réponses pour un combo'],['🏆','Battez votre meilleur score !']] },
+  intervalle:  { icon:'🔀', title:'Intervalles', sub:'Distance entre notes', rules:[['👂','Écoutez deux notes jouées l\'une après l\'autre'],['📏','Identifiez la distance musicale entre elles'],['🎼','Ex: Do→Sol = Quinte, Do→Mi = Tierce']] },
+  simon:       { icon:'🔮', title:'Simon Musical', sub:'Mémoire séquentielle', rules:[['🔮','Écoutez et regardez la séquence s\'allumer'],['🧠','La séquence s\'allonge à chaque bonne réponse'],['👆','Reproduisez la séquence dans le même ordre']] },
+  rapidfire:   { icon:'🔥', title:'Rapid Fire', sub:'10 notes en rafale', rules:[['⚡','10 notes vont se jouer en rafale'],['🎯','Identifiez chaque note le plus rapidement possible'],['🏆','Votre score dépend de votre rapidité']] },
+  gamme:       { icon:'🎼', title:'Gamme Musicale', sub:'Reconnaissance de gammes', rules:[['👂','Écoutez la gamme jouée en montant'],['🎯','Identifiez le type : Majeure, Mineure, Pentatonique...'],['🧠','Chaque gamme a un son caractéristique']] },
+  graveaigu:   { icon:'📶', title:'Grave ou Aigu ?', sub:'Comparaison de hauteur', rules:[['👂','Deux notes vont être jouées l\'une après l\'autre'],['🔽🔼','Dites si la 2ème note est plus grave ou plus aiguë'],['⚡','Répondez vite !']] },
+  accordparfait:{ icon:'🎸', title:'Accord Parfait', sub:'Majeur · Mineur · Diminué', rules:[['👂','Écoutez l\'accord joué'],['😊','Majeur = joyeux · Mineur = mélancolique · Diminué = tendu'],['🎯','Choisissez le bon type d\'accord']] },
+  oabsolue:    { icon:'🦻', title:'Oreille Absolue', sub:'Sans indice visuel', rules:[['🙈','Aucune aide visuelle : faites confiance à votre oreille'],['👂','Identifiez la note jouée uniquement à l\'oreille'],['🏆','Le défi ultime de la musique']] },
+  duelnotes:   { icon:'⚔️', title:'Duel de Notes', sub:'2 notes, 1 gagnante', rules:[['⚔️','Deux notes vont se jouer en duel'],['🎯','Identifiez laquelle des deux a été jouée en dernier'],['⚡','Soyez rapide et précis']] }
+};
+
+function showGameIntro(type, onStart) {
+  if (window._skipIntro) return onStart();
+  var info = _GAME_INFO[type] || _GAME_INFO.note;
+  var area = document.getElementById('game-area');
+  if (!area) return onStart();
+  var rulesHtml = info.rules.map(function(r) {
+    return '<div class="game-intro-rule"><span class="game-intro-rule-icon">' + r[0] + '</span><span>' + r[1] + '</span></div>';
+  }).join('');
+  area.innerHTML = '<div class="game-intro">'
+    + '<div class="game-intro-icon">' + info.icon + '</div>'
+    + '<div class="game-intro-title">' + info.title + '</div>'
+    + '<div class="game-intro-sub">' + info.sub + '</div>'
+    + '<div class="game-intro-level"><span>' + levelLabel(_gameLevel) + '</span></div>'
+    + '<div class="game-intro-rules">' + rulesHtml + '</div>'
+    + '<button class="game-intro-start" id="game-intro-start-btn">▶ Commencer</button>'
+    + '</div>';
+  document.getElementById('game-intro-start-btn').onclick = onStart;
+}
+
 function buildJeux() {
   stopGameTimer();
   if (rhythmTimeout) { clearTimeout(rhythmTimeout); rhythmTimeout = null; }
@@ -4810,38 +4862,29 @@ function buildJeux() {
     if (b) b.classList.toggle('active', x === diff);
   });
 
-  if (type === 'note') {
-    buildNoteGame(diff);
-  } else if (type === 'rhythm') {
-    buildRhythmGame(diff);
-  } else if (type === 'speed') {
-    buildSpeedGame(diff);
-  } else if (type === 'melody') {
-    buildMelodyGame(diff);
-  } else if (type === 'pitch') {
-    buildPitchGame(diff);
-  } else if (type === 'chord') {
-    buildChordGame(diff);
-  } else if (type === 'battle') {
-    buildBattleGame(diff);
-  } else if (type === 'intervalle') {
-    buildIntervalleGame(diff);
-  } else if (type === 'simon') {
-    buildSimonGame(diff);
-  } else if (type === 'rapidfire') {
-    buildRapidFireGame(diff);
-  } else if (type === 'gamme') {
-    buildGammeGame(diff);
-  } else if (type === 'graveaigu') {
-    buildGraveAiguGame(diff);
-  } else if (type === 'accordparfait') {
-    buildAccordParfaitGame(diff);
-  } else if (type === 'oabsolue') {
-    buildOreillAbsolueGame(diff);
-  } else if (type === 'duelnotes') {
-    buildDuelNotesGame(diff);
+  var builders = {
+    note: function(){ buildNoteGame(diff); },
+    rhythm: function(){ buildRhythmGame(diff); },
+    speed: function(){ buildSpeedGame(diff); },
+    melody: function(){ buildMelodyGame(diff); },
+    pitch: function(){ buildPitchGame(diff); },
+    chord: function(){ buildChordGame(diff); },
+    battle: function(){ buildBattleGame(diff); },
+    intervalle: function(){ buildIntervalleGame(diff); },
+    simon: function(){ buildSimonGame(diff); },
+    rapidfire: function(){ buildRapidFireGame(diff); },
+    gamme: function(){ buildGammeGame(diff); },
+    graveaigu: function(){ buildGraveAiguGame(diff); },
+    accordparfait: function(){ buildAccordParfaitGame(diff); },
+    oabsolue: function(){ buildOreillAbsolueGame(diff); },
+    duelnotes: function(){ buildDuelNotesGame(diff); }
+  };
+  var builder = builders[type] || builders.note;
+  var skipIntro = (type === 'auto' && window._gameCombo > 0);
+  if (skipIntro) {
+    builder();
   } else {
-    buildNoteGame(diff);
+    showGameIntro(type, builder);
   }
 
   // Hide selector grid, show game fullscreen
