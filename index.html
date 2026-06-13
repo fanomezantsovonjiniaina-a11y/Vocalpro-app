@@ -534,12 +534,19 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);heig
 .game-timer-bar{height:7px;background:rgba(255,255,255,.07);border-radius:4px;margin-bottom:16px;overflow:hidden;box-shadow:inset 0 1px 2px rgba(0,0,0,.3)}
 .game-timer-fill{height:100%;border-radius:4px;transition:width .1s linear,background-color .5s;background:linear-gradient(90deg,#00d4b4,#22d773)}
 .game-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px}
-.game-opt{padding:20px 8px;background:linear-gradient(145deg,rgba(22,25,55,.95),rgba(28,32,68,.95));border:1.5px solid rgba(255,255,255,.1);border-radius:20px;font-family:'Outfit',sans-serif;font-size:19px;font-weight:900;color:#fff;cursor:pointer;text-align:center;transition:all .2s cubic-bezier(.34,1.56,.64,1);box-shadow:0 4px 20px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.1);position:relative;overflow:hidden}
-.game-opt::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.04),transparent);pointer-events:none}
-.game-opt:active{transform:scale(.91)!important;box-shadow:0 2px 8px rgba(0,0,0,.4)}
-.game-opt.correct{background:linear-gradient(145deg,#00a896,#00c9b1);border-color:#00d4b4;color:#fff;box-shadow:0 0 32px rgba(0,212,180,.5),0 4px 16px rgba(0,0,0,.3);transform:scale(1.04)}
-.game-opt.wrong{background:linear-gradient(145deg,#c0262f,#e63946);border-color:#ff4f6d;color:#fff;box-shadow:0 0 32px rgba(255,79,109,.45),0 4px 16px rgba(0,0,0,.3)}
-.game-opt.disabled{pointer-events:none;opacity:.4}
+.game-opt{padding:22px 8px;border:2px solid rgba(255,255,255,.15);border-radius:22px;font-family:'Outfit',sans-serif;font-size:20px;font-weight:900;color:#fff;cursor:pointer;text-align:center;transition:all .2s cubic-bezier(.34,1.56,.64,1);box-shadow:0 6px 20px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.15);position:relative;overflow:hidden}
+.game-opt::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.07),transparent);pointer-events:none}
+.game-opt:active{transform:scale(.89)!important;box-shadow:0 2px 8px rgba(0,0,0,.5)}
+.game-opt.c0{background:linear-gradient(145deg,#1a3a6e,#0d2450);border-color:#4a9eff}
+.game-opt.c1{background:linear-gradient(145deg,#3a1a5c,#220d40);border-color:#a855f7}
+.game-opt.c2{background:linear-gradient(145deg,#0d3d2a,#062818);border-color:#22d773}
+.game-opt.c3{background:linear-gradient(145deg,#3d2a0a,#281804);border-color:#ffd700}
+.game-opt.c4{background:linear-gradient(145deg,#3d1a1a,#280a0a);border-color:#ff4f6d}
+.game-opt.c5{background:linear-gradient(145deg,#0d3540,#062228);border-color:#00d4e0}
+.game-opt.c6{background:linear-gradient(145deg,#2a3d0a,#182806);border-color:#a8e063}
+.game-opt.correct{background:linear-gradient(145deg,#006e60,#00a896)!important;border-color:#00d4b4!important;color:#fff;box-shadow:0 0 36px rgba(0,212,180,.6),0 4px 16px rgba(0,0,0,.3)!important;transform:scale(1.05)!important}
+.game-opt.wrong{background:linear-gradient(145deg,#8b1520,#c0262f)!important;border-color:#ff4f6d!important;color:#fff;box-shadow:0 0 36px rgba(255,79,109,.5),0 4px 16px rgba(0,0,0,.3)!important}
+.game-opt.disabled{pointer-events:none;opacity:.35}
 .game-feedback{text-align:center;font-size:15px;font-weight:900;min-height:26px;margin-bottom:10px;transition:all .25s;letter-spacing:.2px}
 .game-feedback.correct{color:#00d4b4;text-shadow:0 0 12px rgba(0,212,180,.5)}
 .game-feedback.wrong{color:#ff4f6d;text-shadow:0 0 12px rgba(255,79,109,.4)}
@@ -1035,6 +1042,26 @@ document.addEventListener('DOMContentLoaded', function() {
       <div class="gs-card-icon">🎼</div>
       <div class="gs-card-name">Gamme</div>
       <div class="gs-card-desc">Identifiez la gamme jouée</div>
+    </div>
+    <div class="gs-card intervalle" id="gs-graveaigu" onclick="selectGameMode('graveaigu')">
+      <div class="gs-card-icon">📶</div>
+      <div class="gs-card-name">Grave ou Aigu</div>
+      <div class="gs-card-desc">Comparez deux notes</div>
+    </div>
+    <div class="gs-card chord" id="gs-accordparfait" onclick="selectGameMode('accordparfait')">
+      <div class="gs-card-icon">🎸</div>
+      <div class="gs-card-name">Accord Parfait</div>
+      <div class="gs-card-desc">Majeur, Mineur ou Diminué?</div>
+    </div>
+    <div class="gs-card battle" id="gs-oabsolue" onclick="selectGameMode('oabsolue')">
+      <div class="gs-card-icon">🦻</div>
+      <div class="gs-card-name">Oreille Absolue</div>
+      <div class="gs-card-desc">Identifiez sans indice</div>
+    </div>
+    <div class="gs-card simon" id="gs-duelnotes" onclick="selectGameMode('duelnotes')">
+      <div class="gs-card-icon">⚔️</div>
+      <div class="gs-card-name">Duel de Notes</div>
+      <div class="gs-card-desc">2 notes, laquelle est jouée?</div>
     </div>
   </div>
   <!-- Game area -->
@@ -4403,8 +4430,8 @@ function buildNoteGame(diff) {
     + '<div class="game-timer-bar"><div class="game-timer-fill" style="width:0%"></div></div>'
     + '<div class="game-feedback"></div>'
     + '<div class="game-opts" id="game-opts" style="' + colsCls + '">'
-    + choices.map(function(c) {
-        return '<button class="game-opt" onclick="gameNoteAnswer(this,\'' + c + '\',\'' + correct + '\',' + timeLimit + ')">' + c + '</button>';
+    + choices.map(function(c,i) {
+        return '<button class="game-opt c'+i%7+'" onclick="gameNoteAnswer(this,\'' + c + '\',\'' + correct + '\',' + timeLimit + ')">' + c + '</button>';
       }).join('')
     + '</div>'
     + '<div style="text-align:center;font-size:11px;color:var(--text2);margin-top:8px">⏱ ' + timeLimit + 's</div>';
@@ -4626,8 +4653,8 @@ function buildIntervalGame(level) {
     + '<div class="game-timer-bar"><div class="game-timer-fill" style="width:0%"></div></div>'
     + '<div class="game-feedback"></div>'
     + '<div class="game-opts" style="grid-template-columns:1fr 1fr" id="game-opts">'
-    + choices.map(function(c) {
-        return '<button class="game-opt" onclick="gameIntervalAnswer(this,\'' + c.name + '\',\'' + correct.name + '\',' + timeLimit + ')">' + c.name + '</button>';
+    + choices.map(function(c,i) {
+        return '<button class="game-opt c'+i%7+'" onclick="gameIntervalAnswer(this,\'' + c.name + '\',\'' + correct.name + '\',' + timeLimit + ')">' + c.name + '</button>';
       }).join('')
     + '</div>'
     + '<div style="text-align:center;font-size:11px;color:var(--text2);margin-top:8px">⏱ ' + Math.round(timeLimit) + 's · Niv. ' + level + '/100</div>';
@@ -4690,7 +4717,7 @@ DIFF.gamme = {
 // ===== GAME MODE SELECTOR =====
 var _forceGameMode = 'auto';
 var _autoGameType = 'note';
-var _autoGameTypes = ['note','rhythm','speed','melody','pitch','chord','battle','intervalle','simon','rapidfire','gamme'];
+var _autoGameTypes = ['note','rhythm','speed','melody','pitch','chord','battle','intervalle','simon','rapidfire','gamme','graveaigu','accordparfait','oabsolue','duelnotes'];
 var _autoGameIdx = 0;
 
 window.showGameSelector = function() {
@@ -4762,6 +4789,14 @@ function buildJeux() {
     buildRapidFireGame(diff);
   } else if (type === 'gamme') {
     buildGammeGame(diff);
+  } else if (type === 'graveaigu') {
+    buildGraveAiguGame(diff);
+  } else if (type === 'accordparfait') {
+    buildAccordParfaitGame(diff);
+  } else if (type === 'oabsolue') {
+    buildOreillAbsolueGame(diff);
+  } else if (type === 'duelnotes') {
+    buildDuelNotesGame(diff);
   } else {
     buildNoteGame(diff);
   }
@@ -4810,8 +4845,8 @@ function buildSpeedGame(diff) {
     return '<div class="speed-note' + (i===0?' current':'') + '">' + n + '</div>';
   }).join('');
 
-  var notesBtns = allNotes.map(function(n) {
-    return '<button class="game-opt" style="font-size:15px;padding:12px 6px" onclick="speedTap(\'' + n + '\')">' + n + '</button>';
+  var notesBtns = allNotes.map(function(n,i) {
+    return '<button class="game-opt c'+i%7+'" style="font-size:15px;padding:12px 6px" onclick="speedTap(\'' + n + '\')">' + n + '</button>';
   }).join('');
 
   var area = document.getElementById('game-area');
@@ -4914,8 +4949,8 @@ function buildMelodyGame(diff) {
     return '<div class="melody-slot" id="mslot-' + i + '"></div>';
   }).join('');
 
-  var notesBtns = allNotes.map(function(n) {
-    return '<button class="game-opt" style="font-size:13px;padding:10px 4px" onclick="melodyTap(\'' + n + '\')">' + n + '</button>';
+  var notesBtns = allNotes.map(function(n,i) {
+    return '<button class="game-opt c'+i%7+'" style="font-size:13px;padding:10px 4px" onclick="melodyTap(\'' + n + '\')">' + n + '</button>';
   }).join('');
 
   var area = document.getElementById('game-area');
@@ -5238,8 +5273,8 @@ function battleNextRound() {
   battleArea.innerHTML = '<button class="game-play-btn" id="battle-play-btn" onclick="battlePlayNote()" style="width:70px;height:70px;font-size:26px;margin-bottom:8px">🎵</button>'
     + '<div class="game-timer-bar" style="margin-bottom:8px"><div class="game-timer-fill" style="width:0%"></div></div>'
     + '<div class="game-opts" id="battle-opts">'
-    + choices.map(function(c) {
-        return '<button class="game-opt" onclick="battleAnswer(\'' + c + '\',\'' + correct + '\')">' + c + '</button>';
+    + choices.map(function(c,i) {
+        return '<button class="game-opt c'+i%7+'" onclick="battleAnswer(\'' + c + '\',\'' + correct + '\')">' + c + '</button>';
       }).join('')
     + '</div>';
 }
@@ -5344,8 +5379,8 @@ function buildIntervalleGame(diff) {
   var choices = shuffle(pool.filter(function(x){return x!==correctName;})).slice(0,3).concat([correctName]);
   choices = shuffle(choices);
 
-  var opts = choices.map(function(c){
-    return '<button class="game-opt" style="font-size:13px;padding:14px 6px" onclick="intervalleAnswer(\''+c+'\')">'+c+'</button>';
+  var opts = choices.map(function(c,i){
+    return '<button class="game-opt c'+i%7+'" style="font-size:13px;padding:14px 6px" onclick="intervalleAnswer(\''+c+'\')">'+c+'</button>';
   }).join('');
 
   var area = document.getElementById('game-area');
@@ -5507,7 +5542,7 @@ function rfNextQuestion(){
   var area = document.getElementById('rf-question-area');
   if(!area) return;
   area.innerHTML = '<div class="game-opts">'
-    +choices.map(function(c){return '<button class="game-opt" onclick="rfAnswer(\''+c+'\')">'+c+'</button>';}).join('')
+    +choices.map(function(c,i){return '<button class="game-opt c'+i%7+'" onclick="rfAnswer(\''+c+'\')">'+c+'</button>';}).join('')
     +'</div>';
 }
 window.rfAnswer = function(chosen){
@@ -5558,8 +5593,8 @@ function buildGammeGame(diff) {
   var choices = shuffle(availableGammes.filter(function(g){return g!==correctName;})).slice(0,Math.min(3,availableGammes.length-1)).concat([correctName]);
   choices = shuffle(choices);
 
-  var opts = choices.map(function(c){
-    return '<button class="game-opt" style="font-size:13px;padding:14px 6px" onclick="gammeAnswer(\''+c+'\')">'+c+'</button>';
+  var opts = choices.map(function(c,i){
+    return '<button class="game-opt c'+i%7+'" style="font-size:13px;padding:14px 6px" onclick="gammeAnswer(\''+c+'\')">'+c+'</button>';
   }).join('');
 
   var area = document.getElementById('game-area');
@@ -5591,6 +5626,169 @@ window.gammeAnswer = function(chosen){
   if(chosen===correct){ onCorrectAnswer(); }
   else { onWrongAnswer(correct); }
 };
+
+// ===== GRAVE OU AIGU GAME =====
+function buildGraveAiguGame(diff) {
+  var cfg = {facile:{time:8},moyen:{time:5},difficile:{time:3}}[diff]||{time:5};
+  var POOL = [{k:'Do3',f:130.81},{k:'Re3',f:146.83},{k:'Mi3',f:164.81},{k:'Fa3',f:174.61},{k:'Sol3',f:196},{k:'La3',f:220},{k:'Si3',f:246.94},{k:'Do4',f:261.63},{k:'Re4',f:293.66},{k:'Mi4',f:329.63},{k:'Fa4',f:349.23},{k:'Sol4',f:392},{k:'La4',f:440},{k:'Si4',f:493.88},{k:'Do5',f:523.25}];
+  var timeLimit = cfg.time;
+  var idx1 = Math.floor(Math.random()*POOL.length);
+  var idx2;
+  do { idx2 = Math.floor(Math.random()*POOL.length); } while(Math.abs(idx2-idx1)<2);
+  var p1 = POOL[idx1], p2 = POOL[idx2];
+  var correct = idx1 < idx2 ? p2 : p1;
+  window._gaPool = {p1:p1, p2:p2, correct:correct};
+  gameAnswered = false;
+  var choices = shuffle([p1,p2]);
+  var area = document.getElementById('game-area');
+  if(!area) return;
+  area.innerHTML = '<div class="game-type-badge">&#128310; Grave ou Aigu &middot; '+diffLabel(diff)+'</div>'
+    +'<div style="text-align:center;padding:10px 0 4px;color:var(--text2);font-size:13px">Quelle note est la plus <b style="color:var(--a3)">aigu&#235;</b> ?</div>'
+    +'<div style="display:flex;justify-content:center;gap:16px;margin:10px 0">'
+    +'<button class="game-play-btn" onclick="gaPlayNote(\'p1\')" style="font-size:13px;width:60px;height:60px">'+p1.k+'</button>'
+    +'<button class="game-play-btn" onclick="gaPlayNote(\'p2\')" style="font-size:13px;width:60px;height:60px">'+p2.k+'</button>'
+    +'</div>'
+    +'<div class="game-timer-bar"><div class="game-timer-fill" style="width:0%"></div></div>'
+    +'<div class="game-feedback"></div>'
+    +'<div class="game-opts" id="ga-opts">'
+    +choices.map(function(c,i){return '<button class="game-opt c'+i%7+'" onclick="gaAnswer(\''+c.k+'\')">'+c.k+'</button>';}).join('')
+    +'</div>';
+  gaPlayNote('p1'); setTimeout(function(){gaPlayNote('p2');},700);
+  startGameTimer(timeLimit, function(){ gaAnswer(null); });
+}
+window.gaPlayNote = function(k) { var p=window._gaPool[k]; if(p) playGameNote(p.f,0.5); };
+window.gaAnswer = function(chosen) {
+  if(gameAnswered) return;
+  var correct = window._gaPool.correct.k;
+  document.querySelectorAll('#ga-opts .game-opt').forEach(function(b){
+    b.classList.add('disabled');
+    if(b.textContent===correct) b.classList.add('correct');
+    else if(b.textContent===chosen) b.classList.add('wrong');
+  });
+  if(chosen===correct){ onCorrectAnswer(); } else { onWrongAnswer(correct); }
+};
+
+// ===== ACCORD PARFAIT GAME =====
+function buildAccordParfaitGame(diff) {
+  var cfg = {facile:{time:10},moyen:{time:6},difficile:{time:4}}[diff]||{time:6};
+  var allTypes = [{name:'Majeur',intervals:[0,4,7]},{name:'Mineur',intervals:[0,3,7]},{name:'Diminué',intervals:[0,3,6]},{name:'Augmenté',intervals:[0,4,8]}];
+  var types = diff==='facile' ? allTypes.slice(0,2) : allTypes;
+  var chord = types[Math.floor(Math.random()*types.length)];
+  var rootFreqs = [261.63,293.66,329.63,349.23,392,440,493.88];
+  var rootNames = ['Do','Ré','Mi','Fa','Sol','La','Si'];
+  var ri = Math.floor(Math.random()*rootFreqs.length);
+  var rootF = rootFreqs[ri], rootN = rootNames[ri];
+  var timeLimit = cfg.time;
+  window._apChord = chord; window._apRootF = rootF;
+  gameAnswered = false;
+  var choices = shuffle(types.map(function(t){return t.name;}).filter(function(n){return n!==chord.name;})).slice(0,3).concat([chord.name]);
+  choices = shuffle(choices);
+  var area = document.getElementById('game-area');
+  if(!area) return;
+  area.innerHTML = '<div class="game-type-badge">&#127928; Accord Parfait &middot; '+diffLabel(diff)+'</div>'
+    +'<div style="text-align:center;padding:8px 0 4px;color:var(--text2);font-size:13px">Quel type d\'accord entendez-vous ? (racine: <b>'+rootN+'</b>)</div>'
+    +'<button class="game-play-btn" id="ap-play" onclick="apPlay()" style="margin:10px auto;display:block">&#127925;</button>'
+    +'<div class="game-timer-bar"><div class="game-timer-fill" style="width:0%"></div></div>'
+    +'<div class="game-feedback"></div>'
+    +'<div class="game-opts" id="ap-opts">'
+    +choices.map(function(c,i){return '<button class="game-opt c'+i%7+'" onclick="apAnswer(\''+c+'\')">'+c+'</button>';}).join('')
+    +'</div>';
+  apPlay();
+  startGameTimer(timeLimit, function(){ apAnswer(null); });
+}
+window.apPlay = function() {
+  var f=window._apRootF, iv=window._apChord.intervals;
+  iv.forEach(function(semi,i){ setTimeout(function(){ playGameNote(f*Math.pow(2,semi/12),0.5); },i*100); });
+};
+window.apAnswer = function(chosen) {
+  if(gameAnswered) return;
+  var correct = window._apChord.name;
+  document.querySelectorAll('#ap-opts .game-opt').forEach(function(b){
+    b.classList.add('disabled');
+    if(b.textContent===correct) b.classList.add('correct');
+    else if(b.textContent===chosen) b.classList.add('wrong');
+  });
+  if(chosen===correct){ onCorrectAnswer(); } else { onWrongAnswer(correct); }
+};
+
+// ===== OREILLE ABSOLUE GAME =====
+function buildOreillAbsolueGame(diff) {
+  var pools = {
+    facile:[{n:'Do',f:261.63},{n:'Mi',f:329.63},{n:'Sol',f:392},{n:'La',f:440}],
+    moyen:[{n:'Do',f:261.63},{n:'Ré',f:293.66},{n:'Mi',f:329.63},{n:'Fa',f:349.23},{n:'Sol',f:392},{n:'La',f:440},{n:'Si',f:493.88}],
+    difficile:[{n:'Do',f:261.63},{n:'Do#',f:277.18},{n:'Ré',f:293.66},{n:'Ré#',f:311.13},{n:'Mi',f:329.63},{n:'Fa',f:349.23},{n:'Fa#',f:369.99},{n:'Sol',f:392},{n:'Sol#',f:415.30},{n:'La',f:440},{n:'La#',f:466.16},{n:'Si',f:493.88}]
+  };
+  var times = {facile:12,moyen:7,difficile:4};
+  var pool = pools[diff]||pools.moyen;
+  var timeLimit = times[diff]||7;
+  var pick = pool[Math.floor(Math.random()*pool.length)];
+  window._oaPick = pick;
+  gameAnswered = false;
+  var choices = shuffle(pool.filter(function(p){return p.n!==pick.n;})).slice(0,3).concat([pick]);
+  choices = shuffle(choices);
+  var area = document.getElementById('game-area');
+  if(!area) return;
+  area.innerHTML = '<div class="game-type-badge">&#129355; Oreille Absolue &middot; '+diffLabel(diff)+'</div>'
+    +'<div style="text-align:center;padding:8px 0 4px;color:var(--text2);font-size:13px">Quelle note entendez-vous ?</div>'
+    +'<button class="game-play-btn" id="oa-play" onclick="oaPlay()" style="margin:10px auto;display:block">&#127925;</button>'
+    +'<div class="game-timer-bar"><div class="game-timer-fill" style="width:0%"></div></div>'
+    +'<div class="game-feedback"></div>'
+    +'<div class="game-opts" id="oa-opts">'
+    +choices.map(function(c,i){return '<button class="game-opt c'+i%7+'" onclick="oaAnswer(\''+c.n+'\')">'+c.n+'</button>';}).join('')
+    +'</div>';
+  oaPlay();
+  startGameTimer(timeLimit, function(){ oaAnswer(null); });
+}
+window.oaPlay = function() { if(window._oaPick) playGameNote(window._oaPick.f, 0.6); };
+window.oaAnswer = function(chosen) {
+  if(gameAnswered) return;
+  var correct = window._oaPick.n;
+  document.querySelectorAll('#oa-opts .game-opt').forEach(function(b){
+    b.classList.add('disabled');
+    if(b.textContent===correct) b.classList.add('correct');
+    else if(b.textContent===chosen) b.classList.add('wrong');
+  });
+  if(chosen===correct){ onCorrectAnswer(); } else { onWrongAnswer(correct); }
+};
+
+// ===== DUEL DE NOTES GAME =====
+function buildDuelNotesGame(diff) {
+  var cfg = {facile:{time:8},moyen:{time:5},difficile:{time:3}}[diff]||{time:5};
+  var POOL = [{n:'Do',f:261.63},{n:'Ré',f:293.66},{n:'Mi',f:329.63},{n:'Fa',f:349.23},{n:'Sol',f:392},{n:'La',f:440},{n:'Si',f:493.88},{n:'Do5',f:523.25},{n:'Ré5',f:587.33},{n:'Mi5',f:659.25}];
+  var timeLimit = cfg.time;
+  var idx = Math.floor(Math.random()*POOL.length);
+  var correct = POOL[idx];
+  var otherIdx;
+  do { otherIdx = Math.floor(Math.random()*POOL.length); } while(otherIdx===idx);
+  var other = POOL[otherIdx];
+  window._dnCorrect = correct;
+  gameAnswered = false;
+  var choices = shuffle([correct, other]);
+  var area = document.getElementById('game-area');
+  if(!area) return;
+  area.innerHTML = '<div class="game-type-badge">&#9876;&#65039; Duel de Notes &middot; '+diffLabel(diff)+'</div>'
+    +'<div style="text-align:center;padding:8px 0 4px;color:var(--text2);font-size:13px">Quelle note a &#233;t&#233; jou&#233;e ?</div>'
+    +'<button class="game-play-btn" id="dn-play" onclick="dnPlay()" style="margin:10px auto;display:block">&#127925;</button>'
+    +'<div class="game-timer-bar"><div class="game-timer-fill" style="width:0%"></div></div>'
+    +'<div class="game-feedback"></div>'
+    +'<div class="game-opts" id="dn-opts" style="grid-template-columns:1fr 1fr">'
+    +choices.map(function(c,i){return '<button class="game-opt c'+i%7+'" style="font-size:22px;padding:28px 8px" onclick="dnAnswer(\''+c.n+'\')">'+c.n+'</button>';}).join('')
+    +'</div>';
+  dnPlay();
+  startGameTimer(timeLimit, function(){ dnAnswer(null); });
+}
+window.dnPlay = function() { if(window._dnCorrect) playGameNote(window._dnCorrect.f, 0.6); };
+window.dnAnswer = function(chosen) {
+  if(gameAnswered) return;
+  var correct = window._dnCorrect.n;
+  document.querySelectorAll('#dn-opts .game-opt').forEach(function(b){
+    b.classList.add('disabled');
+    if(b.textContent===correct) b.classList.add('correct');
+    else if(b.textContent===chosen) b.classList.add('wrong');
+  });
+  if(chosen===correct){ onCorrectAnswer(); } else { onWrongAnswer(correct); }
+};
+
 
 </script>
 <!-- BOTTOM NAV -->
