@@ -4693,6 +4693,17 @@ var _autoGameType = 'note';
 var _autoGameTypes = ['note','rhythm','speed','melody','pitch','chord','battle','intervalle','simon','rapidfire','gamme'];
 var _autoGameIdx = 0;
 
+window.showGameSelector = function() {
+  var grid = document.getElementById('game-selector-grid');
+  var diffSel = document.querySelector('.diff-selector');
+  var area = document.getElementById('game-area');
+  if (grid) grid.style.display = '';
+  if (diffSel) diffSel.style.display = '';
+  if (area) area.innerHTML = '<div style="text-align:center;color:var(--text2);font-size:14px;padding:24px 0">Choisissez un jeu ci-dessus !</div>';
+  var screen = document.getElementById('jeux');
+  if (screen) screen.scrollTop = 0;
+};
+
 window.selectGameMode = function(mode) {
   _forceGameMode = mode;
   document.querySelectorAll('.gs-card').forEach(function(b) { b.classList.remove('active'); });
@@ -4755,12 +4766,26 @@ function buildJeux() {
     buildNoteGame(diff);
   }
 
-  // Scroll game area into view
+  // Hide selector grid, show game fullscreen
+  var grid = document.getElementById('game-selector-grid');
+  var diffSel = document.querySelector('.diff-selector');
+  if (grid) grid.style.display = 'none';
+  if (diffSel) diffSel.style.display = 'none';
+  // Add back button to header
+  var hdr = document.querySelector('.jeux-header');
+  var existBack = document.getElementById('jeux-back-btn');
+  if (hdr && !existBack) {
+    var backBtn = document.createElement('button');
+    backBtn.id = 'jeux-back-btn';
+    backBtn.onclick = function() { window.showGameSelector(); document.getElementById('jeux-back-btn').remove(); };
+    backBtn.style.cssText = 'background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:12px;color:var(--text);font-size:20px;width:38px;height:38px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0';
+    backBtn.textContent = '←';
+    hdr.insertBefore(backBtn, hdr.firstChild);
+  }
   setTimeout(function() {
-    var area = document.getElementById('game-area');
     var screen = document.getElementById('jeux');
-    if (area && screen) screen.scrollTop = area.offsetTop - 10;
-  }, 50);
+    if (screen) screen.scrollTop = 0;
+  }, 30);
 }
 
 // ===== GAME 4: SPEED VOCAL =====
