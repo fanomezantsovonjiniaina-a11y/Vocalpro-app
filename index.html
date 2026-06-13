@@ -963,23 +963,20 @@ document.addEventListener('DOMContentLoaded', function() {
     <div class="jeux-title">🎮 Jeux Vocaux</div>
     <div class="jeux-xp-chip" id="jeux-xp-chip">⚡ 0 XP</div>
   </div>
-  <!-- Difficulty selector -->
-  <div class="diff-selector">
-    <button class="diff-btn facile active" id="diff-facile" onclick="setDifficulty('facile')">
-      <span class="diff-icon">🟢</span>
-      <span class="diff-label">Facile</span>
-      <span class="diff-stars">★</span>
-    </button>
-    <button class="diff-btn moyen" id="diff-moyen" onclick="setDifficulty('moyen')">
-      <span class="diff-icon">🟡</span>
-      <span class="diff-label">Moyen</span>
-      <span class="diff-stars">★★</span>
-    </button>
-    <button class="diff-btn difficile" id="diff-difficile" onclick="setDifficulty('difficile')">
-      <span class="diff-icon">🔴</span>
-      <span class="diff-label">Difficile</span>
-      <span class="diff-stars">★★★</span>
-    </button>
+  <!-- Level display -->
+  <div style="padding:0 16px 12px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+      <span style="font-size:13px;font-weight:700;color:var(--gold)" id="level-display">Niv. 1 / 300</span>
+      <span style="font-size:11px;color:var(--text2)">+1 correct · -1 erreur</span>
+    </div>
+    <div style="height:8px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden">
+      <div id="level-bar-fill" style="height:100%;background:linear-gradient(90deg,var(--gold2),var(--a1));border-radius:4px;transition:width .4s ease;width:0.33%"></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;margin-top:4px">
+      <button onclick="setDifficulty('facile')" style="font-size:10px;padding:3px 8px;border-radius:6px;border:1px solid var(--brd2);background:rgba(255,255,255,.05);color:var(--text2);cursor:pointer">⭐ Niv.1</button>
+      <button onclick="setDifficulty('moyen')" style="font-size:10px;padding:3px 8px;border-radius:6px;border:1px solid var(--brd2);background:rgba(255,255,255,.05);color:var(--text2);cursor:pointer">🌟 Niv.101</button>
+      <button onclick="setDifficulty('difficile')" style="font-size:10px;padding:3px 8px;border-radius:6px;border:1px solid var(--brd2);background:rgba(255,255,255,.05);color:var(--text2);cursor:pointer">🏆 Niv.201</button>
+    </div>
   </div>
   <!-- Game selector grid -->
   <div class="game-selector-grid" id="game-selector-grid">
@@ -3874,9 +3871,40 @@ function sendWhatsApp() {
   toast("📲 WhatsApp ouvert — envoyez votre transaction !");
 }
 
-// ===== JEUX VOCAUX — DIFFICULTY SYSTEM =====
+// ===== JEUX VOCAUX — LEVEL SYSTEM (1-300) =====
 
+var _gameLevel = Math.max(1, Math.min(300, parseInt(localStorage.getItem('vp_level') || '1')));
 var _gameDifficulty = localStorage.getItem('vp_diff') || 'facile';
+
+function getLevelDiff(level) {
+  if (level <= 100) return 'facile';
+  if (level <= 200) return 'moyen';
+  return 'difficile';
+}
+
+function getLevelCfg(level) {
+  var t = level / 300;
+  return {
+    time:      Math.max(2, Math.round(12 - t * 10)),
+    choices:   Math.min(6, 2 + Math.floor(t * 4)),
+    speed:     Math.max(1, Math.round(8 - t * 7)),
+    melodyLen: Math.min(10, 2 + Math.floor(t * 8)),
+    bpm:       Math.round(70 + t * 90)
+  };
+}
+
+function levelLabel(level) {
+  var star = level <= 50 ? '⭐' : level <= 100 ? '⭐⭐' : level <= 150 ? '⭐⭐⭐' : level <= 200 ? '🌟🌟🌟' : level <= 250 ? '💫💫💫💫' : '🏆🏆🏆🏆🏆';
+  return 'Niv. ' + level + '/300 ' + star;
+}
+
+function saveLevel() {
+  localStorage.setItem('vp_level', _gameLevel);
+  var el = document.getElementById('level-display');
+  if (el) el.textContent = 'Niv. ' + _gameLevel + ' / 300';
+  var bar = document.getElementById('level-bar-fill');
+  if (bar) bar.style.width = (_gameLevel / 300 * 100) + '%';
+}
 
 // Difficulty configs per game
 var DIFF = {
@@ -4238,6 +4266,10 @@ function getCurrentGameMode() {
 window.setDifficulty = function(d) {
   _gameDifficulty = d;
   localStorage.setItem('vp_diff', d);
+  if (d === 'facile') _gameLevel = Math.min(100, _gameLevel > 100 ? 1 : _gameLevel);
+  else if (d === 'moyen') _gameLevel = _gameLevel < 101 ? 101 : Math.min(200, _gameLevel);
+  else _gameLevel = _gameLevel < 201 ? 201 : Math.min(300, _gameLevel);
+  saveLevel();
   ['facile','moyen','difficile'].forEach(function(x) {
     var b = document.getElementById('diff-' + x);
     if (b) b.classList.toggle('active', x === d);
@@ -4254,6 +4286,7 @@ function updateJeuxUI() {
   if (statCorrect) statCorrect.textContent = gameTotalCorrect;
   if (statWrong) statWrong.textContent = gameTotalWrong;
   if (statStreak) statStreak.textContent = gameSessionStreak;
+  saveLevel();
 }
 
 function stopGameTimer() {
@@ -4292,6 +4325,8 @@ function onCorrectAnswer() {
   gameXP += 10;
   window._gameCombo = (window._gameCombo || 0) + 1;
   var combo = window._gameCombo;
+  _gameLevel = Math.min(300, _gameLevel + 1);
+  saveLevel();
 
   saveGameProgress();
   updateJeuxUI();
@@ -4324,6 +4359,8 @@ function onWrongAnswer(correctAnswer) {
   gameSessionStreak = 0;
   window._gameCombo = 0;
   gameXP = Math.max(0, gameXP - 5);
+  _gameLevel = Math.max(1, _gameLevel - 1);
+  saveLevel();
   saveGameProgress();
   updateJeuxUI();
   var fb = document.querySelector('.game-feedback');
@@ -4399,11 +4436,14 @@ function spawnGameConfetti() {
 // ===== GAME BUILDERS =====
 
 function diffLabel(d) {
-  return d === 'facile' ? '🟢 Facile' : d === 'moyen' ? '🟡 Moyen' : '🔴 Difficile';
+  return levelLabel(_gameLevel);
 }
 
 function buildNoteGame(diff) {
-  var cfg = DIFF.note[diff] || DIFF.note.facile;
+  var lc = getLevelCfg(_gameLevel);
+  var allNotesByLevel = ['Do','Ré','Mi','Fa','Sol','La','Si','Do#','Ré#','Fa#','Sol#','La#'];
+  var poolSize = Math.min(allNotesByLevel.length, 4 + Math.floor(_gameLevel / 30));
+  var cfg = { notes: allNotesByLevel.slice(0, poolSize), choices: lc.choices, time: lc.time };
   var notes = cfg.notes;
   var correct = notes[Math.floor(Math.random() * notes.length)];
   var freq = getFreqByName(correct);
