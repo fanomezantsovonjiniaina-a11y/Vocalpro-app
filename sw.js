@@ -1,4 +1,4 @@
-const CACHE = 'vocalpro-v6';
+const CACHE = 'vocalpro-v7';
 const ASSETS = [
   '/Vocalpro-app/manifest.json',
   '/Vocalpro-app/icon-512.png',
