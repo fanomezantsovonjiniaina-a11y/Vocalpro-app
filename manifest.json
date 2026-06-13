@@ -1,7 +1,7 @@
 {
-  "name": "VocalPro — Coach Vocal Pro",
+  "name": "VocalPro Coach Vocal",
   "short_name": "VocalPro",
-  "description": "Coach vocal professionnel — améliorez votre voix avec des exercices, du solfège et des jeux musicaux.",
+  "description": "Coach vocal professionnel - exercices de chant, solfege et jeux musicaux pour ameliorer votre voix.",
   "start_url": "/Vocalpro-app/",
   "scope": "/Vocalpro-app/",
   "display": "standalone",
@@ -12,22 +12,16 @@
   "categories": ["education", "music"],
   "icons": [
     {
-      "src": "icon-512.png",
+      "src": "https://vocalproapp.site/Vocalpro-app/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "icon-512.png",
+      "src": "https://vocalproapp.site/Vocalpro-app/icon-512.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
-    },
-    {
-      "src": "icon-512.png",
-      "sizes": "384x384",
-      "type": "image/png",
-      "purpose": "any"
     }
   ]
 }
